@@ -1,34 +1,37 @@
-import { useTranslations } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/routing";
+import { getForumCategories } from "@/lib/data/forum";
+import { MessageSquare, Eye, Clock } from "lucide-react";
+import type { SupportedLocale } from "@/types";
+import type { Metadata } from "next";
 
-export default function ForumPage() {
-  const t = useTranslations("forum");
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "forum" });
+  return { title: `${t("title")} | Riftbound` };
+}
 
-  const categories = [
-    {
-      name: "Strategie",
-      description: "Discussion autour des strategies et du metagame",
-      topics: 142,
-      replies: 1203,
-    },
-    {
-      name: "Echanges",
-      description: "Proposez vos echanges de cartes",
-      topics: 89,
-      replies: 567,
-    },
-    {
-      name: "Tournois",
-      description: "Annonces et resultats de tournois",
-      topics: 34,
-      replies: 298,
-    },
-    {
-      name: "General",
-      description: "Discussion libre autour de Riftbound",
-      topics: 210,
-      replies: 1876,
-    },
-  ];
+function formatRelative(isoDate: string | null, locale: SupportedLocale): string {
+  if (!isoDate) return "—";
+  const diff = Date.now() - new Date(isoDate).getTime();
+  const hours = Math.floor(diff / 3600000);
+  if (hours < 1) return locale === "fr" ? "< 1h" : "< 1h ago";
+  if (hours < 24) return locale === "fr" ? `il y a ${hours}h` : `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return locale === "fr" ? `il y a ${days}j` : `${days}d ago`;
+}
+
+export default async function ForumPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "forum" });
+  const typedLocale = locale as SupportedLocale;
+
+  const categories = await getForumCategories(typedLocale);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -39,34 +42,43 @@ export default function ForumPage() {
         </button>
       </div>
 
-      {/* Forum Categories */}
       <div className="mt-8 space-y-4">
         {categories.map((cat) => (
-          <div
-            key={cat.name}
+          <Link
+            key={cat.id}
+            href={{ pathname: "/forum" }}
             className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 transition-colors hover:border-zinc-700"
           >
-            <div>
-              <h3 className="text-lg font-semibold text-zinc-100">
-                {cat.name}
-              </h3>
-              <p className="mt-1 text-sm text-zinc-500">{cat.description}</p>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-zinc-100">{cat.name}</h3>
+              {cat.description && (
+                <p className="mt-1 text-sm text-zinc-500">{cat.description}</p>
+              )}
             </div>
-            <div className="flex gap-8 text-center">
+            <div className="hidden gap-8 text-center sm:flex">
               <div>
-                <div className="text-lg font-semibold text-zinc-300">
-                  {cat.topics}
+                <div className="flex items-center gap-1.5 text-lg font-semibold text-zinc-300">
+                  <MessageSquare size={16} className="text-zinc-500" />
+                  {cat.topicCount}
                 </div>
                 <div className="text-xs text-zinc-500">{t("topics")}</div>
               </div>
               <div>
-                <div className="text-lg font-semibold text-zinc-300">
-                  {cat.replies}
+                <div className="flex items-center gap-1.5 text-lg font-semibold text-zinc-300">
+                  <Eye size={16} className="text-zinc-500" />
+                  {cat.replyCount}
                 </div>
                 <div className="text-xs text-zinc-500">{t("replies")}</div>
               </div>
+              <div>
+                <div className="flex items-center gap-1.5 text-sm text-zinc-400">
+                  <Clock size={14} className="text-zinc-600" />
+                  {formatRelative(cat.lastActivity, typedLocale)}
+                </div>
+                <div className="text-xs text-zinc-500">{t("lastActivity")}</div>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

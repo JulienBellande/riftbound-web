@@ -118,6 +118,10 @@
     "addToCart": "Add to cart",
     "cart": "Cart",
     "checkout": "Checkout",
+    "emptyCart": "Your cart is empty.",
+    "clearCart": "Clear cart",
+    "checkoutDemoNotice": "Payments are not configured (demo mode). Connect Stripe to enable checkout.",
+    "checkoutError": "Could not start checkout. Please try again.",
     "outOfStock": "Out of stock",
     "categories": {
       "all": "All",
@@ -159,7 +163,10 @@
     "forgotPassword": "Forgot password?",
     "orContinueWith": "Or continue with",
     "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?"
+    "hasAccount": "Already have an account?",
+    "demoNotice": "Authentication is not configured (demo mode). Connect Supabase to enable accounts.",
+    "genericError": "Authentication failed. Check your credentials.",
+    "checkEmail": "Check your inbox to confirm your account."
   },
   "common": {
     "loading": "Loading...",

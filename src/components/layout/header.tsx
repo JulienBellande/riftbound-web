@@ -51,7 +51,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
           <Link
-            href="/cards"
+            href="/login"
             className="hidden rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 sm:block"
           >
             {t("login")}

@@ -38,9 +38,21 @@ export const routing = defineRouting({
       fr: "/blog",
       en: "/blog",
     },
+    "/blog/[slug]": {
+      fr: "/blog/[slug]",
+      en: "/blog/[slug]",
+    },
     "/forum": {
       fr: "/forum",
       en: "/forum",
+    },
+    "/login": {
+      fr: "/connexion",
+      en: "/login",
+    },
+    "/register": {
+      fr: "/inscription",
+      en: "/register",
     },
   },
 });

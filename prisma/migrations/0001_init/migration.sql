@@ -223,7 +223,8 @@ CREATE TABLE "products" (
 -- CreateTable
 CREATE TABLE "orders" (
     "id" UUID NOT NULL,
-    "user_id" UUID NOT NULL,
+    "user_id" UUID,
+    "email" TEXT NOT NULL DEFAULT '',
     "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
     "total_eur" DECIMAL(10,2) NOT NULL,
     "currency" TEXT NOT NULL DEFAULT 'eur',
@@ -375,7 +376,7 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_deck_id_fkey" FOREIGN KEY ("deck
 ALTER TABLE "comments" ADD CONSTRAINT "comments_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "posts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "order_items" ADD CONSTRAINT "order_items_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;

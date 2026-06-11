@@ -118,6 +118,10 @@
     "addToCart": "Ajouter au panier",
     "cart": "Panier",
     "checkout": "Commander",
+    "emptyCart": "Votre panier est vide.",
+    "clearCart": "Vider le panier",
+    "checkoutDemoNotice": "Paiement non configuré (mode démo). Connectez Stripe pour activer la commande.",
+    "checkoutError": "Impossible de lancer le paiement. Réessayez.",
     "outOfStock": "Rupture de stock",
     "categories": {
       "all": "Tout",
@@ -159,7 +163,10 @@
     "forgotPassword": "Mot de passe oublié ?",
     "orContinueWith": "Ou continuer avec",
     "noAccount": "Pas encore de compte ?",
-    "hasAccount": "Déjà un compte ?"
+    "hasAccount": "Déjà un compte ?",
+    "demoNotice": "Authentification non configurée (mode démo). Connectez Supabase pour activer les comptes.",
+    "genericError": "Échec de l'authentification. Vérifiez vos identifiants.",
+    "checkEmail": "Vérifiez votre boîte mail pour confirmer votre compte."
   },
   "common": {
     "loading": "Chargement...",
