@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "title": "Riftbound - Card Database, Decks & Community",
+    "description": "The go-to platform for Riftbound: card database, deck building, real-time prices and an active community."
+  },
+  "nav": {
+    "cards": "Cards",
+    "decks": "Decks",
+    "deckBuilder": "Build a deck",
+    "prices": "Prices",
+    "shop": "Shop",
+    "blog": "Blog",
+    "forum": "Forum",
+    "login": "Log in",
+    "register": "Sign up",
+    "profile": "My profile",
+    "myDecks": "My decks",
+    "orders": "Orders",
+    "logout": "Log out"
+  },
+  "home": {
+    "hero": {
+      "title": "The Riftbound Reference",
+      "subtitle": "Complete card database, deck building tools and an active community.",
+      "cta": "Explore cards",
+      "ctaSecondary": "Top Decks"
+    },
+    "topDecks": {
+      "title": "Top Decks this week",
+      "viewAll": "View all decks"
+    },
+    "latestNews": {
+      "title": "Latest news",
+      "viewAll": "View all news"
+    },
+    "priceAlerts": {
+      "title": "Price movements",
+      "rising": "Rising",
+      "falling": "Falling"
+    }
+  },
+  "cards": {
+    "title": "Card Database",
+    "search": "Search for a card...",
+    "filters": {
+      "extension": "Set",
+      "type": "Type",
+      "rarity": "Rarity",
+      "cost": "Cost",
+      "allExtensions": "All sets",
+      "allTypes": "All types",
+      "allRarities": "All rarities"
+    },
+    "sort": {
+      "name": "Name",
+      "cost": "Cost",
+      "rarity": "Rarity",
+      "price": "Price",
+      "date": "Date"
+    },
+    "noResults": "No cards found.",
+    "results": "{count} card(s) found"
+  },
+  "decks": {
+    "title": "Community Decks",
+    "topWeek": "Top this week",
+    "topMonth": "Top this month",
+    "all": "All",
+    "create": "Create a deck",
+    "by": "by",
+    "cards": "cards",
+    "votes": "votes",
+    "comments": "comments"
+  },
+  "deckBuilder": {
+    "title": "Deck Builder",
+    "deckName": "Deck name",
+    "format": "Format",
+    "cardSearch": "Search for a card to add...",
+    "deckList": "Deck list",
+    "totalCards": "Total: {count} cards",
+    "save": "Save",
+    "publish": "Publish",
+    "clear": "Clear",
+    "dragHint": "Drag cards here to add them"
+  },
+  "prices": {
+    "title": "Riftbound Card Prices",
+    "lastUpdate": "Last update: {date}",
+    "currency": "Currency"
+  },
+  "shop": {
+    "title": "Riftbound Shop",
+    "addToCart": "Add to cart",
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "outOfStock": "Out of stock",
+    "categories": {
+      "all": "All",
+      "playmat": "Playmats",
+      "sleeves": "Sleeves",
+      "deckbox": "Deck Boxes",
+      "figurine": "Figurines",
+      "clothing": "Clothing",
+      "accessory": "Accessories"
+    }
+  },
+  "blog": {
+    "title": "News & Guides",
+    "categories": {
+      "all": "All",
+      "news": "News",
+      "guide": "Guides",
+      "meta": "Meta",
+      "tournament": "Tournaments",
+      "patchNotes": "Patch Notes"
+    },
+    "readMore": "Read more",
+    "publishedAt": "Published on {date}"
+  },
+  "forum": {
+    "title": "Community Forum",
+    "newTopic": "New topic",
+    "topics": "topics",
+    "replies": "replies",
+    "views": "views",
+    "lastActivity": "Last activity"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Sign up",
+    "email": "Email address",
+    "password": "Password",
+    "username": "Username",
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "Or continue with",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "share": "Share",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "seeMore": "See more",
+    "back": "Back"
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© {year} Riftbound. All rights reserved."
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "title": "Riftbound - Base de données, Decks & Communauté",
+    "description": "La plateforme de référence pour Riftbound : base de données de cartes, construction de decks, prix en temps réel et communauté active."
+  },
+  "nav": {
+    "cards": "Cartes",
+    "decks": "Decks",
+    "deckBuilder": "Créer un deck",
+    "prices": "Prix",
+    "shop": "Boutique",
+    "blog": "Blog",
+    "forum": "Forum",
+    "login": "Connexion",
+    "register": "Inscription",
+    "profile": "Mon profil",
+    "myDecks": "Mes decks",
+    "orders": "Commandes",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "hero": {
+      "title": "La référence Riftbound",
+      "subtitle": "Base de données complète, construction de decks et communauté active.",
+      "cta": "Explorer les cartes",
+      "ctaSecondary": "Top Decks"
+    },
+    "topDecks": {
+      "title": "Top Decks de la semaine",
+      "viewAll": "Voir tous les decks"
+    },
+    "latestNews": {
+      "title": "Dernières actualités",
+      "viewAll": "Voir toutes les news"
+    },
+    "priceAlerts": {
+      "title": "Mouvements de prix",
+      "rising": "En hausse",
+      "falling": "En baisse"
+    }
+  },
+  "cards": {
+    "title": "Base de données des cartes",
+    "search": "Rechercher une carte...",
+    "filters": {
+      "extension": "Extension",
+      "type": "Type",
+      "rarity": "Rareté",
+      "cost": "Coût",
+      "allExtensions": "Toutes les extensions",
+      "allTypes": "Tous les types",
+      "allRarities": "Toutes les raretés"
+    },
+    "sort": {
+      "name": "Nom",
+      "cost": "Coût",
+      "rarity": "Rareté",
+      "price": "Prix",
+      "date": "Date"
+    },
+    "noResults": "Aucune carte trouvée.",
+    "results": "{count} carte(s) trouvée(s)"
+  },
+  "decks": {
+    "title": "Decks de la communauté",
+    "topWeek": "Top de la semaine",
+    "topMonth": "Top du mois",
+    "all": "Tous",
+    "create": "Créer un deck",
+    "by": "par",
+    "cards": "cartes",
+    "votes": "votes",
+    "comments": "commentaires"
+  },
+  "deckBuilder": {
+    "title": "Constructeur de deck",
+    "deckName": "Nom du deck",
+    "format": "Format",
+    "cardSearch": "Rechercher une carte à ajouter...",
+    "deckList": "Liste du deck",
+    "totalCards": "Total : {count} cartes",
+    "save": "Sauvegarder",
+    "publish": "Publier",
+    "clear": "Vider",
+    "dragHint": "Glissez les cartes ici pour les ajouter"
+  },
+  "prices": {
+    "title": "Cotes des cartes Riftbound",
+    "lastUpdate": "Dernière mise à jour : {date}",
+    "currency": "Devise"
+  },
+  "shop": {
+    "title": "Boutique Riftbound",
+    "addToCart": "Ajouter au panier",
+    "cart": "Panier",
+    "checkout": "Commander",
+    "outOfStock": "Rupture de stock",
+    "categories": {
+      "all": "Tout",
+      "playmat": "Tapis de jeu",
+      "sleeves": "Protège-cartes",
+      "deckbox": "Deck Box",
+      "figurine": "Figurines",
+      "clothing": "Vêtements",
+      "accessory": "Accessoires"
+    }
+  },
+  "blog": {
+    "title": "Actualités & Guides",
+    "categories": {
+      "all": "Tout",
+      "news": "Actualités",
+      "guide": "Guides",
+      "meta": "Méta",
+      "tournament": "Tournois",
+      "patchNotes": "Notes de patch"
+    },
+    "readMore": "Lire la suite",
+    "publishedAt": "Publié le {date}"
+  },
+  "forum": {
+    "title": "Forum de la communauté",
+    "newTopic": "Nouveau sujet",
+    "topics": "sujets",
+    "replies": "réponses",
+    "views": "vues",
+    "lastActivity": "Dernière activité"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "username": "Nom d'utilisateur",
+    "forgotPassword": "Mot de passe oublié ?",
+    "orContinueWith": "Ou continuer avec",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "share": "Partager",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "seeMore": "Voir plus",
+    "back": "Retour"
+  },
+  "footer": {
+    "about": "À propos",
+    "contact": "Contact",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "copyright": "© {year} Riftbound. Tous droits réservés."
+  }
+}

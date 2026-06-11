@@ -1,0 +1,372 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────────────────────────
+// Auth & Users
+// ──────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  username  String   @unique
+  avatarUrl String?  @map("avatar_url")
+  role      UserRole @default(USER)
+  locale    Locale   @default(FR)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  decks       Deck[]
+  votes       Vote[]
+  posts       Post[]
+  orders      Order[]
+  forumTopics ForumTopic[]
+  forumReplies ForumReply[]
+  comments    Comment[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum Locale {
+  FR
+  EN
+}
+
+// ──────────────────────────────────────────────
+// Cards & Extensions
+// ──────────────────────────────────────────────
+
+model Extension {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique
+  nameFr      String   @map("name_fr")
+  nameEn      String   @map("name_en")
+  releaseDate DateTime @map("release_date")
+  imageUrl    String?  @map("image_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  cards Card[]
+
+  @@map("extensions")
+}
+
+model Card {
+  id            String     @id @default(uuid()) @db.Uuid
+  extensionId   String     @map("extension_id") @db.Uuid
+  collectorNum  String     @map("collector_num")
+  nameFr        String     @map("name_fr")
+  nameEn        String     @map("name_en")
+  descriptionFr String?    @map("description_fr") @db.Text
+  descriptionEn String?    @map("description_en") @db.Text
+  type          CardType
+  rarity        CardRarity
+  cost          Int        @default(0)
+  attack        Int?
+  health        Int?
+  imageUrl      String?    @map("image_url")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  extension Extension   @relation(fields: [extensionId], references: [id])
+  prices    CardPrice[]
+  deckCards DeckCard[]
+
+  @@unique([extensionId, collectorNum])
+  @@index([type])
+  @@index([rarity])
+  @@index([cost])
+  @@index([nameFr])
+  @@index([nameEn])
+  @@map("cards")
+}
+
+model CardPrice {
+  id        String   @id @default(uuid()) @db.Uuid
+  cardId    String   @map("card_id") @db.Uuid
+  priceEur  Decimal  @map("price_eur") @db.Decimal(10, 2)
+  priceUsd  Decimal  @map("price_usd") @db.Decimal(10, 2)
+  priceGbp  Decimal  @map("price_gbp") @db.Decimal(10, 2)
+  source    String   @default("manual")
+  fetchedAt DateTime @default(now()) @map("fetched_at")
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([cardId, fetchedAt(sort: Desc)])
+  @@map("card_prices")
+}
+
+enum CardType {
+  CREATURE
+  SPELL
+  ARTIFACT
+  ENCHANTMENT
+  LAND
+  HERO
+}
+
+enum CardRarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+// ──────────────────────────────────────────────
+// Decks & Votes
+// ──────────────────────────────────────────────
+
+model Deck {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String
+  description String?  @db.Text
+  format      String   @default("standard")
+  isPublic    Boolean  @default(false) @map("is_public")
+  coverCardId String?  @map("cover_card_id") @db.Uuid
+  score       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards    DeckCard[]
+  votes    Vote[]
+  comments Comment[]
+
+  @@index([userId])
+  @@index([isPublic, score(sort: Desc)])
+  @@index([format])
+  @@map("decks")
+}
+
+model DeckCard {
+  id       String @id @default(uuid()) @db.Uuid
+  deckId   String @map("deck_id") @db.Uuid
+  cardId   String @map("card_id") @db.Uuid
+  quantity Int    @default(1)
+
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card Card @relation(fields: [cardId], references: [id])
+
+  @@unique([deckId, cardId])
+  @@map("deck_cards")
+}
+
+model Vote {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  deckId    String   @map("deck_id") @db.Uuid
+  value     Int      // +1 or -1
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deckId])
+  @@map("votes")
+}
+
+// ──────────────────────────────────────────────
+// Blog
+// ──────────────────────────────────────────────
+
+model Post {
+  id          String       @id @default(uuid()) @db.Uuid
+  authorId    String       @map("author_id") @db.Uuid
+  slug        String       @unique
+  titleFr     String       @map("title_fr")
+  titleEn     String       @map("title_en")
+  contentFr   String       @map("content_fr") @db.Text
+  contentEn   String       @map("content_en") @db.Text
+  excerptFr   String?      @map("excerpt_fr")
+  excerptEn   String?      @map("excerpt_en")
+  coverImage  String?      @map("cover_image")
+  category    PostCategory
+  isPublished Boolean      @default(false) @map("is_published")
+  publishedAt DateTime?    @map("published_at")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+
+  @@index([isPublished, publishedAt(sort: Desc)])
+  @@index([category])
+  @@map("posts")
+}
+
+enum PostCategory {
+  NEWS
+  GUIDE
+  META
+  TOURNAMENT
+  PATCH_NOTES
+}
+
+// ──────────────────────────────────────────────
+// Forum
+// ──────────────────────────────────────────────
+
+model ForumCategory {
+  id            String @id @default(uuid()) @db.Uuid
+  slug          String @unique
+  nameFr        String @map("name_fr")
+  nameEn        String @map("name_en")
+  descriptionFr String? @map("description_fr")
+  descriptionEn String? @map("description_en")
+  sortOrder     Int    @default(0) @map("sort_order")
+
+  topics ForumTopic[]
+
+  @@map("forum_categories")
+}
+
+model ForumTopic {
+  id         String   @id @default(uuid()) @db.Uuid
+  categoryId String   @map("category_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  title      String
+  content    String   @db.Text
+  isPinned   Boolean  @default(false) @map("is_pinned")
+  isLocked   Boolean  @default(false) @map("is_locked")
+  viewCount  Int      @default(0) @map("view_count")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  category ForumCategory @relation(fields: [categoryId], references: [id])
+  user     User          @relation(fields: [userId], references: [id])
+  replies  ForumReply[]
+
+  @@index([categoryId, isPinned(sort: Desc), updatedAt(sort: Desc)])
+  @@map("forum_topics")
+}
+
+model ForumReply {
+  id        String   @id @default(uuid()) @db.Uuid
+  topicId   String   @map("topic_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  topic ForumTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  user  User       @relation(fields: [userId], references: [id])
+
+  @@index([topicId, createdAt])
+  @@map("forum_replies")
+}
+
+// ──────────────────────────────────────────────
+// Comments (polymorphic: decks + posts)
+// ──────────────────────────────────────────────
+
+model Comment {
+  id         String      @id @default(uuid()) @db.Uuid
+  userId     String      @map("user_id") @db.Uuid
+  parentType CommentType @map("parent_type")
+  deckId     String?     @map("deck_id") @db.Uuid
+  postId     String?     @map("post_id") @db.Uuid
+  content    String      @db.Text
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  user User  @relation(fields: [userId], references: [id])
+  deck Deck? @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([parentType, deckId])
+  @@index([parentType, postId])
+  @@map("comments")
+}
+
+enum CommentType {
+  DECK
+  POST
+}
+
+// ──────────────────────────────────────────────
+// Shop
+// ──────────────────────────────────────────────
+
+model Product {
+  id            String          @id @default(uuid()) @db.Uuid
+  slug          String          @unique
+  nameFr        String          @map("name_fr")
+  nameEn        String          @map("name_en")
+  descriptionFr String?         @map("description_fr") @db.Text
+  descriptionEn String?         @map("description_en") @db.Text
+  priceEur      Decimal         @map("price_eur") @db.Decimal(10, 2)
+  priceUsd      Decimal         @map("price_usd") @db.Decimal(10, 2)
+  priceGbp      Decimal         @map("price_gbp") @db.Decimal(10, 2)
+  imageUrl      String?         @map("image_url")
+  stock         Int             @default(0)
+  category      ProductCategory
+  isActive      Boolean         @default(true) @map("is_active")
+  stripeId      String?         @unique @map("stripe_id")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  orderItems OrderItem[]
+
+  @@index([category, isActive])
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String      @map("user_id") @db.Uuid
+  status          OrderStatus @default(PENDING)
+  totalEur        Decimal     @map("total_eur") @db.Decimal(10, 2)
+  currency        String      @default("eur")
+  stripeSessionId String?     @unique @map("stripe_session_id")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid()) @db.Uuid
+  orderId   String  @map("order_id") @db.Uuid
+  productId String  @map("product_id") @db.Uuid
+  quantity  Int
+  unitPrice Decimal @map("unit_price") @db.Decimal(10, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+enum ProductCategory {
+  PLAYMAT
+  SLEEVES
+  DECKBOX
+  FIGURINE
+  CLOTHING
+  ACCESSORY
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
