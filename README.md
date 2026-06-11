@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Riftbound Web
 
-## Getting Started
+Plateforme de référence pour le jeu de cartes **Riftbound** : base de données de cartes, cotes multi-devises, construction de decks communautaire, blog, forum et boutique.
 
-First, run the development server:
+> The reference platform for the Riftbound card game: card database, multi-currency prices, community deck building, blog, forum and shop. Bilingual FR/EN.
+
+## Stack
+
+- **Next.js 16** (App Router, React Server Components) + TypeScript
+- **Tailwind CSS 4**
+- **Supabase** — PostgreSQL, Auth, Storage
+- **Prisma 7** — ORM (driver adapter `@prisma/adapter-pg`)
+- **next-intl** — i18n FR/EN avec pathnames localisés (`/fr/cartes` ↔ `/en/cards`)
+- **Stripe** — paiements boutique
+- **Zustand** — état client (panier, deck builder)
+- **@dnd-kit** — drag-and-drop du deck builder
+
+## Démarrage rapide
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sans configuration, le site tourne en **mode démo** : un dataset d'exemple embarqué (36 cartes, 3 extensions, prix avec historique) alimente toutes les pages. Aucune base de données requise.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Connexion à une vraie base (Supabase)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Copier `.env.example` vers `.env` et renseigner :
+   - `DATABASE_URL` — chaîne de connexion PostgreSQL Supabase
+   - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Clés Stripe pour la boutique
+2. Appliquer le schéma et peupler :
 
-## Learn More
+```bash
+npm run db:migrate   # applique prisma/migrations
+npm run db:seed      # importe le dataset d'exemple
+```
 
-To learn more about Next.js, take a look at the following resources:
+La couche de données (`src/lib/data/cards.ts`) bascule automatiquement de la démo vers PostgreSQL dès que `DATABASE_URL` pointe vers une instance `postgres://`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── [locale]/(main)/      # Pages publiques (cartes, decks, prix, shop, blog, forum)
+│   │   └── cards/[id]/       # Fiche carte détaillée
+│   └── api/                  # Route handlers (cards, decks, votes, prices, stripe)
+├── components/               # UI par domaine (cards/, layout/, ui/)
+├── i18n/                     # Config next-intl + pathnames localisés
+├── lib/
+│   ├── data/                 # Couche d'accès aux données (Prisma ⇄ démo)
+│   ├── supabase/             # Clients browser/server/middleware
+│   └── stripe/
+├── stores/                   # Zustand (cart, deck-builder)
+└── types/
 
-## Deploy on Vercel
+prisma/
+├── schema.prisma             # Schéma complet (12 modèles)
+├── migrations/0001_init/     # SQL initial (utilisable tel quel sur Supabase)
+└── seed.ts
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Commande | Description |
+|----------|-------------|
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Build production |
+| `npm run db:migrate` | Migrations Prisma |
+| `npm run db:seed` | Seed du dataset d'exemple |
+| `npm run db:studio` | Interface d'exploration de la base |

@@ -1,15 +1,8 @@
 import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 
-export default function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  // setRequestLocale will be called after params resolves in production
+export default function HomePage() {
   const t = useTranslations("home");
-  const tMeta = useTranslations("metadata");
 
   return (
     <>

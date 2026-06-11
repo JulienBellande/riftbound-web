@@ -1,48 +1,112 @@
-import { useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/routing";
+import { getCards, getExtensions } from "@/lib/data/cards";
+import { CardFiltersBar } from "@/components/cards/card-filters-bar";
+import { CardFrame } from "@/components/cards/card-frame";
+import { Pagination } from "@/components/ui/pagination";
+import { formatPrice } from "@/lib/utils/format";
+import type { CardFilters, SupportedLocale } from "@/types";
+import type { Metadata } from "next";
 
-export default function CardsPage() {
-  const t = useTranslations("cards");
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "cards" });
+  return { title: `${t("title")} | Riftbound` };
+}
+
+function parseCostRange(cost?: string): {
+  costMin?: number;
+  costMax?: number;
+} {
+  switch (cost) {
+    case "0-2":
+      return { costMin: 0, costMax: 2 };
+    case "3-5":
+      return { costMin: 3, costMax: 5 };
+    case "6+":
+      return { costMin: 6 };
+    default:
+      return {};
+  }
+}
+
+export default async function CardsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const sp = await searchParams;
+  const t = await getTranslations({ locale, namespace: "cards" });
+
+  const filters: CardFilters = {
+    search: typeof sp.q === "string" ? sp.q : undefined,
+    extensionId: typeof sp.ext === "string" ? sp.ext : undefined,
+    type: typeof sp.type === "string" ? sp.type : undefined,
+    rarity: typeof sp.rarity === "string" ? sp.rarity : undefined,
+    ...parseCostRange(typeof sp.cost === "string" ? sp.cost : undefined),
+    sortBy:
+      typeof sp.sort === "string"
+        ? (sp.sort as CardFilters["sortBy"])
+        : "name",
+    sortOrder: sp.order === "desc" ? "desc" : "asc",
+    page: typeof sp.page === "string" ? Number(sp.page) : 1,
+    perPage: 24,
+  };
+
+  const [result, extensions] = await Promise.all([
+    getCards(filters),
+    getExtensions(),
+  ]);
+
+  const typedLocale = locale as SupportedLocale;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-zinc-100">{t("title")}</h1>
 
-      {/* Filters Bar */}
-      <div className="mt-6 flex flex-wrap gap-3">
-        <input
-          type="text"
-          placeholder={t("search")}
-          className="flex-1 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-        />
-        <select className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none">
-          <option>{t("filters.allExtensions")}</option>
-        </select>
-        <select className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none">
-          <option>{t("filters.allTypes")}</option>
-        </select>
-        <select className="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none">
-          <option>{t("filters.allRarities")}</option>
-        </select>
+      <div className="mt-6">
+        <CardFiltersBar extensions={extensions} />
       </div>
 
-      {/* Card Grid (placeholder) */}
-      <div className="mt-8 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <div
-            key={i}
-            className="group rounded-xl border border-zinc-800 bg-zinc-900/50 p-3 transition-all hover:border-amber-600/50 hover:shadow-lg hover:shadow-amber-600/5"
-          >
-            <div className="aspect-[2.5/3.5] rounded-lg bg-zinc-800/50" />
-            <div className="mt-3 h-3 w-3/4 rounded bg-zinc-800" />
-            <div className="mt-1.5 h-2.5 w-1/2 rounded bg-zinc-800/50" />
-          </div>
-        ))}
-      </div>
-
-      <p className="mt-6 text-center text-sm text-zinc-500">
-        {t("noResults")}
+      <p className="mt-4 text-sm text-zinc-500">
+        {t("results", { count: result.total })}
       </p>
+
+      {result.data.length === 0 ? (
+        <p className="mt-12 text-center text-zinc-500">{t("noResults")}</p>
+      ) : (
+        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {result.data.map((card) => (
+            <Link
+              key={card.id}
+              href={{ pathname: "/cards/[id]", params: { id: card.id } }}
+              className="group"
+            >
+              <CardFrame
+                card={card}
+                locale={typedLocale}
+                typeLabel={t(`types.${card.type}`)}
+              />
+              {card.latestPrice && (
+                <p className="mt-1.5 text-center text-xs font-medium text-amber-500">
+                  {formatPrice(card.latestPrice.priceEur, "EUR", typedLocale)}
+                </p>
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <Pagination page={result.page} totalPages={result.totalPages} />
     </div>
   );
 }

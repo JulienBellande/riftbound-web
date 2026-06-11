@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 export async function POST(request: NextRequest) {
-  const body = await request.text();
+  // Raw body required for Stripe signature verification (Phase 5)
+  await request.text();
   const headersList = await headers();
   const sig = headersList.get("stripe-signature");
 

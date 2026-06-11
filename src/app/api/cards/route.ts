@@ -1,31 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { getCards } from "@/lib/data/cards";
+
+const querySchema = z.object({
+  q: z.string().optional(),
+  ext: z.string().optional(),
+  type: z.string().optional(),
+  rarity: z.string().optional(),
+  costMin: z.coerce.number().int().min(0).optional(),
+  costMax: z.coerce.number().int().min(0).optional(),
+  sort: z.enum(["name", "cost", "rarity", "price", "date"]).default("name"),
+  order: z.enum(["asc", "desc"]).default("asc"),
+  page: z.coerce.number().int().min(1).default(1),
+  perPage: z.coerce.number().int().min(1).max(100).default(24),
+});
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
+  const parsed = querySchema.safeParse(
+    Object.fromEntries(request.nextUrl.searchParams)
+  );
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid query", details: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
 
-  const filters = {
-    search: searchParams.get("search") ?? undefined,
-    extensionId: searchParams.get("extensionId") ?? undefined,
-    type: searchParams.get("type") ?? undefined,
-    rarity: searchParams.get("rarity") ?? undefined,
-    costMin: searchParams.get("costMin")
-      ? Number(searchParams.get("costMin"))
-      : undefined,
-    costMax: searchParams.get("costMax")
-      ? Number(searchParams.get("costMax"))
-      : undefined,
-    sortBy: searchParams.get("sortBy") ?? "name",
-    sortOrder: searchParams.get("sortOrder") ?? "asc",
-    page: Number(searchParams.get("page") ?? 1),
-    perPage: Math.min(Number(searchParams.get("perPage") ?? 24), 100),
-  };
+  const q = parsed.data;
+  const result = await getCards({
+    search: q.q,
+    extensionId: q.ext,
+    type: q.type,
+    rarity: q.rarity,
+    costMin: q.costMin,
+    costMax: q.costMax,
+    sortBy: q.sort,
+    sortOrder: q.order,
+    page: q.page,
+    perPage: q.perPage,
+  });
 
-  // TODO: Prisma query with filters
-  return NextResponse.json({
-    data: [],
-    total: 0,
-    page: filters.page,
-    perPage: filters.perPage,
-    totalPages: 0,
+  return NextResponse.json(result, {
+    headers: {
+      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+    },
   });
 }

@@ -21,8 +21,7 @@ export async function GET(request: NextRequest) {
   });
 }
 
-export async function POST(request: NextRequest) {
-  // TODO: Auth check + create deck
-  const body = await request.json();
-  return NextResponse.json({ id: null }, { status: 201 });
+export async function POST() {
+  // TODO: Auth check + create deck (Phase 3)
+  return NextResponse.json({ error: "Not implemented" }, { status: 501 });
 }

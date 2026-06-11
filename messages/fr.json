@@ -49,7 +49,23 @@
       "cost": "Coût",
       "allExtensions": "Toutes les extensions",
       "allTypes": "Tous les types",
-      "allRarities": "Toutes les raretés"
+      "allRarities": "Toutes les raretés",
+      "anyCost": "Tous les coûts"
+    },
+    "types": {
+      "UNIT": "Unité",
+      "CHAMPION": "Champion",
+      "SPELL": "Sort",
+      "GEAR": "Équipement",
+      "RUNE": "Rune",
+      "BATTLEFIELD": "Champ de bataille"
+    },
+    "rarities": {
+      "COMMON": "Commune",
+      "UNCOMMON": "Peu commune",
+      "RARE": "Rare",
+      "EPIC": "Épique",
+      "LEGENDARY": "Légendaire"
     },
     "sort": {
       "name": "Nom",
@@ -57,6 +73,11 @@
       "rarity": "Rareté",
       "price": "Prix",
       "date": "Date"
+    },
+    "detail": {
+      "stats": "ATQ / PV",
+      "marketPrices": "Prix du marché",
+      "priceDate": "Cote relevée le {date}"
     },
     "noResults": "Aucune carte trouvée.",
     "results": "{count} carte(s) trouvée(s)"
@@ -87,7 +108,8 @@
   "prices": {
     "title": "Cotes des cartes Riftbound",
     "lastUpdate": "Dernière mise à jour : {date}",
-    "currency": "Devise"
+    "currency": "Devise",
+    "trend7d": "7 jours"
   },
   "shop": {
     "title": "Boutique Riftbound",
@@ -149,7 +171,9 @@
     "copy": "Copier",
     "copied": "Copié !",
     "seeMore": "Voir plus",
-    "back": "Retour"
+    "back": "Retour",
+    "previous": "Précédent",
+    "next": "Suivant"
   },
   "footer": {
     "about": "À propos",
