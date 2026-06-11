@@ -91,7 +91,9 @@
     "by": "par",
     "cards": "cartes",
     "votes": "votes",
-    "comments": "commentaires"
+    "comments": "commentaires",
+    "noResults": "Aucun deck trouvé.",
+    "deckList": "Liste du deck"
   },
   "deckBuilder": {
     "title": "Constructeur de deck",

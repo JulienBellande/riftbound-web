@@ -91,7 +91,9 @@
     "by": "by",
     "cards": "cards",
     "votes": "votes",
-    "comments": "comments"
+    "comments": "comments",
+    "noResults": "No decks found.",
+    "deckList": "Deck list"
   },
   "deckBuilder": {
     "title": "Deck Builder",
