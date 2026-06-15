@@ -1,9 +1,14 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { AuthForm } from "@/components/auth/auth-form";
+import { Flame } from "lucide-react";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "auth" });
   return { title: `${t("login")} | RiftForge` };
@@ -20,25 +25,39 @@ export default async function LoginPage({
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
-      <div className="w-full max-w-md">
-        <Link href="/" className="mb-8 block text-center text-2xl font-bold text-amber-500">
-          RIFTBOUND
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,_rgba(99,102,241,0.1),transparent)]" />
+      <div className="relative w-full max-w-sm">
+        <Link
+          href="/"
+          className="mb-6 flex items-center justify-center gap-2"
+        >
+          <Flame size={22} className="text-amber-500" />
+          <span className="text-xl font-extrabold tracking-tight">
+            <span className="text-zinc-100">RIFT</span>
+            <span className="text-amber-500">FORGE</span>
+          </span>
         </Link>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8">
-          <h1 className="text-2xl font-bold text-zinc-100">{t("login")}</h1>
+        <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-6 backdrop-blur-sm">
+          <h1 className="text-xl font-black text-zinc-100">{t("login")}</h1>
 
           <AuthForm mode="login" />
 
-          <p className="mt-6 text-center text-sm text-zinc-500">
+          <p className="mt-5 text-center text-xs text-zinc-500">
             {t("noAccount")}{" "}
-            <Link href="/register" className="text-amber-500 hover:text-amber-400">
+            <Link
+              href="/register"
+              className="font-semibold text-indigo-400 hover:text-indigo-300"
+            >
               {t("register")}
             </Link>
           </p>
 
-          <p className="mt-2 text-center">
-            <Link href="/login" className="text-sm text-zinc-500 hover:text-zinc-400">
+          <p className="mt-1.5 text-center">
+            <Link
+              href="/login"
+              className="text-xs text-zinc-600 hover:text-zinc-400"
+            >
               {t("forgotPassword")}
             </Link>
           </p>

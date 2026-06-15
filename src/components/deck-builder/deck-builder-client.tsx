@@ -78,11 +78,11 @@ export function DeckBuilderClient({
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-black tracking-tight text-zinc-100">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
         {t("title")}
       </h1>
-      <p className="mt-1 text-sm text-zinc-500">{t("subtitle")}</p>
+      <p className="mt-1 text-xs text-zinc-500">{t("subtitle")}</p>
 
       <DndContext
         collisionDetection={pointerWithin}
