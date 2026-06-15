@@ -39,6 +39,11 @@
       "valuableTitle": "Most valuable cards",
       "viewAll": "All prices"
     },
+    "browseSets": {
+      "title": "Browse by set",
+      "viewAll": "All cards",
+      "cards": "cards"
+    },
     "topDecks": {
       "title": "Top Decks this week",
       "viewAll": "View all decks"
@@ -65,7 +70,8 @@
       "allTypes": "All types",
       "allRarities": "All rarities",
       "allDomains": "All domains",
-      "anyCost": "Any energy"
+      "anyCost": "Any energy",
+      "clearAll": "Clear all"
     },
     "types": {
       "UNIT": "Unit",

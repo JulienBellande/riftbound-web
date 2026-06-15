@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { getCardById, getCardVariants } from "@/lib/data/cards";
 import {
   formatPrice,
@@ -17,24 +17,32 @@ const RARITY_DOT: Record<string, string> = {
   UNCOMMON: "bg-emerald-500",
   RARE: "bg-sky-500",
   EPIC: "bg-violet-500",
-  SHOWCASE: "bg-amber-400",
-  PROMO: "bg-fuchsia-500",
+  SHOWCASE: "bg-gradient-to-br from-amber-300 to-orange-500",
+  PROMO: "bg-gradient-to-br from-fuchsia-400 to-pink-600",
 };
 
-/** Human label for a printing, derived from its name suffix. */
+const RARITY_BG: Record<string, string> = {
+  COMMON: "border-zinc-800/60 bg-zinc-900/40",
+  UNCOMMON: "border-emerald-800/30 bg-emerald-950/10",
+  RARE: "border-sky-800/30 bg-sky-950/10",
+  EPIC: "border-violet-800/30 bg-violet-950/10",
+  SHOWCASE: "border-amber-800/30 bg-amber-950/10",
+  PROMO: "border-fuchsia-800/30 bg-fuchsia-950/10",
+};
+
 function variantLabel(name: string): string {
   const m = name.match(/\(([^)]*)\)\s*$/);
   return m ? m[1] : "Standard";
 }
 
 const DOMAIN_COLORS: Record<string, string> = {
-  Fury: "bg-red-500/20 text-red-400 ring-red-500/30",
-  Calm: "bg-cyan-500/20 text-cyan-400 ring-cyan-500/30",
-  Mind: "bg-purple-500/20 text-purple-400 ring-purple-500/30",
-  Body: "bg-amber-500/20 text-amber-400 ring-amber-500/30",
-  Chaos: "bg-rose-500/20 text-rose-400 ring-rose-500/30",
-  Order: "bg-sky-500/20 text-sky-400 ring-sky-500/30",
-  Colorless: "bg-zinc-500/20 text-zinc-400 ring-zinc-500/30",
+  Fury: "bg-red-500/15 text-red-400 ring-red-500/25",
+  Calm: "bg-cyan-500/15 text-cyan-400 ring-cyan-500/25",
+  Mind: "bg-purple-500/15 text-purple-400 ring-purple-500/25",
+  Body: "bg-amber-500/15 text-amber-400 ring-amber-500/25",
+  Chaos: "bg-rose-500/15 text-rose-400 ring-rose-500/25",
+  Order: "bg-sky-500/15 text-sky-400 ring-sky-500/25",
+  Colorless: "bg-zinc-500/15 text-zinc-400 ring-zinc-500/25",
 };
 
 export async function generateMetadata({
@@ -78,32 +86,35 @@ export default async function CardDetailPage({
   const otherVariants = variants.filter((v) => v.id !== card.id);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      {/* Back link */}
       <Link
         href="/cards"
-        className="inline-flex items-center gap-2 text-sm text-zinc-500 transition-colors hover:text-zinc-300"
+        className="inline-flex items-center gap-1.5 text-sm text-zinc-500 transition-colors hover:text-zinc-300"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={14} />
         {tCommon("back")}
       </Link>
 
-      <div className="mt-6 grid gap-10 md:grid-cols-[320px_1fr]">
+      <div className="mt-5 grid gap-8 md:grid-cols-[300px_1fr] lg:gap-10">
         {/* Card image */}
-        <div className="mx-auto w-full max-w-[320px]">
-          {card.imageUrl ? (
-            <Image
-              src={card.imageUrl}
-              alt={name}
-              width={744}
-              height={1039}
-              className="w-full rounded-xl shadow-2xl"
-              priority
-            />
-          ) : (
-            <div className="aspect-[744/1039] w-full rounded-xl bg-zinc-800" />
-          )}
+        <div className="mx-auto w-full max-w-[300px]">
+          <div className="overflow-hidden rounded-xl shadow-2xl shadow-black/40 ring-1 ring-zinc-800/50">
+            {card.imageUrl ? (
+              <Image
+                src={card.imageUrl}
+                alt={name}
+                width={744}
+                height={1039}
+                className="w-full"
+                priority
+              />
+            ) : (
+              <div className="aspect-[744/1039] w-full bg-zinc-800" />
+            )}
+          </div>
           {card.artist && (
-            <p className="mt-2 text-center text-xs text-zinc-600">
+            <p className="mt-2 text-center text-[10px] text-zinc-600">
               Art: {card.artist}
             </p>
           )}
@@ -111,18 +122,37 @@ export default async function CardDetailPage({
 
         {/* Card info */}
         <div>
-          <h1 className="text-3xl font-black text-zinc-100">{name}</h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            {card.extension.nameEn} · #{card.extension.code}
-          </p>
+          <div className="flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-2xl font-black text-zinc-100 sm:text-3xl">
+                {name}
+              </h1>
+              <p className="mt-1 text-sm text-zinc-500">
+                {card.extension.nameEn} · #{card.extension.code}
+              </p>
+            </div>
+            {/* Rarity badge */}
+            <div
+              className={`rounded-lg border px-3 py-1.5 text-xs font-bold ${RARITY_BG[card.rarity] ?? RARITY_BG.COMMON}`}
+            >
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`h-2 w-2 rounded-full ${RARITY_DOT[card.rarity] ?? RARITY_DOT.COMMON}`}
+                />
+                <span className="text-zinc-200">
+                  {t(`rarities.${card.rarity}`)}
+                </span>
+              </div>
+            </div>
+          </div>
 
-          {/* Domain badges */}
-          {card.domain.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
+          {/* Domain + tags */}
+          {(card.domain.length > 0 || card.tags.length > 0) && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
               {card.domain.map((d) => (
                 <span
                   key={d}
-                  className={`rounded-full px-3 py-0.5 text-xs font-semibold ring-1 ${DOMAIN_COLORS[d] ?? "bg-zinc-800 text-zinc-400 ring-zinc-700"}`}
+                  className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ring-1 ${DOMAIN_COLORS[d] ?? "bg-zinc-800 text-zinc-400 ring-zinc-700"}`}
                 >
                   {d}
                 </span>
@@ -130,7 +160,7 @@ export default async function CardDetailPage({
               {card.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-zinc-800/60 px-3 py-0.5 text-xs text-zinc-400 ring-1 ring-zinc-700/50"
+                  className="rounded-full bg-zinc-800/50 px-2.5 py-0.5 text-[11px] text-zinc-400 ring-1 ring-zinc-700/40"
                 >
                   {tag}
                 </span>
@@ -138,95 +168,102 @@ export default async function CardDetailPage({
             </div>
           )}
 
+          {/* Description */}
           {description && (
-            <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-zinc-300">
-              {description}
-            </p>
+            <div className="mt-4 rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3.5">
+              <p className="whitespace-pre-line text-sm leading-relaxed text-zinc-300">
+                {description}
+              </p>
+            </div>
           )}
 
-          {/* Attributes */}
-          <dl className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-3.5">
+          {/* Attributes grid */}
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
               <dt className="text-[10px] uppercase tracking-widest text-zinc-600">
                 {t("filters.type")}
               </dt>
-              <dd className="mt-1 text-sm font-semibold text-zinc-200">
+              <dd className="mt-1 text-sm font-bold text-zinc-200">
                 {t(`types.${card.type}`)}
               </dd>
             </div>
-            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-3.5">
+            <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
               <dt className="text-[10px] uppercase tracking-widest text-zinc-600">
                 {t("filters.rarity")}
               </dt>
-              <dd className="mt-1 text-sm font-semibold text-zinc-200">
+              <dd className="mt-1 flex items-center gap-1.5 text-sm font-bold text-zinc-200">
+                <span
+                  className={`h-2 w-2 rounded-full ${RARITY_DOT[card.rarity] ?? RARITY_DOT.COMMON}`}
+                />
                 {t(`rarities.${card.rarity}`)}
               </dd>
             </div>
-            <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-3.5">
+            <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
               <dt className="text-[10px] uppercase tracking-widest text-zinc-600">
-                Energy
+                {t("filters.cost")}
               </dt>
-              <dd className="mt-1 text-sm font-bold text-amber-400">
+              <dd className="mt-1 text-sm font-black text-amber-400">
                 {card.cost}
               </dd>
             </div>
             {card.attack !== null && (
-              <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-3.5">
+              <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3">
                 <dt className="text-[10px] uppercase tracking-widest text-zinc-600">
-                  Might
+                  {t("detail.stats")}
                 </dt>
-                <dd className="mt-1 text-sm font-bold text-orange-400">
+                <dd className="mt-1 text-sm font-black text-orange-400">
                   {card.attack}
                 </dd>
               </div>
             )}
-          </dl>
+          </div>
 
           {/* Prices */}
           {card.latestPrice && (
-            <div className="mt-8">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+            <div className="mt-6">
+              <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <ExternalLink size={12} />
                 {t("detail.marketPrices")}
               </h2>
-              <div className="mt-3 grid grid-cols-3 gap-3">
-                <div className="rounded-xl border border-amber-800/30 bg-amber-950/10 p-4 text-center">
-                  <div className="text-lg font-bold text-amber-400">
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <div className="rounded-lg border border-amber-800/25 bg-amber-950/10 p-3 text-center">
+                  <div className="text-lg font-black text-amber-400">
                     {formatPrice(
                       card.latestPrice.priceEur,
                       "EUR",
                       typedLocale
                     )}
                   </div>
-                  <div className="mt-1 text-[10px] font-semibold uppercase text-zinc-600">
+                  <div className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-600">
                     EUR
                   </div>
                 </div>
-                <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-4 text-center">
-                  <div className="text-lg font-bold text-zinc-200">
+                <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3 text-center">
+                  <div className="text-lg font-black text-zinc-200">
                     {formatPrice(
                       card.latestPrice.priceUsd,
                       "USD",
                       typedLocale
                     )}
                   </div>
-                  <div className="mt-1 text-[10px] font-semibold uppercase text-zinc-600">
+                  <div className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-600">
                     USD
                   </div>
                 </div>
-                <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/40 p-4 text-center">
-                  <div className="text-lg font-bold text-zinc-200">
+                <div className="rounded-lg border border-zinc-800/50 bg-zinc-900/30 p-3 text-center">
+                  <div className="text-lg font-black text-zinc-200">
                     {formatPrice(
                       card.latestPrice.priceGbp,
                       "GBP",
                       typedLocale
                     )}
                   </div>
-                  <div className="mt-1 text-[10px] font-semibold uppercase text-zinc-600">
+                  <div className="mt-0.5 text-[10px] font-semibold uppercase text-zinc-600">
                     GBP
                   </div>
                 </div>
               </div>
-              <p className="mt-2 text-[10px] text-zinc-700">
+              <p className="mt-1.5 text-[10px] text-zinc-700">
                 {t("detail.priceDate", {
                   date: new Date(
                     card.latestPrice.fetchedAt
@@ -240,21 +277,21 @@ export default async function CardDetailPage({
 
       {/* Other printings / variants */}
       {otherVariants.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
+        <section className="mt-10">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
             {t("detail.otherVersions")} ({otherVariants.length})
           </h2>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {[card, ...otherVariants].map((v) => {
               const isCurrent = v.id === card.id;
               return (
                 <Link
                   key={v.id}
                   href={{ pathname: "/cards/[id]", params: { id: v.id } }}
-                  className={`flex items-center gap-3 rounded-xl border p-2.5 transition-colors ${
+                  className={`flex items-center gap-3 rounded-xl border p-2.5 transition-all ${
                     isCurrent
-                      ? "border-indigo-500/50 bg-indigo-500/5"
-                      : "border-zinc-800/60 bg-zinc-900/30 hover:border-zinc-700"
+                      ? "border-indigo-500/40 bg-indigo-500/5"
+                      : "border-zinc-800/50 bg-zinc-900/20 hover:border-zinc-700 hover:bg-zinc-900/40"
                   }`}
                 >
                   {v.imageUrl ? (

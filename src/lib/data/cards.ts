@@ -14,6 +14,7 @@ export interface ExtensionSummary {
   nameFr: string;
   nameEn: string;
   releaseDate: string;
+  count: number;
 }
 
 export interface PriceRow extends CardWithPrice {
@@ -131,17 +132,23 @@ function applyDemoFilters(filters: CardFilters): CardWithPrice[] {
 
 export async function getExtensions(): Promise<ExtensionSummary[]> {
   if (!isDatabaseConfigured()) {
+    const countBySet = new Map<string, number>();
+    for (const c of sampleCards) {
+      countBySet.set(c.extensionCode, (countBySet.get(c.extensionCode) ?? 0) + 1);
+    }
     return sampleExtensions.map((e) => ({
       id: e.code,
       code: e.code,
       nameFr: e.nameFr,
       nameEn: e.nameEn,
       releaseDate: e.releaseDate,
+      count: countBySet.get(e.code) ?? 0,
     }));
   }
 
   const extensions = await prisma.extension.findMany({
     orderBy: { releaseDate: "desc" },
+    include: { _count: { select: { cards: true } } },
   });
   return extensions.map((e) => ({
     id: e.id,
@@ -149,6 +156,7 @@ export async function getExtensions(): Promise<ExtensionSummary[]> {
     nameFr: e.nameFr,
     nameEn: e.nameEn,
     releaseDate: e.releaseDate.toISOString(),
+    count: e._count.cards,
   }));
 }
 

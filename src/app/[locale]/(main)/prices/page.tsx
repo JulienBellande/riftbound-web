@@ -14,6 +14,15 @@ import { cn } from "@/lib/utils/cn";
 import type { Currency, SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
+const RARITY_DOT: Record<string, string> = {
+  COMMON: "bg-zinc-500",
+  UNCOMMON: "bg-emerald-500",
+  RARE: "bg-sky-500",
+  EPIC: "bg-violet-500",
+  SHOWCASE: "bg-amber-400",
+  PROMO: "bg-fuchsia-500",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -55,12 +64,14 @@ export default async function PricesPage({
   const lastUpdate = result.data[0]?.latestPrice?.fetchedAt;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100">{t("title")}</h1>
+          <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+            {t("title")}
+          </h1>
           {lastUpdate && (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-xs text-zinc-500">
               {t("lastUpdate", {
                 date: new Date(lastUpdate).toLocaleDateString(
                   locale === "fr" ? "fr-FR" : "en-GB"
@@ -69,63 +80,78 @@ export default async function PricesPage({
             </p>
           )}
         </div>
-      </div>
-
-      <div className="mt-6">
         <PricesToolbar currency={currency} />
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-zinc-800">
+      <div className="mt-5 overflow-hidden rounded-xl border border-zinc-800/50">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-zinc-800 bg-zinc-900/50">
+          <thead className="border-b border-zinc-800/50 bg-zinc-900/40">
             <tr>
-              <th className="px-4 py-3 font-semibold text-zinc-400">
+              <th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {tCards("sort.name")}
               </th>
-              <th className="hidden px-4 py-3 font-semibold text-zinc-400 sm:table-cell">
+              <th className="hidden px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 sm:table-cell">
                 {tCards("filters.extension")}
               </th>
-              <th className="hidden px-4 py-3 font-semibold text-zinc-400 md:table-cell">
+              <th className="hidden px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 md:table-cell">
                 {tCards("filters.rarity")}
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-zinc-400">
+              <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {tCards("sort.price")} ({currency})
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-zinc-400">
+              <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {t("trend7d")}
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/50">
+          <tbody className="divide-y divide-zinc-800/30">
             {result.data.map((row) => (
-              <tr key={row.id} className="transition-colors hover:bg-zinc-900/30">
-                <td className="px-4 py-3">
+              <tr
+                key={row.id}
+                className="transition-colors hover:bg-zinc-900/30"
+              >
+                <td className="px-3 py-2">
                   <Link
-                    href={{ pathname: "/cards/[id]", params: { id: row.id } }}
-                    className="flex items-center gap-3 font-medium text-zinc-200 transition-colors hover:text-indigo-400"
+                    href={{
+                      pathname: "/cards/[id]",
+                      params: { id: row.id },
+                    }}
+                    className="flex items-center gap-2.5 font-medium text-zinc-200 transition-colors hover:text-indigo-400"
                   >
                     {row.imageUrl ? (
                       <Image
                         src={row.imageUrl}
                         alt=""
-                        width={32}
-                        height={45}
-                        quality={70}
+                        width={28}
+                        height={39}
+                        quality={60}
                         className="shrink-0 rounded ring-1 ring-zinc-800"
                       />
                     ) : (
-                      <span className="h-[45px] w-8 shrink-0 rounded bg-zinc-800" />
+                      <span className="h-[39px] w-7 shrink-0 rounded bg-zinc-800" />
                     )}
-                    {localizedName(row, typedLocale)}
+                    <span className="truncate text-sm">
+                      {localizedName(row, typedLocale)}
+                    </span>
                   </Link>
                 </td>
-                <td className="hidden px-4 py-3 text-zinc-500 sm:table-cell">
+                <td className="hidden px-3 py-2 text-xs text-zinc-500 sm:table-cell">
                   {row.extension.code}
                 </td>
-                <td className="hidden px-4 py-3 text-zinc-500 md:table-cell">
-                  {tCards(`rarities.${row.rarity}`)}
+                <td className="hidden px-3 py-2 md:table-cell">
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={cn(
+                        "h-2 w-2 rounded-full",
+                        RARITY_DOT[row.rarity] ?? "bg-zinc-500"
+                      )}
+                    />
+                    <span className="text-xs text-zinc-500">
+                      {tCards(`rarities.${row.rarity}`)}
+                    </span>
+                  </div>
                 </td>
-                <td className="px-4 py-3 text-right font-semibold text-zinc-100">
+                <td className="px-3 py-2 text-right text-sm font-bold text-zinc-100">
                   {row.latestPrice
                     ? formatPrice(
                         priceForCurrency(row.latestPrice, currency),
@@ -136,13 +162,13 @@ export default async function PricesPage({
                 </td>
                 <td
                   className={cn(
-                    "px-4 py-3 text-right font-medium",
+                    "px-3 py-2 text-right text-xs font-semibold",
                     row.trend7d === null
                       ? "text-zinc-600"
                       : row.trend7d > 0
-                        ? "text-emerald-500"
+                        ? "text-emerald-400"
                         : row.trend7d < 0
-                          ? "text-red-500"
+                          ? "text-red-400"
                           : "text-zinc-500"
                   )}
                 >

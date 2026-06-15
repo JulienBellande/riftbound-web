@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { CardFrame } from "@/components/cards/card-frame";
-import { formatPrice } from "@/lib/utils/format";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 
 const PER_PAGE = 30;
@@ -26,7 +25,6 @@ export function CardsGrid({
   const [done, setDone] = useState(initialCards.length >= total);
   const sentinel = useRef<HTMLDivElement>(null);
 
-  // Reset when the filters (URL) change — server re-renders initialCards
   const spKey = searchParams.toString();
   useEffect(() => {
     setCards(initialCards);
@@ -74,28 +72,30 @@ export function CardsGrid({
 
   return (
     <>
-      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {cards.map((card) => (
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        {cards.map((card, i) => (
           <Link
             key={card.id}
             href={{ pathname: "/cards/[id]", params: { id: card.id } }}
             className="group animate-fade-in"
+            style={{ animationDelay: `${Math.min(i * 30, 300)}ms` }}
           >
-            <CardFrame card={card} locale={locale} />
-            {card.latestPrice && (
-              <p className="mt-1.5 text-center text-xs font-semibold text-emerald-400">
-                {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
-              </p>
-            )}
+            <CardFrame card={card} locale={locale} showPrice />
           </Link>
         ))}
       </div>
 
       <div ref={sentinel} className="h-10" />
       {loading && (
-        <div className="flex justify-center py-6">
-          <Loader2 className="animate-spin text-zinc-500" size={24} />
+        <div className="flex items-center justify-center gap-2 py-8">
+          <Loader2 className="animate-spin text-indigo-400" size={20} />
+          <span className="text-sm text-zinc-500">Loading...</span>
         </div>
+      )}
+      {done && cards.length > 0 && (
+        <p className="py-6 text-center text-xs text-zinc-600">
+          {cards.length} / {total}
+        </p>
       )}
     </>
   );

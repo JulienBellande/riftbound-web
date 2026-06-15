@@ -5,7 +5,7 @@ import { VoteButton } from "@/components/decks/vote-button";
 import { ManaCurve } from "@/components/decks/mana-curve";
 import { Pagination } from "@/components/ui/pagination";
 import { DecksToolbar } from "@/components/decks/decks-toolbar";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Plus } from "lucide-react";
 import type { DeckFilters, SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -40,7 +40,10 @@ export default async function DecksPage({
       typeof sp.period === "string"
         ? (sp.period as DeckFilters["period"])
         : "week",
-    sortBy: typeof sp.sort === "string" ? (sp.sort as DeckFilters["sortBy"]) : "score",
+    sortBy:
+      typeof sp.sort === "string"
+        ? (sp.sort as DeckFilters["sortBy"])
+        : "score",
     page: typeof sp.page === "string" ? Number(sp.page) : 1,
     perPage: 20,
   };
@@ -48,41 +51,43 @@ export default async function DecksPage({
   const result = await getDecks(filters);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-100">{t("title")}</h1>
+        <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+          {t("title")}
+        </h1>
         <Link
           href="/deck-builder"
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-indigo-600/25 hover:brightness-110"
         >
+          <Plus size={15} />
           {t("create")}
         </Link>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-5">
         <DecksToolbar currentPeriod={filters.period ?? "week"} />
       </div>
 
       {result.data.length === 0 ? (
-        <p className="mt-12 text-center text-zinc-500">{t("noResults")}</p>
+        <p className="mt-16 text-center text-sm text-zinc-500">
+          {t("noResults")}
+        </p>
       ) : (
-        <div className="mt-8 space-y-4">
+        <div className="mt-6 space-y-2.5">
           {result.data.map((deck) => (
             <div
               key={deck.id}
-              className="flex gap-4 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 transition-colors hover:border-zinc-700"
+              className="flex gap-3 rounded-xl border border-zinc-800/50 bg-zinc-900/30 p-3 transition-all hover:border-zinc-700 hover:bg-zinc-900/50 sm:gap-4 sm:p-4"
             >
-              {/* Vote column */}
               <div className="flex shrink-0 flex-col items-center justify-center">
                 <VoteButton deckId={deck.id} initialScore={deck.score} />
               </div>
 
-              {/* Mana curve */}
-              <div className="hidden w-28 shrink-0 self-center sm:block">
+              <div className="hidden w-24 shrink-0 self-center sm:block">
                 <ManaCurve cards={deck.cards} />
               </div>
 
-              {/* Info */}
               <div className="flex flex-1 flex-col justify-between">
                 <div>
                   <Link
@@ -90,26 +95,27 @@ export default async function DecksPage({
                       pathname: "/decks/[id]",
                       params: { id: deck.id },
                     }}
-                    className="text-lg font-semibold text-zinc-100 hover:text-amber-400"
+                    className="text-sm font-bold text-zinc-100 transition-colors hover:text-indigo-400 sm:text-base"
                   >
                     {deck.name}
                   </Link>
-                  <p className="mt-0.5 text-sm text-zinc-500">
+                  <p className="mt-0.5 text-xs text-zinc-500">
                     {t("by")} {deck.user.username} ·{" "}
                     <span className="capitalize">{deck.format}</span>
                   </p>
                   {deck.description && (
-                    <p className="mt-1 line-clamp-1 text-sm text-zinc-400">
+                    <p className="mt-1 line-clamp-1 text-xs text-zinc-400">
                       {deck.description}
                     </p>
                   )}
                 </div>
-                <div className="mt-2 flex gap-4 text-xs text-zinc-500">
+                <div className="mt-2 flex gap-3 text-[11px] text-zinc-500">
                   <span>
-                    {deck.cards.reduce((s, c) => s + c.quantity, 0)} {t("cards")}
+                    {deck.cards.reduce((s, c) => s + c.quantity, 0)}{" "}
+                    {t("cards")}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MessageSquare size={12} />
+                    <MessageSquare size={11} />
                     {deck._count.comments}
                   </span>
                   <span>
