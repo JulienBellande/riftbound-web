@@ -20,7 +20,7 @@ export async function generateMetadata({
   const deck = await getDeckById(id);
   if (!deck) return {};
   return {
-    title: `${deck.name} | Riftbound`,
+    title: `${deck.name} | RiftForge`,
     description: deck.description ?? undefined,
   };
 }

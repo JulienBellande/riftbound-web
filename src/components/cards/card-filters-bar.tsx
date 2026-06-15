@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { Search } from "lucide-react";
 import type { ExtensionSummary } from "@/lib/data/cards";
 
-const CARD_TYPES = ["UNIT", "CHAMPION", "SPELL", "GEAR", "RUNE", "BATTLEFIELD"];
-const RARITIES = ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY"];
+const CARD_TYPES = ["UNIT", "SPELL", "RUNE", "GEAR", "LEGEND", "BATTLEFIELD"];
+const RARITIES = ["COMMON", "UNCOMMON", "RARE", "EPIC"];
+const DOMAINS = ["Fury", "Calm", "Mind", "Body", "Chaos", "Order", "Colorless"];
 const COST_RANGES = [
   { value: "0-2", label: "0 – 2" },
   { value: "3-5", label: "3 – 5" },
@@ -47,7 +49,6 @@ export function CardFiltersBar({
     [router, pathname, searchParams]
   );
 
-  // Debounced text search
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -61,17 +62,23 @@ export function CardFiltersBar({
   }, [search]);
 
   const selectClass =
-    "rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none";
+    "rounded-lg border border-zinc-700/60 bg-zinc-900/80 px-3 py-2 text-sm text-zinc-300 transition-colors focus:border-amber-500 focus:outline-none hover:border-zinc-600";
 
   return (
-    <div className="flex flex-wrap gap-3">
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder={t("search")}
-        className="min-w-48 flex-1 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
-      />
+    <div className="flex flex-wrap gap-2">
+      <div className="relative min-w-48 flex-1">
+        <Search
+          size={15}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+        />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("search")}
+          className="w-full rounded-lg border border-zinc-700/60 bg-zinc-900/80 py-2 pl-9 pr-4 text-sm text-zinc-100 placeholder-zinc-500 transition-colors focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500/30 hover:border-zinc-600"
+        />
+      </div>
 
       <select
         value={searchParams.get("ext") ?? ""}
@@ -81,7 +88,20 @@ export function CardFiltersBar({
         <option value="">{t("filters.allExtensions")}</option>
         {extensions.map((ext) => (
           <option key={ext.code} value={ext.code}>
-            {locale === "fr" ? ext.nameFr : ext.nameEn} ({ext.code})
+            {locale === "fr" ? ext.nameFr : ext.nameEn}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={searchParams.get("domain") ?? ""}
+        onChange={(e) => updateParams({ domain: e.target.value || null })}
+        className={selectClass}
+      >
+        <option value="">{t("filters.allDomains")}</option>
+        {DOMAINS.map((d) => (
+          <option key={d} value={d}>
+            {d}
           </option>
         ))}
       </select>

@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Riftbound - Base de données, Decks & Communauté",
-    "description": "La plateforme de référence pour Riftbound : base de données de cartes, construction de decks, prix en temps réel et communauté active."
+    "title": "RiftForge — Base de données Riftbound, Decks & Communauté",
+    "description": "La plateforme de référence pour le TCG Riftbound : base de données de cartes, construction de decks, prix en temps réel et communauté active."
   },
   "nav": {
     "cards": "Cartes",
@@ -21,10 +21,11 @@
   },
   "home": {
     "hero": {
-      "title": "La référence Riftbound",
-      "subtitle": "Base de données complète, construction de decks et communauté active.",
+      "titlePart1": "Votre QG",
+      "titlePart2": "Riftbound",
+      "subtitle": "883 vraies cartes, prix du marché, construction de decks et communauté active — tout en un seul endroit.",
       "cta": "Explorer les cartes",
-      "ctaSecondary": "Top Decks"
+      "ctaSecondary": "Créer un deck"
     },
     "topDecks": {
       "title": "Top Decks de la semaine",
@@ -47,36 +48,36 @@
       "extension": "Extension",
       "type": "Type",
       "rarity": "Rareté",
-      "cost": "Coût",
+      "cost": "Énergie",
       "allExtensions": "Toutes les extensions",
       "allTypes": "Tous les types",
       "allRarities": "Toutes les raretés",
-      "anyCost": "Tous les coûts"
+      "allDomains": "Tous les domaines",
+      "anyCost": "Toute énergie"
     },
     "types": {
       "UNIT": "Unité",
-      "CHAMPION": "Champion",
       "SPELL": "Sort",
       "GEAR": "Équipement",
       "RUNE": "Rune",
+      "LEGEND": "Légende",
       "BATTLEFIELD": "Champ de bataille"
     },
     "rarities": {
       "COMMON": "Commune",
       "UNCOMMON": "Peu commune",
       "RARE": "Rare",
-      "EPIC": "Épique",
-      "LEGENDARY": "Légendaire"
+      "EPIC": "Épique"
     },
     "sort": {
       "name": "Nom",
-      "cost": "Coût",
+      "cost": "Énergie",
       "rarity": "Rareté",
       "price": "Prix",
       "date": "Date"
     },
     "detail": {
-      "stats": "ATQ / PV",
+      "stats": "Puissance",
       "marketPrices": "Prix du marché",
       "priceDate": "Cote relevée le {date}"
     },
@@ -117,7 +118,7 @@
     "trend7d": "7 jours"
   },
   "shop": {
-    "title": "Boutique Riftbound",
+    "title": "Boutique RiftForge",
     "addToCart": "Ajouter au panier",
     "cart": "Panier",
     "checkout": "Commander",
@@ -223,6 +224,7 @@
     "legal": "Mentions légales",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
-    "copyright": "© {year} Riftbound. Tous droits réservés."
+    "copyright": "© {year} RiftForge. Tous droits réservés.",
+    "disclaimer": "RiftForge n'est pas affilié à Riot Games. Riftbound et ses assets sont la propriété de Riot Games, Inc."
   }
 }

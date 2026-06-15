@@ -44,6 +44,9 @@ export interface CardWithPrice {
   attack: number | null;
   health: number | null;
   imageUrl: string | null;
+  domain: string[];
+  artist: string;
+  tags: string[];
   extension: {
     code: string;
     nameFr: string;

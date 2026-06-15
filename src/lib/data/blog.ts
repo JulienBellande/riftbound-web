@@ -34,7 +34,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "PATCH_NOTES",
     publishedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    author: { username: "RiftboundTeam", avatarUrl: null },
+    author: { username: "RiftForgeTeam", avatarUrl: null },
   },
   {
     id: "post-2",
@@ -62,7 +62,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "META",
     publishedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    author: { username: "RiftboundTeam", avatarUrl: null },
+    author: { username: "RiftForgeTeam", avatarUrl: null },
   },
   {
     id: "post-4",
@@ -76,7 +76,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "TOURNAMENT",
     publishedAt: new Date(Date.now() - 5 * 86400000).toISOString(),
-    author: { username: "RiftboundTeam", avatarUrl: null },
+    author: { username: "RiftForgeTeam", avatarUrl: null },
   },
   {
     id: "post-5",
@@ -90,7 +90,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "NEWS",
     publishedAt: new Date(Date.now() - 7 * 86400000).toISOString(),
-    author: { username: "RiftboundTeam", avatarUrl: null },
+    author: { username: "RiftForgeTeam", avatarUrl: null },
   },
 ];
 

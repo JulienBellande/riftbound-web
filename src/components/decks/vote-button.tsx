@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
 export function VoteButton({
@@ -31,40 +31,52 @@ export function VoteButton({
   }
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-center gap-0.5 rounded-lg border border-zinc-800 bg-zinc-900/80 px-1.5 py-1">
       <button
-        onClick={() => vote(1)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          vote(1);
+        }}
         disabled={isPending}
         className={cn(
-          "rounded-lg p-1.5 transition-colors",
+          "rounded p-0.5 transition-colors",
           userVote === 1
-            ? "bg-emerald-600/20 text-emerald-400"
-            : "text-zinc-500 hover:bg-zinc-800 hover:text-emerald-400"
+            ? "text-amber-400"
+            : "text-zinc-600 hover:text-amber-400"
         )}
         aria-label="Upvote"
       >
-        <ThumbsUp size={16} />
+        <ChevronUp size={16} strokeWidth={2.5} />
       </button>
       <span
         className={cn(
-          "min-w-[2rem] text-center text-sm font-bold",
-          score > 0 ? "text-emerald-400" : score < 0 ? "text-red-400" : "text-zinc-400"
+          "text-xs font-bold tabular-nums leading-none",
+          score > 0
+            ? "text-amber-400"
+            : score < 0
+              ? "text-red-400"
+              : "text-zinc-500"
         )}
       >
         {score}
       </span>
       <button
-        onClick={() => vote(-1)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          vote(-1);
+        }}
         disabled={isPending}
         className={cn(
-          "rounded-lg p-1.5 transition-colors",
+          "rounded p-0.5 transition-colors",
           userVote === -1
-            ? "bg-red-600/20 text-red-400"
-            : "text-zinc-500 hover:bg-zinc-800 hover:text-red-400"
+            ? "text-red-400"
+            : "text-zinc-600 hover:text-red-400"
         )}
         aria-label="Downvote"
       >
-        <ThumbsDown size={16} />
+        <ChevronDown size={16} strokeWidth={2.5} />
       </button>
     </div>
   );

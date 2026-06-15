@@ -6,17 +6,15 @@ import { Plus, Loader2 } from "lucide-react";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 import type { ExtensionSummary } from "@/lib/data/cards";
 
-const CARD_TYPES = ["UNIT", "CHAMPION", "SPELL", "GEAR", "RUNE", "BATTLEFIELD"];
+const CARD_TYPES = ["UNIT", "SPELL", "RUNE", "GEAR", "LEGEND", "BATTLEFIELD"];
 
 function DraggableCard({
   card,
   locale,
-  typeLabel,
   onClickAdd,
 }: {
   card: CardWithPrice;
   locale: SupportedLocale;
-  typeLabel: string;
   onClickAdd: (card: CardWithPrice) => void;
 }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -31,7 +29,7 @@ function DraggableCard({
       className="group relative cursor-grab active:cursor-grabbing"
       style={{ opacity: isDragging ? 0.3 : 1 }}
     >
-      <CardFrame card={card} locale={locale} typeLabel={typeLabel} />
+      <CardFrame card={card} locale={locale} />
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -126,7 +124,6 @@ export function CardPool({
             key={card.id}
             card={card}
             locale={locale}
-            typeLabel={tCards(`types.${card.type}`)}
             onClickAdd={onClickAdd}
           />
         ))}

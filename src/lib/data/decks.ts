@@ -47,7 +47,10 @@ function demoCardDto(slug: string): CardWithPrice | null {
     cost: card.cost,
     attack: card.attack,
     health: card.health,
-    imageUrl: null,
+    imageUrl: card.imageUrl ?? null,
+    domain: card.domain ?? [],
+    artist: card.artist ?? "",
+    tags: card.tags ?? [],
     extension: { code: ext.code, nameFr: ext.nameFr, nameEn: ext.nameEn },
     latestPrice: {
       priceEur: latest.priceEur,
@@ -358,6 +361,9 @@ export async function getDecks(
           attack: dc.card.attack,
           health: dc.card.health,
           imageUrl: dc.card.imageUrl,
+          domain: [],
+          artist: "",
+          tags: [],
           extension: {
             code: dc.card.extension.code,
             nameFr: dc.card.extension.nameFr,
@@ -431,6 +437,9 @@ export async function getDeckById(id: string): Promise<DeckWithDetails | null> {
         attack: dc.card.attack,
         health: dc.card.health,
         imageUrl: dc.card.imageUrl,
+          domain: [],
+          artist: "",
+          tags: [],
         extension: {
           code: dc.card.extension.code,
           nameFr: dc.card.extension.nameFr,
@@ -627,6 +636,9 @@ export async function getDecksByUser(
         attack: dc.card.attack,
         health: dc.card.health,
         imageUrl: dc.card.imageUrl,
+          domain: [],
+          artist: "",
+          tags: [],
         extension: {
           code: dc.card.extension.code,
           nameFr: dc.card.extension.nameFr,

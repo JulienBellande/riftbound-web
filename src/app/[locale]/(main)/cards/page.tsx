@@ -15,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "cards" });
-  return { title: `${t("title")} | Riftbound` };
+  return { title: `${t("title")} | RiftForge` };
 }
 
 function parseCostRange(cost?: string): {
@@ -91,11 +91,7 @@ export default async function CardsPage({
               href={{ pathname: "/cards/[id]", params: { id: card.id } }}
               className="group"
             >
-              <CardFrame
-                card={card}
-                locale={typedLocale}
-                typeLabel={t(`types.${card.type}`)}
-              />
+              <CardFrame card={card} locale={typedLocale} />
               {card.latestPrice && (
                 <p className="mt-1.5 text-center text-xs font-medium text-amber-500">
                   {formatPrice(card.latestPrice.priceEur, "EUR", typedLocale)}

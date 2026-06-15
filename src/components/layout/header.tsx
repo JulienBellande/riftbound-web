@@ -5,7 +5,7 @@ import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils/cn";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Flame } from "lucide-react";
 import { useState } from "react";
 
 interface HeaderUser {
@@ -29,24 +29,26 @@ export function Header({ user }: { user: HeaderUser | null }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-zinc-800/60 bg-zinc-950/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight text-amber-500">
-            RIFTBOUND
+          <Flame size={22} className="text-amber-500" />
+          <span className="text-lg font-extrabold tracking-tight">
+            <span className="text-zinc-100">RIFT</span>
+            <span className="text-amber-500">FORGE</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-800 hover:text-zinc-100",
+                "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                 pathname === item.href
-                  ? "bg-zinc-800 text-amber-500"
-                  : "text-zinc-400"
+                  ? "bg-amber-500/10 text-amber-400"
+                  : "text-zinc-400 hover:text-zinc-100"
               )}
             >
               {t(item.labelKey)}
@@ -54,14 +56,14 @@ export function Header({ user }: { user: HeaderUser | null }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <LocaleSwitcher />
           {user ? (
             <UserMenu username={user.username} isDemo={user.isDemo} />
           ) : (
             <Link
               href="/login"
-              className="hidden rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 sm:block"
+              className="hidden rounded-lg bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white transition-all hover:bg-amber-500 hover:shadow-lg hover:shadow-amber-600/20 sm:block"
             >
               {t("login")}
             </Link>
@@ -78,18 +80,18 @@ export function Header({ user }: { user: HeaderUser | null }) {
       </div>
 
       {mobileOpen && (
-        <nav className="border-t border-zinc-800 px-4 py-4 lg:hidden">
-          <div className="flex flex-col gap-1">
+        <nav className="border-t border-zinc-800/60 px-4 py-3 lg:hidden">
+          <div className="flex flex-col gap-0.5">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-zinc-800",
+                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   pathname === item.href
-                    ? "bg-zinc-800 text-amber-500"
-                    : "text-zinc-400"
+                    ? "bg-amber-500/10 text-amber-400"
+                    : "text-zinc-400 hover:text-zinc-100"
                 )}
               >
                 {t(item.labelKey)}

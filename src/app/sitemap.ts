@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import { getCards } from "@/lib/data/cards";
 import { getPosts } from "@/lib/data/blog";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://riftbound.example.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://riftforge.example.com";
 
 const STATIC_PATHS = [
   "/",

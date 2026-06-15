@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { topicId } = await params;
   const topic = await getTopicById(topicId);
-  return { title: `${topic?.title ?? "Forum"} | Riftbound` };
+  return { title: `${topic?.title ?? "Forum"} | RiftForge` };
 }
 
 export default async function ForumTopicPage({

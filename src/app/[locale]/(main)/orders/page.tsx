@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "nav" });
-  return { title: `${t("orders")} | Riftbound` };
+  return { title: `${t("orders")} | RiftForge` };
 }
 
 export default async function OrdersPage({

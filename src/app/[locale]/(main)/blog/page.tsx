@@ -19,7 +19,7 @@ const CATEGORY_LABEL_MAP: Record<string, string> = {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
-  return { title: `${t("title")} | Riftbound` };
+  return { title: `${t("title")} | RiftForge` };
 }
 
 export default async function BlogPage({

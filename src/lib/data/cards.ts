@@ -21,7 +21,7 @@ export interface PriceRow extends CardWithPrice {
   trend7d: number | null;
 }
 
-const RARITY_ORDER = ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY"];
+const RARITY_ORDER = ["COMMON", "UNCOMMON", "RARE", "EPIC"];
 
 // ──────────────────────────────────────────────
 // Demo mode (no DATABASE_URL): serve the bundled dataset
@@ -46,7 +46,10 @@ function demoCardToDto(card: SampleCard): CardWithPrice {
     cost: card.cost,
     attack: card.attack,
     health: card.health,
-    imageUrl: null,
+    imageUrl: card.imageUrl ?? null,
+    domain: card.domain ?? [],
+    artist: card.artist ?? "",
+    tags: card.tags ?? [],
     extension: {
       code: extension.code,
       nameFr: extension.nameFr,
@@ -215,6 +218,9 @@ export async function getCards(
       attack: c.attack,
       health: c.health,
       imageUrl: c.imageUrl,
+      domain: [],
+      artist: "",
+      tags: [],
       extension: {
         code: c.extension.code,
         nameFr: c.extension.nameFr,
@@ -263,6 +269,9 @@ export async function getCardById(id: string): Promise<CardWithPrice | null> {
     attack: card.attack,
     health: card.health,
     imageUrl: card.imageUrl,
+    domain: [],
+    artist: "",
+    tags: [],
     extension: {
       code: card.extension.code,
       nameFr: card.extension.nameFr,
@@ -368,6 +377,9 @@ export async function getPriceRows(filters: {
         attack: c.attack,
         health: c.health,
         imageUrl: c.imageUrl,
+        domain: [],
+        artist: "",
+        tags: [],
         extension: {
           code: c.extension.code,
           nameFr: c.extension.nameFr,

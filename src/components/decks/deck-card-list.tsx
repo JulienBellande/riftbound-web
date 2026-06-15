@@ -7,7 +7,6 @@ const RARITY_DOT: Record<string, string> = {
   UNCOMMON: "bg-emerald-500",
   RARE: "bg-sky-500",
   EPIC: "bg-violet-500",
-  LEGENDARY: "bg-amber-500",
 };
 
 export function DeckCardList({

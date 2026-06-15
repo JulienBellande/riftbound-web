@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "nav" });
-  return { title: `${t("myDecks")} | Riftbound` };
+  return { title: `${t("myDecks")} | RiftForge` };
 }
 
 export default async function MyDecksPage({

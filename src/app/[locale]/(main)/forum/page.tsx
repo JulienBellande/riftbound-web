@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "forum" });
-  return { title: `${t("title")} | Riftbound` };
+  return { title: `${t("title")} | RiftForge` };
 }
 
 function formatRelative(isoDate: string | null, locale: SupportedLocale): string {

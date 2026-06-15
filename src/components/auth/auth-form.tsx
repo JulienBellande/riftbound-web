@@ -110,7 +110,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={INPUT_CLASS}
-            placeholder="player@riftbound.gg"
+            placeholder="player@riftforge.gg"
           />
         </div>
         <div>

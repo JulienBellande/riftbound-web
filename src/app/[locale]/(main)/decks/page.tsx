@@ -16,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "decks" });
-  return { title: `${t("title")} | Riftbound` };
+  return { title: `${t("title")} | RiftForge` };
 }
 
 export default async function DecksPage({

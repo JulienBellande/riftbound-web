@@ -15,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, category } = await params;
   const cat = await getForumCategory(category, locale as SupportedLocale);
-  return { title: `${cat?.name ?? "Forum"} | Riftbound` };
+  return { title: `${cat?.name ?? "Forum"} | RiftForge` };
 }
 
 export default async function ForumCategoryPage({

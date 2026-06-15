@@ -1,98 +1,124 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 import { localizedName } from "@/lib/utils/format";
 
-const RARITY_STYLES: Record<string, { frame: string; glow: string; badge: string }> = {
+const RARITY_STYLES: Record<
+  string,
+  { ring: string; glow: string; badge: string; text: string }
+> = {
   COMMON: {
-    frame: "from-zinc-700/60 to-zinc-800/80 border-zinc-600/50",
+    ring: "ring-zinc-600/40",
     glow: "",
     badge: "bg-zinc-600",
+    text: "text-zinc-400",
   },
   UNCOMMON: {
-    frame: "from-emerald-900/50 to-zinc-900 border-emerald-700/50",
-    glow: "",
-    badge: "bg-emerald-600",
+    ring: "ring-emerald-500/40",
+    glow: "group-hover:shadow-emerald-500/15",
+    badge: "bg-emerald-500",
+    text: "text-emerald-400",
   },
   RARE: {
-    frame: "from-sky-900/50 to-zinc-900 border-sky-700/50",
+    ring: "ring-sky-500/40",
     glow: "group-hover:shadow-sky-500/20",
-    badge: "bg-sky-600",
+    badge: "bg-sky-500",
+    text: "text-sky-400",
   },
   EPIC: {
-    frame: "from-violet-900/50 to-zinc-900 border-violet-700/50",
-    glow: "group-hover:shadow-violet-500/20",
-    badge: "bg-violet-600",
-  },
-  LEGENDARY: {
-    frame: "from-amber-900/60 to-zinc-900 border-amber-600/60",
-    glow: "group-hover:shadow-amber-500/30",
-    badge: "bg-amber-600",
+    ring: "ring-violet-500/50",
+    glow: "group-hover:shadow-violet-500/25",
+    badge: "bg-violet-500",
+    text: "text-violet-400",
   },
 };
 
-const TYPE_ICONS: Record<string, string> = {
-  UNIT: "⚔",
-  CHAMPION: "★",
-  SPELL: "✦",
-  GEAR: "⛨",
-  RUNE: "◈",
-  BATTLEFIELD: "⛰",
+const DOMAIN_COLORS: Record<string, string> = {
+  Fury: "bg-red-500",
+  Calm: "bg-cyan-500",
+  Mind: "bg-purple-500",
+  Body: "bg-amber-500",
+  Chaos: "bg-rose-600",
+  Order: "bg-sky-400",
+  Colorless: "bg-zinc-500",
 };
 
 export function CardFrame({
   card,
   locale,
-  typeLabel,
 }: {
   card: CardWithPrice;
   locale: SupportedLocale;
-  typeLabel: string;
+  typeLabel?: string;
 }) {
   const rarity = RARITY_STYLES[card.rarity] ?? RARITY_STYLES.COMMON;
-  const isUnit = card.attack !== null && card.health !== null;
 
   return (
     <div
       className={cn(
-        "relative flex aspect-[2.5/3.5] flex-col rounded-xl border bg-gradient-to-b p-3 shadow-lg transition-shadow",
-        rarity.frame,
-        rarity.glow
+        "relative overflow-hidden rounded-xl bg-zinc-900 ring-1 shadow-lg transition-all duration-200",
+        rarity.ring,
+        rarity.glow,
+        "group-hover:shadow-xl group-hover:scale-[1.02]"
       )}
     >
-      {/* Cost badge */}
-      <div className="absolute -left-1.5 -top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-950 text-sm font-bold text-amber-400 ring-2 ring-amber-600/60">
-        {card.cost}
-      </div>
-
-      {/* Rarity dot */}
-      <div
-        className={cn(
-          "absolute -right-1 -top-1 h-3.5 w-3.5 rounded-full ring-2 ring-zinc-950",
-          rarity.badge
+      {/* Card image */}
+      <div className="relative aspect-[744/1039] w-full overflow-hidden bg-zinc-800">
+        {card.imageUrl ? (
+          <Image
+            src={card.imageUrl}
+            alt={localizedName(card, locale)}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-4xl text-zinc-700">
+            ✦
+          </div>
         )}
-      />
 
-      {/* Art zone */}
-      <div className="mt-5 flex flex-1 items-center justify-center rounded-lg bg-zinc-950/40 text-4xl opacity-60">
-        {TYPE_ICONS[card.type] ?? "✦"}
+        {/* Energy cost badge */}
+        {card.cost > 0 && (
+          <div className="absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-950/80 text-xs font-bold text-amber-400 ring-1 ring-amber-500/50 backdrop-blur-sm">
+            {card.cost}
+          </div>
+        )}
+
+        {/* Rarity indicator */}
+        <div
+          className={cn(
+            "absolute right-2 top-2 h-2.5 w-2.5 rounded-full ring-1 ring-zinc-950/50",
+            rarity.badge
+          )}
+        />
       </div>
 
-      {/* Name + type */}
-      <div className="mt-2">
-        <p className="line-clamp-2 text-xs font-semibold leading-tight text-zinc-100">
+      {/* Card info overlay */}
+      <div className="px-2.5 py-2">
+        <p className="truncate text-xs font-semibold leading-tight text-zinc-100">
           {localizedName(card, locale)}
         </p>
-        <p className="mt-0.5 text-[10px] uppercase tracking-wide text-zinc-500">
-          {typeLabel} · {card.extension.code}
-        </p>
+        <div className="mt-1 flex items-center gap-1.5">
+          {card.domain?.slice(0, 2).map((d) => (
+            <span
+              key={d}
+              className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                DOMAIN_COLORS[d] ?? "bg-zinc-500"
+              )}
+            />
+          ))}
+          <span className="text-[10px] uppercase tracking-wider text-zinc-500">
+            {card.type} · {card.extension.code}
+          </span>
+        </div>
       </div>
 
-      {/* Stats */}
-      {isUnit && (
-        <div className="absolute -bottom-1.5 -right-1.5 flex items-center gap-1 rounded-full bg-zinc-950 px-2 py-0.5 text-xs font-bold ring-2 ring-zinc-700">
-          <span className="text-orange-400">{card.attack}</span>
-          <span className="text-zinc-600">/</span>
-          <span className="text-emerald-400">{card.health}</span>
+      {/* Might stat */}
+      {card.attack !== null && (
+        <div className="absolute bottom-11 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-zinc-950/80 text-[10px] font-bold text-orange-400 ring-1 ring-orange-500/40 backdrop-blur-sm">
+          {card.attack}
         </div>
       )}
     </div>

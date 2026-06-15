@@ -1,5 +1,6 @@
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import type { CardType, CardRarity } from "../src/generated/prisma/enums";
 import {
   sampleCards,
   sampleExtensions,
@@ -10,6 +11,22 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+const TYPE_MAP: Record<string, CardType> = {
+  UNIT: "UNIT",
+  SPELL: "SPELL",
+  RUNE: "RUNE",
+  GEAR: "GEAR",
+  LEGEND: "CHAMPION",
+  BATTLEFIELD: "BATTLEFIELD",
+};
+
+const RARITY_MAP: Record<string, CardRarity> = {
+  COMMON: "COMMON",
+  UNCOMMON: "UNCOMMON",
+  RARE: "RARE",
+  EPIC: "EPIC",
+};
 
 async function main() {
   console.log("Seeding extensions...");
@@ -37,6 +54,9 @@ async function main() {
   for (const card of sampleCards) {
     const extensionId = extensionIdByCode.get(card.extensionCode)!;
 
+    const dbType = TYPE_MAP[card.type] ?? "UNIT";
+    const dbRarity = RARITY_MAP[card.rarity] ?? "COMMON";
+
     const row = await prisma.card.upsert({
       where: {
         extensionId_collectorNum: {
@@ -49,11 +69,12 @@ async function main() {
         nameEn: card.nameEn,
         descriptionFr: card.descriptionFr,
         descriptionEn: card.descriptionEn,
-        type: card.type,
-        rarity: card.rarity,
+        type: dbType,
+        rarity: dbRarity,
         cost: card.cost,
         attack: card.attack,
         health: card.health,
+        imageUrl: card.imageUrl,
       },
       create: {
         extensionId,
@@ -62,11 +83,12 @@ async function main() {
         nameEn: card.nameEn,
         descriptionFr: card.descriptionFr,
         descriptionEn: card.descriptionEn,
-        type: card.type,
-        rarity: card.rarity,
+        type: dbType,
+        rarity: dbRarity,
         cost: card.cost,
         attack: card.attack,
         health: card.health,
+        imageUrl: card.imageUrl,
       },
     });
 
