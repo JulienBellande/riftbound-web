@@ -16,7 +16,8 @@
     "profile": "Mon profil",
     "myDecks": "Mes decks",
     "orders": "Commandes",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "demoAccount": "Compte démo"
   },
   "home": {
     "hero": {
@@ -105,7 +106,9 @@
     "save": "Sauvegarder",
     "publish": "Publier",
     "clear": "Vider",
-    "dragHint": "Glissez les cartes ici pour les ajouter"
+    "dragHint": "Glissez les cartes ici pour les ajouter",
+    "loginRequired": "Connectez-vous pour sauvegarder un deck.",
+    "saveError": "Échec de la sauvegarde. Réessayez."
   },
   "prices": {
     "title": "Cotes des cartes Riftbound",
@@ -152,7 +155,37 @@
     "topics": "sujets",
     "replies": "réponses",
     "views": "vues",
-    "lastActivity": "Dernière activité"
+    "lastActivity": "Dernière activité",
+    "by": "par",
+    "pickCategory": "Choisissez une catégorie pour parcourir les discussions.",
+    "noTopics": "Aucun sujet pour l'instant. Lancez la discussion !",
+    "titlePlaceholder": "Titre du sujet",
+    "contentPlaceholder": "Écrivez votre message...",
+    "postTopic": "Publier le sujet",
+    "cancel": "Annuler",
+    "loginRequired": "Connectez-vous pour participer.",
+    "postError": "Échec de la publication. Réessayez.",
+    "yourReply": "Votre réponse",
+    "replyPlaceholder": "Écrivez votre réponse...",
+    "postReply": "Répondre",
+    "readOnlyTopic": "Ce sujet n'accepte pas de nouvelles réponses."
+  },
+  "comments": {
+    "title": "Commentaires",
+    "placeholder": "Ajoutez un commentaire...",
+    "submit": "Commenter",
+    "empty": "Aucun commentaire pour l'instant. Soyez le premier !",
+    "loginRequired": "Connectez-vous pour commenter.",
+    "error": "Échec de l'envoi. Réessayez."
+  },
+  "account": {
+    "demoAccount": "Compte démo",
+    "memberAccount": "Membre",
+    "noDecks": "Vous n'avez pas encore de deck.",
+    "createFirstDeck": "Créer mon premier deck",
+    "noOrders": "Vous n'avez pas encore de commande.",
+    "browseShop": "Parcourir la boutique",
+    "orderTotal": "Total"
   },
   "auth": {
     "login": "Connexion",

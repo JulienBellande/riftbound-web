@@ -16,7 +16,8 @@
     "profile": "My profile",
     "myDecks": "My decks",
     "orders": "Orders",
-    "logout": "Log out"
+    "logout": "Log out",
+    "demoAccount": "Demo account"
   },
   "home": {
     "hero": {
@@ -105,7 +106,9 @@
     "save": "Save",
     "publish": "Publish",
     "clear": "Clear",
-    "dragHint": "Drag cards here to add them"
+    "dragHint": "Drag cards here to add them",
+    "loginRequired": "Log in to save a deck.",
+    "saveError": "Save failed. Please try again."
   },
   "prices": {
     "title": "Riftbound Card Prices",
@@ -152,7 +155,37 @@
     "topics": "topics",
     "replies": "replies",
     "views": "views",
-    "lastActivity": "Last activity"
+    "lastActivity": "Last activity",
+    "by": "by",
+    "pickCategory": "Pick a category to browse the discussions.",
+    "noTopics": "No topics yet. Start the conversation!",
+    "titlePlaceholder": "Topic title",
+    "contentPlaceholder": "Write your message...",
+    "postTopic": "Post topic",
+    "cancel": "Cancel",
+    "loginRequired": "Log in to take part.",
+    "postError": "Posting failed. Please try again.",
+    "yourReply": "Your reply",
+    "replyPlaceholder": "Write your reply...",
+    "postReply": "Reply",
+    "readOnlyTopic": "This topic is not accepting new replies."
+  },
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Add a comment...",
+    "submit": "Comment",
+    "empty": "No comments yet. Be the first!",
+    "loginRequired": "Log in to comment.",
+    "error": "Submission failed. Please try again."
+  },
+  "account": {
+    "demoAccount": "Demo account",
+    "memberAccount": "Member",
+    "noDecks": "You don't have any decks yet.",
+    "createFirstDeck": "Create my first deck",
+    "noOrders": "You don't have any orders yet.",
+    "browseShop": "Browse the shop",
+    "orderTotal": "Total"
   },
   "auth": {
     "login": "Log in",

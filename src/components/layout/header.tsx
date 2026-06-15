@@ -4,8 +4,14 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils/cn";
 import { LocaleSwitcher } from "./locale-switcher";
+import { UserMenu } from "./user-menu";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+
+interface HeaderUser {
+  username: string;
+  isDemo: boolean;
+}
 
 const navItems = [
   { href: "/cards" as const, labelKey: "cards" },
@@ -17,7 +23,7 @@ const navItems = [
   { href: "/forum" as const, labelKey: "forum" },
 ] as const;
 
-export function Header() {
+export function Header({ user }: { user: HeaderUser | null }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -50,12 +56,16 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <LocaleSwitcher />
-          <Link
-            href="/login"
-            className="hidden rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 sm:block"
-          >
-            {t("login")}
-          </Link>
+          {user ? (
+            <UserMenu username={user.username} isDemo={user.isDemo} />
+          ) : (
+            <Link
+              href="/login"
+              className="hidden rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 sm:block"
+            >
+              {t("login")}
+            </Link>
+          )}
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}

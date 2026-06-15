@@ -1,5 +1,7 @@
 import "server-only";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
+import { demoRead, demoMutate } from "./demo-store";
+import type { CurrentUser } from "@/lib/auth";
 import type { SupportedLocale, PaginatedResponse } from "@/types";
 
 export interface ForumCategoryWithCounts {
@@ -195,6 +197,19 @@ const DEMO_TOPICS: (ForumTopicDetail & { categorySlug: string })[] = [
   },
 ];
 
+// Topics created during a demo session, persisted via the demo file store so
+// they survive the RSC-page / route-handler worker boundary.
+type SessionTopic = ForumTopicDetail & { categorySlug: string };
+const sessionTopics = () => demoRead<SessionTopic[]>("topics", []);
+
+export async function getForumCategory(
+  slug: string,
+  locale: SupportedLocale
+): Promise<ForumCategoryWithCounts | null> {
+  const categories = await getForumCategories(locale);
+  return categories.find((c) => c.slug === slug) ?? null;
+}
+
 export async function getForumCategories(
   locale: SupportedLocale
 ): Promise<ForumCategoryWithCounts[]> {
@@ -247,12 +262,12 @@ export async function getTopics(
   const perPage = Math.min(Math.max(filters.perPage ?? 20, 1), 50);
 
   if (!isDatabaseConfigured()) {
-    const topics = DEMO_TOPICS.filter((t) => t.categorySlug === categorySlug).sort(
-      (a, b) => {
+    const topics = [...sessionTopics(), ...DEMO_TOPICS]
+      .filter((t) => t.categorySlug === categorySlug)
+      .sort((a, b) => {
         if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1;
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-      }
-    );
+      });
     const start = (page - 1) * perPage;
     return {
       data: topics.slice(start, start + perPage),
@@ -306,7 +321,11 @@ export async function getTopicById(
   id: string
 ): Promise<ForumTopicDetail | null> {
   if (!isDatabaseConfigured()) {
-    return DEMO_TOPICS.find((t) => t.id === id) ?? null;
+    return (
+      sessionTopics().find((t) => t.id === id) ??
+      DEMO_TOPICS.find((t) => t.id === id) ??
+      null
+    );
   }
 
   const t = await prisma.forumTopic.findUnique({
@@ -340,4 +359,105 @@ export async function getTopicById(
       createdAt: r.createdAt.toISOString(),
     })),
   };
+}
+
+export async function createTopic(
+  categorySlug: string,
+  input: { title: string; content: string },
+  user: CurrentUser
+): Promise<{ id: string }> {
+  const now = new Date().toISOString();
+
+  if (!isDatabaseConfigured()) {
+    const id = `user-topic-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 6)}`;
+    demoMutate<SessionTopic[]>("topics", [], (topics) => [
+      {
+        id,
+        categorySlug,
+        title: input.title,
+        content: input.content,
+        user: { username: user.username, avatarUrl: user.avatarUrl },
+        replyCount: 0,
+        viewCount: 0,
+        isPinned: false,
+        isLocked: false,
+        createdAt: now,
+        updatedAt: now,
+        replies: [],
+      },
+      ...topics,
+    ]);
+    return { id };
+  }
+
+  const category = await prisma.forumCategory.findUnique({
+    where: { slug: categorySlug },
+  });
+  if (!category) throw new Error("unknown_category");
+
+  const topic = await prisma.forumTopic.create({
+    data: {
+      categoryId: category.id,
+      userId: user.id,
+      title: input.title,
+      content: input.content,
+    },
+  });
+  return { id: topic.id };
+}
+
+export async function createReply(
+  topicId: string,
+  content: string,
+  user: CurrentUser
+): Promise<{ id: string }> {
+  if (!isDatabaseConfigured()) {
+    const id = `user-reply-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 6)}`;
+    const createdAt = new Date().toISOString();
+    let found = false;
+    demoMutate<SessionTopic[]>("topics", [], (topics) =>
+      topics.map((t) => {
+        if (t.id !== topicId) return t;
+        found = true;
+        return {
+          ...t,
+          replyCount: t.replyCount + 1,
+          updatedAt: createdAt,
+          replies: [
+            ...t.replies,
+            {
+              id,
+              content,
+              user: { username: user.username, avatarUrl: user.avatarUrl },
+              createdAt,
+            },
+          ],
+        };
+      })
+    );
+    if (!found) throw new Error("topic_not_found_or_readonly");
+    return { id };
+  }
+
+  const topic = await prisma.forumTopic.findUnique({ where: { id: topicId } });
+  if (!topic) throw new Error("topic_not_found");
+  if (topic.isLocked) throw new Error("topic_locked");
+
+  const reply = await prisma.forumReply.create({
+    data: { topicId, userId: user.id, content },
+  });
+  return { id: reply.id };
+}
+
+/** True when a topic accepts replies in the current mode (demo topics from the
+ *  static seed are read-only; only session-created ones can be replied to). */
+export function isTopicReplyable(topicId: string): boolean {
+  if (!isDatabaseConfigured()) {
+    return sessionTopics().some((t) => t.id === topicId);
+  }
+  return true;
 }

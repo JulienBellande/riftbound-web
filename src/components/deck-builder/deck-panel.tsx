@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { useTranslations } from "next-intl";
 import { Trash2, Minus, Plus } from "lucide-react";
 import { useDeckBuilderStore } from "@/stores/deck-builder-store";
+import { useRouter } from "@/i18n/routing";
 import { ManaCurve } from "@/components/decks/mana-curve";
 import { localizedName, formatPrice } from "@/lib/utils/format";
 import { cn } from "@/lib/utils/cn";
@@ -21,8 +23,45 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
   const t = useTranslations("deckBuilder");
   const store = useDeckBuilderStore();
   const totalCards = store.totalCards();
+  const router = useRouter();
+  const [isSaving, startSave] = useTransition();
+  const [notice, setNotice] = useState<string | null>(null);
 
   const { isOver, setNodeRef } = useDroppable({ id: "deck-drop-zone" });
+
+  function save(isPublic: boolean) {
+    setNotice(null);
+    startSave(async () => {
+      try {
+        const res = await fetch("/api/decks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: store.name,
+            format: store.format,
+            isPublic,
+            cards: store.cards.map((c) => ({
+              cardId: c.cardId,
+              quantity: c.quantity,
+            })),
+          }),
+        });
+        if (res.status === 401) {
+          setNotice(t("loginRequired"));
+          return;
+        }
+        if (!res.ok) {
+          setNotice(t("saveError"));
+          return;
+        }
+        const { id } = await res.json();
+        store.clearDeck();
+        router.push({ pathname: "/decks/[id]", params: { id } });
+      } catch {
+        setNotice(t("saveError"));
+      }
+    });
+  }
 
   const sorted = [...store.cards].sort((a, b) => a.card.cost - b.card.cost);
   const totalPrice = sorted.reduce(
@@ -145,11 +184,25 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
       </div>
 
       {/* Actions */}
+      {notice && (
+        <p className="mt-4 rounded-lg border border-amber-900 bg-amber-950/50 px-3 py-2 text-xs text-amber-400">
+          {notice}
+        </p>
+      )}
       <div className="mt-4 flex gap-2">
-        <button className="flex-1 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 disabled:opacity-50"
-          disabled={totalCards === 0 || !store.name}
+        <button
+          onClick={() => save(false)}
+          disabled={totalCards === 0 || !store.name || isSaving}
+          className="flex-1 rounded-lg border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-500 disabled:opacity-50"
         >
           {t("save")}
+        </button>
+        <button
+          onClick={() => save(true)}
+          disabled={totalCards === 0 || !store.name || isSaving}
+          className="flex-1 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 disabled:opacity-50"
+        >
+          {t("publish")}
         </button>
         <button
           onClick={() => store.clearDeck()}

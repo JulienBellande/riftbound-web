@@ -46,6 +46,26 @@ export const routing = defineRouting({
       fr: "/forum",
       en: "/forum",
     },
+    "/forum/[category]": {
+      fr: "/forum/[category]",
+      en: "/forum/[category]",
+    },
+    "/forum/[category]/[topicId]": {
+      fr: "/forum/[category]/[topicId]",
+      en: "/forum/[category]/[topicId]",
+    },
+    "/profile": {
+      fr: "/profil",
+      en: "/profile",
+    },
+    "/my-decks": {
+      fr: "/mes-decks",
+      en: "/my-decks",
+    },
+    "/orders": {
+      fr: "/commandes",
+      en: "/orders",
+    },
     "/login": {
       fr: "/connexion",
       en: "/login",

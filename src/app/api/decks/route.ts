@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { getDecks } from "@/lib/data/decks";
+import { getDecks, createDeck } from "@/lib/data/decks";
+import { getCurrentUser } from "@/lib/auth";
 
 const querySchema = z.object({
   q: z.string().optional(),
@@ -33,4 +34,37 @@ export async function GET(request: NextRequest) {
   });
 
   return NextResponse.json(result);
+}
+
+const createSchema = z.object({
+  name: z.string().trim().min(1).max(80),
+  description: z.string().trim().max(500).optional(),
+  format: z.enum(["standard", "extended", "draft"]).default("standard"),
+  isPublic: z.boolean().default(false),
+  cards: z
+    .array(
+      z.object({
+        cardId: z.string().min(1),
+        quantity: z.number().int().min(1).max(4),
+      })
+    )
+    .min(1)
+    .max(60),
+});
+
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  let parsed;
+  try {
+    parsed = createSchema.parse(await request.json());
+  } catch {
+    return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
+  }
+
+  const result = await createDeck(parsed, user);
+  return NextResponse.json(result, { status: 201 });
 }

@@ -3,9 +3,11 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft, User } from "lucide-react";
 import { getDeckById } from "@/lib/data/decks";
+import { getDeckComments } from "@/lib/data/comments";
 import { VoteButton } from "@/components/decks/vote-button";
 import { DeckCardList } from "@/components/decks/deck-card-list";
 import { ManaCurve } from "@/components/decks/mana-curve";
+import { CommentForm } from "@/components/decks/comment-form";
 import type { SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -36,7 +38,9 @@ export default async function DeckDetailPage({
 
   const t = await getTranslations({ locale, namespace: "decks" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
+  const tComments = await getTranslations({ locale, namespace: "comments" });
   const typedLocale = locale as SupportedLocale;
+  const comments = await getDeckComments(id);
   const totalCards = deck.cards.reduce((s, c) => s + c.quantity, 0);
   const totalPrice = deck.cards.reduce(
     (s, c) => s + (c.card.latestPrice?.priceEur ?? 0) * c.quantity,
@@ -108,6 +112,42 @@ export default async function DeckDetailPage({
             {t("deckList")}
           </h2>
           <DeckCardList cards={deck.cards} locale={typedLocale} />
+        </div>
+
+        {/* Comments */}
+        <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+            {tComments("title")} ({comments.length})
+          </h2>
+
+          <CommentForm deckId={deck.id} />
+
+          <ul className="mt-6 space-y-4">
+            {comments.length === 0 ? (
+              <li className="text-sm text-zinc-500">{tComments("empty")}</li>
+            ) : (
+              comments.map((c) => (
+                <li
+                  key={c.id}
+                  className="rounded-lg border border-zinc-800 bg-zinc-800/30 p-3"
+                >
+                  <div className="flex items-center justify-between text-xs text-zinc-500">
+                    <span className="font-medium text-zinc-300">
+                      {c.user.username}
+                    </span>
+                    <span>
+                      {new Date(c.createdAt).toLocaleDateString(
+                        typedLocale === "fr" ? "fr-FR" : "en-GB"
+                      )}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 whitespace-pre-wrap text-sm text-zinc-200">
+                    {c.content}
+                  </p>
+                </li>
+              ))
+            )}
+          </ul>
         </div>
       </div>
     </div>

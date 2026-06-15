@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { isDatabaseConfigured } from "@/lib/db";
-import { castDemoVote } from "@/lib/data/decks";
+import { castDemoVote, castVote } from "@/lib/data/decks";
+import { getCurrentUser } from "@/lib/auth";
 
 const bodySchema = z.object({
   deckId: z.string(),
@@ -24,6 +25,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
   }
 
-  // TODO: Auth check + upsert vote + recalculate score in DB
-  return NextResponse.json({ error: "Not implemented" }, { status: 501 });
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  const result = await castVote(deckId, user.id, value);
+  return NextResponse.json(result);
 }
