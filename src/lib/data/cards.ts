@@ -40,7 +40,6 @@ function demoCardToDto(card: SampleCard): CardWithPrice {
   )!;
   const prices = samplePricePoints(card);
   const latest = prices[prices.length - 1];
-  const fetchedAt = new Date();
 
   return {
     id: card.slug,
@@ -62,12 +61,14 @@ function demoCardToDto(card: SampleCard): CardWithPrice {
       nameFr: extension.nameFr,
       nameEn: extension.nameEn,
     },
-    latestPrice: {
-      priceEur: latest.priceEur,
-      priceUsd: latest.priceUsd,
-      priceGbp: latest.priceGbp,
-      fetchedAt: fetchedAt.toISOString(),
-    },
+    latestPrice: latest
+      ? {
+          priceEur: latest.priceEur,
+          priceUsd: latest.priceUsd,
+          priceGbp: latest.priceGbp,
+          fetchedAt: new Date().toISOString(),
+        }
+      : null,
   };
 }
 
@@ -298,6 +299,71 @@ export async function getCardById(id: string): Promise<CardWithPrice | null> {
   };
 }
 
+/** Strips trailing parenthetical variant suffixes, e.g.
+ *  "Ahri - Inquisitive (Signature)" → "Ahri - Inquisitive". */
+export function baseCardName(name: string): string {
+  return name.replace(/\s*\([^)]*\)\s*$/g, "").trim();
+}
+
+/** Returns every printing/variant that shares a base name (incl. the card
+ *  itself), sorted cheapest-first. Powers the "other versions" panel. */
+export async function getCardVariants(
+  cardId: string
+): Promise<CardWithPrice[]> {
+  if (!isDatabaseConfigured()) {
+    const card = sampleCards.find((c) => c.slug === cardId);
+    if (!card) return [];
+    const base = baseCardName(card.nameEn).toLowerCase();
+    return sampleCards
+      .filter((c) => baseCardName(c.nameEn).toLowerCase() === base)
+      .map(demoCardToDto)
+      .sort(
+        (a, b) =>
+          (a.latestPrice?.priceEur ?? 1e9) - (b.latestPrice?.priceEur ?? 1e9)
+      );
+  }
+
+  const card = await prisma.card.findUnique({ where: { id: cardId } });
+  if (!card) return [];
+  const base = baseCardName(card.nameEn);
+  const cards = await prisma.card.findMany({
+    where: { nameEn: { startsWith: base } },
+    include: {
+      extension: true,
+      prices: { orderBy: { fetchedAt: "desc" }, take: 1 },
+    },
+  });
+  return cards.map((c) => ({
+    id: c.id,
+    nameFr: c.nameFr,
+    nameEn: c.nameEn,
+    descriptionFr: c.descriptionFr,
+    descriptionEn: c.descriptionEn,
+    type: c.type,
+    rarity: c.rarity,
+    cost: c.cost,
+    attack: c.attack,
+    health: c.health,
+    imageUrl: c.imageUrl,
+    domain: [],
+    artist: "",
+    tags: [],
+    extension: {
+      code: c.extension.code,
+      nameFr: c.extension.nameFr,
+      nameEn: c.extension.nameEn,
+    },
+    latestPrice: c.prices[0]
+      ? {
+          priceEur: Number(c.prices[0].priceEur),
+          priceUsd: Number(c.prices[0].priceUsd),
+          priceGbp: Number(c.prices[0].priceGbp),
+          fetchedAt: c.prices[0].fetchedAt.toISOString(),
+        }
+      : null,
+  }));
+}
+
 export async function getPriceRows(filters: {
   search?: string;
   extensionId?: string;
@@ -315,7 +381,7 @@ export async function getPriceRows(filters: {
       const previous = points[0];
       const latest = points[points.length - 1];
       const trend7d =
-        previous.priceEur > 0
+        previous && latest && previous.priceEur > 0
           ? ((latest.priceEur - previous.priceEur) / previous.priceEur) * 100
           : null;
       return { ...dto, trend7d };

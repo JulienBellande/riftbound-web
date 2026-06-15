@@ -52,12 +52,14 @@ function demoCardDto(slug: string): CardWithPrice | null {
     artist: card.artist ?? "",
     tags: card.tags ?? [],
     extension: { code: ext.code, nameFr: ext.nameFr, nameEn: ext.nameEn },
-    latestPrice: {
-      priceEur: latest.priceEur,
-      priceUsd: latest.priceUsd,
-      priceGbp: latest.priceGbp,
-      fetchedAt: new Date().toISOString(),
-    },
+    latestPrice: latest
+      ? {
+          priceEur: latest.priceEur,
+          priceUsd: latest.priceUsd,
+          priceGbp: latest.priceGbp,
+          fetchedAt: new Date().toISOString(),
+        }
+      : null,
   };
 }
 
@@ -72,134 +74,105 @@ interface DemoDeckDef {
   cardSlugs: { slug: string; qty: number }[];
 }
 
-const DEMO_DECKS: DemoDeckDef[] = [
+// Deck recipes themed on a real domain; cards are selected from the real
+// card pool at module load so every demo deck contains valid cards.
+interface DeckRecipe {
+  id: string;
+  name: string;
+  description: string;
+  domain: string;
+  score: number;
+  user: DemoUser;
+  ageDays: number;
+}
+
+const DECK_RECIPES: DeckRecipe[] = [
   {
     id: "demo-deck-1",
-    name: "Duskblade Aggro",
-    description: "Fast aggressive deck built around Kaelen and cheap units.",
-    format: "standard",
+    name: "Fury Aggro",
+    description:
+      "Fast aggressive Fury deck that floods the board with cheap units and closes early.",
+    domain: "Fury",
     score: 47,
     user: DEMO_USERS[0],
-    createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "ogn-002", qty: 4 },
-      { slug: "ogn-001", qty: 3 },
-      { slug: "ogn-004", qty: 1 },
-      { slug: "ogn-005", qty: 2 },
-      { slug: "ogn-003", qty: 3 },
-      { slug: "sfr-001", qty: 4 },
-      { slug: "sfr-009", qty: 3 },
-      { slug: "emb-001", qty: 4 },
-      { slug: "emb-006", qty: 2 },
-      { slug: "emb-009", qty: 4 },
-    ],
+    ageDays: 2,
   },
   {
     id: "demo-deck-2",
-    name: "Emberheart Control",
-    description: "Heavy burn control deck that dominates the late game with Ignis.",
-    format: "standard",
+    name: "Calm Control",
+    description:
+      "Patient Calm control shell that stabilises and grinds out the late game.",
+    domain: "Calm",
     score: 38,
     user: DEMO_USERS[1],
-    createdAt: new Date(Date.now() - 4 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "emb-004", qty: 1 },
-      { slug: "emb-002", qty: 3 },
-      { slug: "emb-003", qty: 4 },
-      { slug: "emb-008", qty: 2 },
-      { slug: "emb-007", qty: 2 },
-      { slug: "emb-012", qty: 2 },
-      { slug: "ogn-009", qty: 4 },
-      { slug: "ogn-010", qty: 3 },
-      { slug: "ogn-006", qty: 3 },
-      { slug: "emb-005", qty: 1 },
-    ],
+    ageDays: 4,
   },
   {
     id: "demo-deck-3",
-    name: "Tide Oracle Combo",
-    description: "Spell-heavy combo deck leveraging Vyra's card selection and Echo Weaver.",
-    format: "standard",
+    name: "Mind Tempo",
+    description: "Mind-based tempo deck leveraging card selection and value units.",
+    domain: "Mind",
     score: 31,
     user: DEMO_USERS[2],
-    createdAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "ogn-012", qty: 1 },
-      { slug: "sfr-002", qty: 2 },
-      { slug: "sfr-003", qty: 1 },
-      { slug: "ogn-003", qty: 4 },
-      { slug: "ogn-009", qty: 4 },
-      { slug: "ogn-006", qty: 3 },
-      { slug: "sfr-004", qty: 3 },
-      { slug: "sfr-006", qty: 2 },
-      { slug: "ogn-011", qty: 2 },
-      { slug: "emb-009", qty: 3 },
-    ],
+    ageDays: 1,
   },
   {
     id: "demo-deck-4",
-    name: "Chainbreaker Midrange",
-    description: "Balanced midrange with Theron as a finisher against Gear-heavy metas.",
-    format: "standard",
+    name: "Body Midrange",
+    description: "Balanced Body midrange built around resilient threats.",
+    domain: "Body",
     score: 24,
     user: DEMO_USERS[3],
-    createdAt: new Date(Date.now() - 6 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "sfr-008", qty: 1 },
-      { slug: "sfr-001", qty: 4 },
-      { slug: "sfr-004", qty: 3 },
-      { slug: "sfr-005", qty: 2 },
-      { slug: "sfr-010", qty: 3 },
-      { slug: "sfr-011", qty: 2 },
-      { slug: "ogn-001", qty: 4 },
-      { slug: "ogn-008", qty: 2 },
-      { slug: "emb-010", qty: 3 },
-      { slug: "emb-003", qty: 2 },
-    ],
+    ageDays: 6,
   },
   {
     id: "demo-deck-5",
-    name: "Frost Ramp",
-    description: "Ramp into Frost Colossus and Magma Behemoth to lock the board.",
-    format: "standard",
+    name: "Order Ramp",
+    description: "Order ramp into powerful top-end finishers to lock the board.",
+    domain: "Order",
     score: 19,
     user: DEMO_USERS[0],
-    createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "ogn-008", qty: 2 },
-      { slug: "emb-008", qty: 2 },
-      { slug: "ogn-007", qty: 1 },
-      { slug: "ogn-009", qty: 4 },
-      { slug: "ogn-001", qty: 4 },
-      { slug: "sfr-004", qty: 4 },
-      { slug: "ogn-005", qty: 3 },
-      { slug: "sfr-007", qty: 1 },
-      { slug: "emb-009", qty: 4 },
-      { slug: "ogn-010", qty: 2 },
-    ],
+    ageDays: 3,
   },
   {
     id: "demo-deck-6",
-    name: "Blitz Runes",
-    description: "Aggressive rune-based tempo deck that empties the hand fast.",
-    format: "standard",
+    name: "Chaos Burn",
+    description: "Aggressive Chaos burn that empties the hand and goes face.",
+    domain: "Chaos",
     score: 12,
     user: DEMO_USERS[2],
-    createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
-    cardSlugs: [
-      { slug: "ogn-006", qty: 4 },
-      { slug: "sfr-006", qty: 4 },
-      { slug: "emb-007", qty: 3 },
-      { slug: "ogn-002", qty: 4 },
-      { slug: "sfr-001", qty: 4 },
-      { slug: "emb-001", qty: 4 },
-      { slug: "emb-006", qty: 2 },
-      { slug: "sfr-009", qty: 4 },
-      { slug: "emb-009", qty: 3 },
-      { slug: "emb-010", qty: 3 },
-    ],
+    ageDays: 5,
   },
 ];
+
+const QUANTITIES = [4, 4, 3, 3, 3, 2, 2, 2, 1, 1];
+
+const DEMO_DECKS: DemoDeckDef[] = DECK_RECIPES.map((r) => {
+  // Pick real, playable cards of the recipe's domain (no signature/alt-art
+  // chase variants), sorted for stability.
+  const pool = sampleCards
+    .filter(
+      (c) =>
+        c.domain.includes(r.domain) &&
+        !c.signature &&
+        !c.altArt &&
+        c.type !== "BATTLEFIELD" &&
+        c.type !== "LEGEND"
+    )
+    .sort((a, b) => a.collectorNum.localeCompare(b.collectorNum))
+    .slice(0, QUANTITIES.length);
+
+  return {
+    id: r.id,
+    name: r.name,
+    description: r.description,
+    format: "standard",
+    score: r.score,
+    user: r.user,
+    createdAt: new Date(Date.now() - r.ageDays * 86400000).toISOString(),
+    cardSlugs: pool.map((c, i) => ({ slug: c.slug, qty: QUANTITIES[i] })),
+  };
+});
 
 function buildDemoDecks(): DeckWithDetails[] {
   return DEMO_DECKS.map((d) => ({
@@ -216,7 +189,7 @@ function buildDemoDecks(): DeckWithDetails[] {
         return card ? { quantity: cs.qty, card } : null;
       })
       .filter((c): c is { quantity: number; card: CardWithPrice } => c !== null),
-    _count: { comments: Math.floor(Math.random() * 12) },
+    _count: { comments: (d.score * 7) % 13 },
   }));
 }
 

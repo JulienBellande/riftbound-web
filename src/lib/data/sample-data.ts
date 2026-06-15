@@ -151,17 +151,20 @@ export interface SamplePricePoint {
 /**
  * Builds price points from real TCGPlayer data.
  *
- * The "current" point uses the real market price. The "7-day-ago" point is
- * derived from the listing vs. market spread, giving a real-data movement
- * signal rather than random noise.
+ * The "current" point uses the real market price (falling back to the lowest
+ * listing). The "7-day-ago" point is derived from the listing vs. market
+ * spread, giving a real-data movement signal rather than random noise.
+ *
+ * Returns an empty array when no real price exists, so the UI can render "—"
+ * instead of a misleading 0.
  */
 export function samplePricePoints(card: SampleCard): SamplePricePoint[] {
-  const market = card.marketUsd ?? card.priceUsd ?? 0;
-  const listing = card.priceUsd ?? market;
-  // previous ≈ listing price (the spread between listing and market is the
-  // observable short-term movement)
-  const prevUsd = listing > 0 ? listing : market;
-  const curUsd = market > 0 ? market : listing;
+  const market = card.marketUsd && card.marketUsd > 0 ? card.marketUsd : 0;
+  const listing = card.priceUsd && card.priceUsd > 0 ? card.priceUsd : 0;
+
+  const curUsd = market || listing;
+  if (curUsd <= 0) return [];
+  const prevUsd = listing || market;
 
   const mk = (usd: number, ageDays: number): SamplePricePoint => ({
     priceUsd: +usd.toFixed(2),

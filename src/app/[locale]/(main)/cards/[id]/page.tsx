@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft } from "lucide-react";
-import { getCardById } from "@/lib/data/cards";
+import { getCardById, getCardVariants } from "@/lib/data/cards";
 import {
   formatPrice,
   localizedName,
@@ -11,6 +11,21 @@ import {
 } from "@/lib/utils/format";
 import type { SupportedLocale } from "@/types";
 import type { Metadata } from "next";
+
+const RARITY_DOT: Record<string, string> = {
+  COMMON: "bg-zinc-500",
+  UNCOMMON: "bg-emerald-500",
+  RARE: "bg-sky-500",
+  EPIC: "bg-violet-500",
+  SHOWCASE: "bg-amber-400",
+  PROMO: "bg-fuchsia-500",
+};
+
+/** Human label for a printing, derived from its name suffix. */
+function variantLabel(name: string): string {
+  const m = name.match(/\(([^)]*)\)\s*$/);
+  return m ? m[1] : "Standard";
+}
 
 const DOMAIN_COLORS: Record<string, string> = {
   Fury: "bg-red-500/20 text-red-400 ring-red-500/30",
@@ -48,7 +63,10 @@ export default async function CardDetailPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
 
-  const card = await getCardById(id);
+  const [card, variants] = await Promise.all([
+    getCardById(id),
+    getCardVariants(id),
+  ]);
   if (!card) notFound();
 
   const t = await getTranslations({ locale, namespace: "cards" });
@@ -57,6 +75,7 @@ export default async function CardDetailPage({
 
   const name = localizedName(card, typedLocale);
   const description = localizedDescription(card, typedLocale);
+  const otherVariants = variants.filter((v) => v.id !== card.id);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -218,6 +237,62 @@ export default async function CardDetailPage({
           )}
         </div>
       </div>
+
+      {/* Other printings / variants */}
+      {otherVariants.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-500">
+            {t("detail.otherVersions")} ({otherVariants.length})
+          </h2>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {[card, ...otherVariants].map((v) => {
+              const isCurrent = v.id === card.id;
+              return (
+                <Link
+                  key={v.id}
+                  href={{ pathname: "/cards/[id]", params: { id: v.id } }}
+                  className={`flex items-center gap-3 rounded-xl border p-2.5 transition-colors ${
+                    isCurrent
+                      ? "border-indigo-500/50 bg-indigo-500/5"
+                      : "border-zinc-800/60 bg-zinc-900/30 hover:border-zinc-700"
+                  }`}
+                >
+                  {v.imageUrl ? (
+                    <Image
+                      src={v.imageUrl}
+                      alt=""
+                      width={40}
+                      height={56}
+                      quality={70}
+                      className="shrink-0 rounded ring-1 ring-zinc-800"
+                    />
+                  ) : (
+                    <span className="h-14 w-10 shrink-0 rounded bg-zinc-800" />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={`h-2 w-2 rounded-full ${RARITY_DOT[v.rarity] ?? "bg-zinc-500"}`}
+                      />
+                      <span className="truncate text-sm font-medium text-zinc-200">
+                        {variantLabel(v.nameEn)}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      {v.extension.code} · {t(`rarities.${v.rarity}`)}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-sm font-bold text-emerald-400">
+                    {v.latestPrice
+                      ? formatPrice(v.latestPrice.priceEur, "EUR", typedLocale)
+                      : "—"}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

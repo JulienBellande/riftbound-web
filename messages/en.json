@@ -93,7 +93,8 @@
     "detail": {
       "stats": "Might",
       "marketPrices": "Market prices",
-      "priceDate": "Price recorded on {date}"
+      "priceDate": "Price recorded on {date}",
+      "otherVersions": "Other versions"
     },
     "noResults": "No cards found.",
     "results": "{count} card(s) found"

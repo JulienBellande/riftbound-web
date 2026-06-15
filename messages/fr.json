@@ -93,7 +93,8 @@
     "detail": {
       "stats": "Puissance",
       "marketPrices": "Prix du marché",
-      "priceDate": "Cote relevée le {date}"
+      "priceDate": "Cote relevée le {date}",
+      "otherVersions": "Autres versions"
     },
     "noResults": "Aucune carte trouvée.",
     "results": "{count} carte(s) trouvée(s)"

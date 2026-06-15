@@ -5,6 +5,7 @@ import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils/cn";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
+import { QuickSearch } from "./quick-search";
 import { Menu, X, Flame } from "lucide-react";
 import { useState } from "react";
 
@@ -57,6 +58,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          <QuickSearch />
           <LocaleSwitcher />
           {user ? (
             <UserMenu username={user.username} isDemo={user.isDemo} />
