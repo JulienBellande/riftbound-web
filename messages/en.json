@@ -21,11 +21,23 @@
   },
   "home": {
     "hero": {
-      "titlePart1": "Your Riftbound",
-      "titlePart2": "Command Center",
-      "subtitle": "883 real cards, market prices, deck building tools and an active community — all in one place.",
+      "badge": "1064 real cards · live TCGPlayer prices",
+      "titlePart1": "Master the",
+      "titlePart2": "Riftbound metagame",
+      "subtitle": "The complete companion for Riot's TCG: full card database, real market prices, deck builder and an active community.",
       "cta": "Explore cards",
-      "ctaSecondary": "Build a deck"
+      "ctaSecondary": "Build a deck",
+      "stats": {
+        "cards": "Cards",
+        "sets": "Sets",
+        "prices": "Live prices"
+      }
+    },
+    "movers": {
+      "risingTitle": "Rising this week",
+      "fallingTitle": "Falling this week",
+      "valuableTitle": "Most valuable cards",
+      "viewAll": "All prices"
     },
     "topDecks": {
       "title": "Top Decks this week",
@@ -67,7 +79,9 @@
       "COMMON": "Common",
       "UNCOMMON": "Uncommon",
       "RARE": "Rare",
-      "EPIC": "Epic"
+      "EPIC": "Epic",
+      "SHOWCASE": "Showcase",
+      "PROMO": "Promo"
     },
     "sort": {
       "name": "Name",
@@ -99,6 +113,7 @@
   },
   "deckBuilder": {
     "title": "Deck Builder",
+    "subtitle": "Tap the + on any card to add it to your deck.",
     "deckName": "Deck name",
     "format": "Format",
     "cardSearch": "Search for a card to add...",

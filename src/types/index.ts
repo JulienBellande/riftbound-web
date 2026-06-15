@@ -7,6 +7,7 @@ export interface CardFilters {
   extensionId?: string;
   type?: string;
   rarity?: string;
+  domain?: string;
   costMin?: number;
   costMax?: number;
   sortBy?: "name" | "cost" | "rarity" | "price" | "date";

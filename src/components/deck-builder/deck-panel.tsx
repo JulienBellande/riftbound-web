@@ -16,6 +16,8 @@ const RARITY_DOT: Record<string, string> = {
   UNCOMMON: "bg-emerald-500",
   RARE: "bg-sky-500",
   EPIC: "bg-violet-500",
+  SHOWCASE: "bg-amber-400",
+  PROMO: "bg-fuchsia-500",
 };
 
 export function DeckPanel({ locale }: { locale: SupportedLocale }) {
@@ -199,7 +201,7 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
         <button
           onClick={() => save(true)}
           disabled={totalCards === 0 || !store.name || isSaving}
-          className="flex-1 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 disabled:opacity-50"
+          className="flex-1 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-50"
         >
           {t("publish")}
         </button>

@@ -1,0 +1,102 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Link } from "@/i18n/routing";
+import { Loader2 } from "lucide-react";
+import { CardFrame } from "@/components/cards/card-frame";
+import { formatPrice } from "@/lib/utils/format";
+import type { CardWithPrice, SupportedLocale } from "@/types";
+
+const PER_PAGE = 30;
+
+export function CardsGrid({
+  initialCards,
+  total,
+  locale,
+}: {
+  initialCards: CardWithPrice[];
+  total: number;
+  locale: SupportedLocale;
+}) {
+  const searchParams = useSearchParams();
+  const [cards, setCards] = useState(initialCards);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(initialCards.length >= total);
+  const sentinel = useRef<HTMLDivElement>(null);
+
+  // Reset when the filters (URL) change — server re-renders initialCards
+  const spKey = searchParams.toString();
+  useEffect(() => {
+    setCards(initialCards);
+    setPage(1);
+    setDone(initialCards.length >= total);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spKey, initialCards, total]);
+
+  const loadMore = useCallback(async () => {
+    if (loading || done) return;
+    setLoading(true);
+    try {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", String(page + 1));
+      params.set("perPage", String(PER_PAGE));
+      const res = await fetch(`/api/cards?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setCards((prev) => [...prev, ...data.data]);
+        setPage((p) => p + 1);
+        if (cards.length + data.data.length >= data.total) setDone(true);
+        if (data.data.length === 0) setDone(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, done, searchParams, page, cards.length]);
+
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { rootMargin: "600px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [loadMore]);
+
+  if (cards.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        {cards.map((card) => (
+          <Link
+            key={card.id}
+            href={{ pathname: "/cards/[id]", params: { id: card.id } }}
+            className="group animate-fade-in"
+          >
+            <CardFrame card={card} locale={locale} />
+            {card.latestPrice && (
+              <p className="mt-1.5 text-center text-xs font-semibold text-emerald-400">
+                {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
+              </p>
+            )}
+          </Link>
+        ))}
+      </div>
+
+      <div ref={sentinel} className="h-10" />
+      {loading && (
+        <div className="flex justify-center py-6">
+          <Loader2 className="animate-spin text-zinc-500" size={24} />
+        </div>
+      )}
+    </>
+  );
+}

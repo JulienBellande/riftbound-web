@@ -26,6 +26,8 @@ const RARITY_MAP: Record<string, CardRarity> = {
   UNCOMMON: "UNCOMMON",
   RARE: "RARE",
   EPIC: "EPIC",
+  SHOWCASE: "EPIC",
+  PROMO: "RARE",
 };
 
 async function main() {

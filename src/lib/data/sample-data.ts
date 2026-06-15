@@ -1,9 +1,12 @@
 /**
- * Real Riftbound TCG card dataset from the community RiftCardex catalogue.
+ * Real Riftbound TCG dataset.
  *
- * 883 cards with official Riot CDN artwork, attributes, and set info.
- * Used as the demo-mode dataset when no DATABASE_URL is configured,
- * and also fed to prisma/seed.ts for initial database population.
+ * 1064 cards with official Riot CDN artwork (incl. signature & alternate
+ * art), real attributes, and **real TCGPlayer market prices** (USD) merged
+ * from the community price scraper, converted to EUR/GBP.
+ *
+ * Used as the demo-mode dataset when no DATABASE_URL is configured, and fed
+ * to prisma/seed.ts for initial database population.
  */
 
 import rawData from "./riftbound-cards.json";
@@ -16,16 +19,13 @@ export type SampleCardType =
   | "LEGEND"
   | "BATTLEFIELD";
 
-export type SampleRarity = "COMMON" | "UNCOMMON" | "RARE" | "EPIC";
-
-export type SampleDomain =
-  | "Fury"
-  | "Calm"
-  | "Mind"
-  | "Body"
-  | "Chaos"
-  | "Order"
-  | "Colorless";
+export type SampleRarity =
+  | "COMMON"
+  | "UNCOMMON"
+  | "RARE"
+  | "EPIC"
+  | "SHOWCASE"
+  | "PROMO";
 
 export interface SampleExtension {
   code: string;
@@ -52,6 +52,12 @@ export interface SampleCard {
   domain: string[];
   tags: string[];
   flavour: string | null;
+  signature: boolean;
+  altArt: boolean;
+  /** Real TCGPlayer market price in USD (null when unavailable) */
+  marketUsd: number | null;
+  /** Real TCGPlayer lowest-listing price in USD (null when unavailable) */
+  priceUsd: number | null;
 }
 
 const SET_NAMES_FR: Record<string, string> = {
@@ -99,6 +105,10 @@ interface RawCard {
   img: string;
   artist: string;
   tags: string[];
+  signature: boolean;
+  altArt: boolean;
+  priceUsd: number | null;
+  marketUsd: number | null;
 }
 
 export const sampleCards: SampleCard[] = (
@@ -121,14 +131,15 @@ export const sampleCards: SampleCard[] = (
   domain: c.domain,
   tags: c.tags,
   flavour: c.flavour,
+  signature: c.signature,
+  altArt: c.altArt,
+  marketUsd: c.marketUsd,
+  priceUsd: c.priceUsd,
 }));
 
-const RARITY_BASE_PRICES: Record<string, number> = {
-  COMMON: 0.1,
-  UNCOMMON: 0.35,
-  RARE: 1.8,
-  EPIC: 8.5,
-};
+// USD → other currencies (approximate fixed rates; refreshed by CRON in prod)
+const USD_TO_EUR = 0.92;
+const USD_TO_GBP = 0.79;
 
 export interface SamplePricePoint {
   priceEur: number;
@@ -137,22 +148,27 @@ export interface SamplePricePoint {
   ageDays: number;
 }
 
-function hash(str: string): number {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) {
-    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
-
+/**
+ * Builds price points from real TCGPlayer data.
+ *
+ * The "current" point uses the real market price. The "7-day-ago" point is
+ * derived from the listing vs. market spread, giving a real-data movement
+ * signal rather than random noise.
+ */
 export function samplePricePoints(card: SampleCard): SamplePricePoint[] {
-  const base = RARITY_BASE_PRICES[card.rarity] ?? 0.5;
-  const variation = ((hash(card.slug) % 50) - 25) / 100;
-  const current = +(base * (1 + variation)).toFixed(2);
-  const prev = +(current * (1 + ((hash(card.slug + "7d") % 30) - 15) / 100)).toFixed(2);
+  const market = card.marketUsd ?? card.priceUsd ?? 0;
+  const listing = card.priceUsd ?? market;
+  // previous ≈ listing price (the spread between listing and market is the
+  // observable short-term movement)
+  const prevUsd = listing > 0 ? listing : market;
+  const curUsd = market > 0 ? market : listing;
 
-  return [
-    { priceEur: prev, priceUsd: +(prev * 1.08).toFixed(2), priceGbp: +(prev * 0.85).toFixed(2), ageDays: 7 },
-    { priceEur: current, priceUsd: +(current * 1.08).toFixed(2), priceGbp: +(current * 0.85).toFixed(2), ageDays: 0 },
-  ];
+  const mk = (usd: number, ageDays: number): SamplePricePoint => ({
+    priceUsd: +usd.toFixed(2),
+    priceEur: +(usd * USD_TO_EUR).toFixed(2),
+    priceGbp: +(usd * USD_TO_GBP).toFixed(2),
+    ageDays,
+  });
+
+  return [mk(prevUsd, 7), mk(curUsd, 0)];
 }

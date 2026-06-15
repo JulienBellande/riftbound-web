@@ -8,7 +8,14 @@ import { Search } from "lucide-react";
 import type { ExtensionSummary } from "@/lib/data/cards";
 
 const CARD_TYPES = ["UNIT", "SPELL", "RUNE", "GEAR", "LEGEND", "BATTLEFIELD"];
-const RARITIES = ["COMMON", "UNCOMMON", "RARE", "EPIC"];
+const RARITIES = [
+  "COMMON",
+  "UNCOMMON",
+  "RARE",
+  "EPIC",
+  "SHOWCASE",
+  "PROMO",
+];
 const DOMAINS = ["Fury", "Calm", "Mind", "Body", "Chaos", "Order", "Colorless"];
 const COST_RANGES = [
   { value: "0-2", label: "0 – 2" },

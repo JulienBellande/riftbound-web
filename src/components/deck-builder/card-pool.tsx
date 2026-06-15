@@ -23,22 +23,29 @@ function DraggableCard({
 
   return (
     <div
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      className="group relative cursor-grab active:cursor-grabbing"
+      className="group relative"
       style={{ opacity: isDragging ? 0.3 : 1 }}
     >
-      <CardFrame card={card} locale={locale} />
+      {/* Draggable surface (optional convenience) */}
+      <div
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
+        className="cursor-grab active:cursor-grabbing"
+      >
+        <CardFrame card={card} locale={locale} />
+      </div>
+
+      {/* Always-visible add button */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           onClickAdd(card);
         }}
-        className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-amber-600 text-white opacity-0 transition-opacity group-hover:opacity-100"
+        className="absolute bottom-12 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg ring-2 ring-zinc-950/40 transition-all hover:scale-110 hover:bg-indigo-500 active:scale-95"
         aria-label="Add to deck"
       >
-        <Plus size={14} />
+        <Plus size={18} strokeWidth={2.5} />
       </button>
     </div>
   );

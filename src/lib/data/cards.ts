@@ -21,7 +21,14 @@ export interface PriceRow extends CardWithPrice {
   trend7d: number | null;
 }
 
-const RARITY_ORDER = ["COMMON", "UNCOMMON", "RARE", "EPIC"];
+const RARITY_ORDER = [
+  "COMMON",
+  "UNCOMMON",
+  "RARE",
+  "EPIC",
+  "SHOWCASE",
+  "PROMO",
+];
 
 // ──────────────────────────────────────────────
 // Demo mode (no DATABASE_URL): serve the bundled dataset
@@ -82,6 +89,9 @@ function applyDemoFilters(filters: CardFilters): CardWithPrice[] {
   }
   if (filters.rarity) {
     cards = cards.filter((c) => c.rarity === filters.rarity);
+  }
+  if (filters.domain) {
+    cards = cards.filter((c) => c.domain.includes(filters.domain!));
   }
   if (filters.costMin !== undefined) {
     cards = cards.filter((c) => c.cost >= filters.costMin!);

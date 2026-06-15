@@ -63,7 +63,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
           ) : (
             <Link
               href="/login"
-              className="hidden rounded-lg bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white transition-all hover:bg-amber-500 hover:shadow-lg hover:shadow-amber-600/20 sm:block"
+              className="hidden rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-1.5 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-indigo-600/30 hover:brightness-110 sm:block"
             >
               {t("login")}
             </Link>

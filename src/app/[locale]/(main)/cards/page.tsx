@@ -1,10 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/routing";
 import { getCards, getExtensions } from "@/lib/data/cards";
 import { CardFiltersBar } from "@/components/cards/card-filters-bar";
-import { CardFrame } from "@/components/cards/card-frame";
-import { Pagination } from "@/components/ui/pagination";
-import { formatPrice } from "@/lib/utils/format";
+import { CardsGrid } from "@/components/cards/cards-grid";
 import type { CardFilters, SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -52,14 +49,15 @@ export default async function CardsPage({
     extensionId: typeof sp.ext === "string" ? sp.ext : undefined,
     type: typeof sp.type === "string" ? sp.type : undefined,
     rarity: typeof sp.rarity === "string" ? sp.rarity : undefined,
+    domain: typeof sp.domain === "string" ? sp.domain : undefined,
     ...parseCostRange(typeof sp.cost === "string" ? sp.cost : undefined),
     sortBy:
       typeof sp.sort === "string"
         ? (sp.sort as CardFilters["sortBy"])
         : "name",
     sortOrder: sp.order === "desc" ? "desc" : "asc",
-    page: typeof sp.page === "string" ? Number(sp.page) : 1,
-    perPage: 24,
+    page: 1,
+    perPage: 30,
   };
 
   const [result, extensions] = await Promise.all([
@@ -69,40 +67,39 @@ export default async function CardsPage({
 
   const typedLocale = locale as SupportedLocale;
 
+  // Stable key so the client grid resets when filters change
+  const spKey = new URLSearchParams(
+    Object.entries(sp).filter(([, v]) => typeof v === "string") as [
+      string,
+      string,
+    ][]
+  ).toString();
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-zinc-100">{t("title")}</h1>
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <h1 className="text-3xl font-black tracking-tight text-zinc-100">
+          {t("title")}
+        </h1>
+        <p className="text-sm text-zinc-500">
+          {t("results", { count: result.total })}
+        </p>
+      </div>
 
-      <div className="mt-6">
+      <div className="sticky top-14 z-30 -mx-4 mt-5 bg-zinc-950/70 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-xl sm:px-3">
         <CardFiltersBar extensions={extensions} />
       </div>
 
-      <p className="mt-4 text-sm text-zinc-500">
-        {t("results", { count: result.total })}
-      </p>
-
       {result.data.length === 0 ? (
-        <p className="mt-12 text-center text-zinc-500">{t("noResults")}</p>
+        <p className="mt-16 text-center text-zinc-500">{t("noResults")}</p>
       ) : (
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {result.data.map((card) => (
-            <Link
-              key={card.id}
-              href={{ pathname: "/cards/[id]", params: { id: card.id } }}
-              className="group"
-            >
-              <CardFrame card={card} locale={typedLocale} />
-              {card.latestPrice && (
-                <p className="mt-1.5 text-center text-xs font-medium text-amber-500">
-                  {formatPrice(card.latestPrice.priceEur, "EUR", typedLocale)}
-                </p>
-              )}
-            </Link>
-          ))}
-        </div>
+        <CardsGrid
+          key={spKey}
+          initialCards={result.data}
+          total={result.total}
+          locale={typedLocale}
+        />
       )}
-
-      <Pagination page={result.page} totalPages={result.totalPages} />
     </div>
   );
 }

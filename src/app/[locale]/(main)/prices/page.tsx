@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { getPriceRows } from "@/lib/data/cards";
 import { Pagination } from "@/components/ui/pagination";
@@ -101,8 +102,20 @@ export default async function PricesPage({
                 <td className="px-4 py-3">
                   <Link
                     href={{ pathname: "/cards/[id]", params: { id: row.id } }}
-                    className="font-medium text-zinc-200 hover:text-amber-400"
+                    className="flex items-center gap-3 font-medium text-zinc-200 transition-colors hover:text-indigo-400"
                   >
+                    {row.imageUrl ? (
+                      <Image
+                        src={row.imageUrl}
+                        alt=""
+                        width={32}
+                        height={45}
+                        quality={70}
+                        className="shrink-0 rounded ring-1 ring-zinc-800"
+                      />
+                    ) : (
+                      <span className="h-[45px] w-8 shrink-0 rounded bg-zinc-800" />
+                    )}
                     {localizedName(row, typedLocale)}
                   </Link>
                 </td>

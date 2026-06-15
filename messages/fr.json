@@ -21,11 +21,23 @@
   },
   "home": {
     "hero": {
-      "titlePart1": "Votre QG",
-      "titlePart2": "Riftbound",
-      "subtitle": "883 vraies cartes, prix du marché, construction de decks et communauté active — tout en un seul endroit.",
+      "badge": "1064 vraies cartes · prix TCGPlayer en direct",
+      "titlePart1": "Maîtrisez le",
+      "titlePart2": "métagame Riftbound",
+      "subtitle": "Le compagnon complet du TCG de Riot : base de données complète, vrais prix du marché, constructeur de decks et communauté active.",
       "cta": "Explorer les cartes",
-      "ctaSecondary": "Créer un deck"
+      "ctaSecondary": "Créer un deck",
+      "stats": {
+        "cards": "Cartes",
+        "sets": "Extensions",
+        "prices": "Prix live"
+      }
+    },
+    "movers": {
+      "risingTitle": "En hausse cette semaine",
+      "fallingTitle": "En baisse cette semaine",
+      "valuableTitle": "Cartes les plus chères",
+      "viewAll": "Tous les prix"
     },
     "topDecks": {
       "title": "Top Decks de la semaine",
@@ -67,7 +79,9 @@
       "COMMON": "Commune",
       "UNCOMMON": "Peu commune",
       "RARE": "Rare",
-      "EPIC": "Épique"
+      "EPIC": "Épique",
+      "SHOWCASE": "Showcase",
+      "PROMO": "Promo"
     },
     "sort": {
       "name": "Nom",
@@ -99,6 +113,7 @@
   },
   "deckBuilder": {
     "title": "Constructeur de deck",
+    "subtitle": "Appuyez sur le + d'une carte pour l'ajouter à votre deck.",
     "deckName": "Nom du deck",
     "format": "Format",
     "cardSearch": "Rechercher une carte à ajouter...",
