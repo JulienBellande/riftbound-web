@@ -60,7 +60,7 @@
   },
   "cards": {
     "title": "Base de données des cartes",
-    "search": "Rechercher une carte...",
+    "search": "Rechercher par nom ou numéro...",
     "filters": {
       "extension": "Extension",
       "type": "Type",

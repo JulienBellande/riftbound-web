@@ -60,7 +60,7 @@
   },
   "cards": {
     "title": "Card Database",
-    "search": "Search for a card...",
+    "search": "Search by name or number...",
     "filters": {
       "extension": "Set",
       "type": "Type",

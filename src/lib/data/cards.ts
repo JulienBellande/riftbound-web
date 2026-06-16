@@ -81,7 +81,9 @@ function applyDemoFilters(filters: CardFilters): CardWithPrice[] {
     const q = filters.search.toLowerCase();
     cards = cards.filter(
       (c) =>
-        c.nameFr.toLowerCase().includes(q) || c.nameEn.toLowerCase().includes(q)
+        c.nameFr.toLowerCase().includes(q) ||
+        c.nameEn.toLowerCase().includes(q) ||
+        c.collectorNum.toLowerCase().includes(q)
     );
   }
   if (filters.extensionId) {
@@ -184,6 +186,12 @@ export async function getCards(
       OR: [
         { nameFr: { contains: filters.search, mode: "insensitive" as const } },
         { nameEn: { contains: filters.search, mode: "insensitive" as const } },
+        {
+          collectorNum: {
+            contains: filters.search,
+            mode: "insensitive" as const,
+          },
+        },
       ],
     }),
     ...(filters.extensionId && {
@@ -404,7 +412,8 @@ export async function getPriceRows(filters: {
       rows = rows.filter(
         (r) =>
           r.nameFr.toLowerCase().includes(q) ||
-          r.nameEn.toLowerCase().includes(q)
+          r.nameEn.toLowerCase().includes(q) ||
+          r.collectorNum.toLowerCase().includes(q)
       );
     }
     if (filters.extensionId) {
@@ -432,6 +441,12 @@ export async function getPriceRows(filters: {
       OR: [
         { nameFr: { contains: filters.search, mode: "insensitive" as const } },
         { nameEn: { contains: filters.search, mode: "insensitive" as const } },
+        {
+          collectorNum: {
+            contains: filters.search,
+            mode: "insensitive" as const,
+          },
+        },
       ],
     }),
     ...(filters.extensionId && { extension: { code: filters.extensionId } }),
