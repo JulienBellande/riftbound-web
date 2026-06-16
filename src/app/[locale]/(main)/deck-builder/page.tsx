@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getCards, getExtensions } from "@/lib/data/cards";
+import { getCards, getExtensions, getLegends } from "@/lib/data/cards";
 import { DeckBuilderClient } from "@/components/deck-builder/deck-builder-client";
 import type { SupportedLocale } from "@/types";
 import type { Metadata } from "next";
@@ -22,9 +22,10 @@ export default async function DeckBuilderPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [initialCards, extensions] = await Promise.all([
+  const [initialCards, extensions, legends] = await Promise.all([
     getCards({ perPage: 100 }),
     getExtensions(),
+    getLegends(),
   ]);
 
   return (
@@ -32,6 +33,7 @@ export default async function DeckBuilderPage({
       locale={locale as SupportedLocale}
       initialCards={initialCards.data}
       extensions={extensions}
+      legends={legends}
     />
   );
 }

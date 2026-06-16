@@ -4,10 +4,11 @@ import { useState, useTransition } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { useTranslations } from "next-intl";
 import { Trash2, Minus, Plus, Copy, Check, Download, Upload } from "lucide-react";
-import { useDeckBuilderStore } from "@/stores/deck-builder-store";
+import { useDeckBuilderStore, RUNE_DECK_SIZE } from "@/stores/deck-builder-store";
 import { useRouter } from "@/i18n/routing";
 import { ManaCurve } from "@/components/decks/mana-curve";
 import { localizedName, formatPrice } from "@/lib/utils/format";
+import { DOMAIN_DOT } from "@/lib/domains";
 import { cn } from "@/lib/utils/cn";
 import type { SupportedLocale } from "@/types";
 
@@ -31,6 +32,12 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
 
   const { isOver, setNodeRef } = useDroppable({ id: "deck-drop-zone" });
 
+  const legend = store.legend;
+  const runes = store.runes;
+  const runeDomains = Object.keys(runes);
+  const totalRunes = store.totalRunes();
+  const runeSummary = runeDomains.map((d) => `${runes[d]} ${d}`).join(" / ");
+
   const sorted = [...store.cards].sort((a, b) => a.card.cost - b.card.cost);
   const totalPrice = sorted.reduce(
     (s, c) => s + (c.card.latestPrice?.priceEur ?? 0) * c.quantity,
@@ -46,13 +53,21 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
       store.name.trim() ||
       (locale === "fr" ? "Deck Riftbound" : "Riftbound deck");
     const unit = locale === "fr" ? "cartes" : "cards";
+    const legendLabel = locale === "fr" ? "Légende" : "Legend";
+    const runesLabel = locale === "fr" ? "Runes" : "Runes";
+    const header = [
+      `${title} — ${store.format}`,
+      legend ? `${legendLabel} : ${localizedName(legend, locale)}` : null,
+      runeDomains.length ? `${runesLabel} : ${runeSummary}` : null,
+      `${totalCards} ${unit}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
     const lines = sorted.map(
       (e) =>
         `${e.quantity}x ${localizedName(e.card, locale)} (${e.card.collectorNum})`
     );
-    return `${title} — ${store.format}\n${totalCards} ${unit}\n\n${lines.join(
-      "\n"
-    )}\n`;
+    return `${header}\n\n${lines.join("\n")}\n`;
   }
 
   async function copyList() {
@@ -95,6 +110,9 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
           body: JSON.stringify({
             name: store.name,
             format: store.format,
+            description: legend
+              ? `${localizedName(legend, locale)} · ${runeSummary}`
+              : undefined,
             isPublic: true,
             cards: store.cards.map((c) => ({
               cardId: c.cardId,
@@ -268,6 +286,56 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
           )}
         </div>
       </div>
+
+      {/* Rune deck — derived from the Legend's domains */}
+      {runeDomains.length > 0 && (
+        <div className="mt-4 border-t border-zinc-800 pt-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-zinc-300">{t("runes")}</h3>
+            <span
+              className={cn(
+                "text-xs",
+                totalRunes === RUNE_DECK_SIZE
+                  ? "text-emerald-400"
+                  : "text-zinc-500"
+              )}
+            >
+              {totalRunes}/{RUNE_DECK_SIZE}
+            </span>
+          </div>
+          <p className="mt-1 text-[11px] text-zinc-500">{t("runesHint")}</p>
+          <div className="mt-3 space-y-2">
+            {runeDomains.map((d) => (
+              <div key={d} className="flex items-center gap-2 text-sm">
+                <span
+                  className={cn(
+                    "h-2.5 w-2.5 shrink-0 rounded-full",
+                    DOMAIN_DOT[d] ?? "bg-zinc-500"
+                  )}
+                />
+                <span className="flex-1 text-zinc-200">{d}</span>
+                <button
+                  onClick={() => store.setRuneCount(d, runes[d] - 1)}
+                  className="rounded p-0.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+                  aria-label="-1"
+                >
+                  <Minus size={12} />
+                </button>
+                <span className="w-5 text-center text-xs font-medium text-zinc-300">
+                  {runes[d]}
+                </span>
+                <button
+                  onClick={() => store.setRuneCount(d, runes[d] + 1)}
+                  className="rounded p-0.5 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+                  aria-label="+1"
+                >
+                  <Plus size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Actions */}
       {notice && (

@@ -6,7 +6,7 @@ import { Plus, Loader2 } from "lucide-react";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 import type { ExtensionSummary } from "@/lib/data/cards";
 
-const CARD_TYPES = ["UNIT", "SPELL", "RUNE", "GEAR", "LEGEND", "BATTLEFIELD"];
+const CARD_TYPES = ["UNIT", "SPELL", "GEAR"];
 
 function DraggableCard({
   card,

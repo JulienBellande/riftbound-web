@@ -6,6 +6,7 @@ import {
   samplePricePoints,
   type SampleCard,
 } from "./sample-data";
+import { isLegalInDomains } from "@/lib/domains";
 import type { CardFilters, CardWithPrice, PaginatedResponse } from "@/types";
 
 export interface ExtensionSummary {
@@ -98,6 +99,9 @@ function applyDemoFilters(filters: CardFilters): CardWithPrice[] {
   if (filters.domain) {
     cards = cards.filter((c) => c.domain.includes(filters.domain!));
   }
+  if (filters.domains && filters.domains.length > 0) {
+    cards = cards.filter((c) => isLegalInDomains(c.domain, filters.domains!));
+  }
   if (filters.costMin !== undefined) {
     cards = cards.filter((c) => c.cost >= filters.costMin!);
   }
@@ -161,6 +165,68 @@ export async function getExtensions(): Promise<ExtensionSummary[]> {
     releaseDate: e.releaseDate.toISOString(),
     count: e._count.cards,
   }));
+}
+
+/**
+ * All selectable Legends (one entry per Legend, excluding signature /
+ * alternate-art printings). Each carries its two domains, which drive the
+ * deck builder's colour constraints and rune selection.
+ */
+export async function getLegends(): Promise<CardWithPrice[]> {
+  if (!isDatabaseConfigured()) {
+    return sampleCards
+      .filter((c) => c.type === "LEGEND" && !c.signature && !c.altArt)
+      .map(demoCardToDto)
+      .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+  }
+
+  const cards = await prisma.card.findMany({
+    where: { type: "LEGEND" as never },
+    include: {
+      extension: true,
+      prices: { orderBy: { fetchedAt: "desc" }, take: 1 },
+    },
+    orderBy: { nameEn: "asc" },
+  });
+
+  const seen = new Set<string>();
+  const out: CardWithPrice[] = [];
+  for (const c of cards) {
+    const base = baseCardName(c.nameEn);
+    if (seen.has(base)) continue;
+    seen.add(base);
+    out.push({
+      id: c.id,
+      collectorNum: c.collectorNum,
+      nameFr: c.nameFr,
+      nameEn: c.nameEn,
+      descriptionFr: c.descriptionFr,
+      descriptionEn: c.descriptionEn,
+      type: c.type,
+      rarity: c.rarity,
+      cost: c.cost,
+      attack: c.attack,
+      health: c.health,
+      imageUrl: c.imageUrl,
+      domain: [],
+      artist: "",
+      tags: [],
+      extension: {
+        code: c.extension.code,
+        nameFr: c.extension.nameFr,
+        nameEn: c.extension.nameEn,
+      },
+      latestPrice: c.prices[0]
+        ? {
+            priceEur: Number(c.prices[0].priceEur),
+            priceUsd: Number(c.prices[0].priceUsd),
+            priceGbp: Number(c.prices[0].priceGbp),
+            fetchedAt: c.prices[0].fetchedAt.toISOString(),
+          }
+        : null,
+    });
+  }
+  return out;
 }
 
 export async function getCards(

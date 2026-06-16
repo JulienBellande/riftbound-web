@@ -8,6 +8,8 @@ export interface CardFilters {
   type?: string;
   rarity?: string;
   domain?: string;
+  /** Legal-domain set (a card matches when all its domains are in this set). */
+  domains?: string[];
   costMin?: number;
   costMax?: number;
   sortBy?: "name" | "cost" | "rarity" | "price" | "date";

@@ -8,6 +8,7 @@ const querySchema = z.object({
   type: z.string().optional(),
   rarity: z.string().optional(),
   domain: z.string().optional(),
+  domains: z.string().optional(),
   costMin: z.coerce.number().int().min(0).optional(),
   costMax: z.coerce.number().int().min(0).optional(),
   sort: z.enum(["name", "cost", "rarity", "price", "date"]).default("name"),
@@ -34,6 +35,9 @@ export async function GET(request: NextRequest) {
     type: q.type,
     rarity: q.rarity,
     domain: q.domain,
+    domains: q.domains
+      ? q.domains.split(",").map((d) => d.trim()).filter(Boolean)
+      : undefined,
     costMin: q.costMin,
     costMax: q.costMax,
     sortBy: q.sort,
