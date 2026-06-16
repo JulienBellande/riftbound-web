@@ -7,17 +7,8 @@
     "cards": "Cartes",
     "decks": "Decks",
     "deckBuilder": "Créer un deck",
-    "prices": "Prix",
-    "shop": "Boutique",
     "blog": "Blog",
-    "forum": "Forum",
-    "login": "Connexion",
-    "register": "Inscription",
-    "profile": "Mon profil",
-    "myDecks": "Mes decks",
-    "orders": "Commandes",
-    "logout": "Déconnexion",
-    "demoAccount": "Compte démo"
+    "forum": "Forum"
   },
   "home": {
     "hero": {
@@ -51,11 +42,6 @@
     "latestNews": {
       "title": "Dernières actualités",
       "viewAll": "Voir toutes les news"
-    },
-    "priceAlerts": {
-      "title": "Mouvements de prix",
-      "rising": "En hausse",
-      "falling": "En baisse"
     }
   },
   "cards": {
@@ -139,32 +125,6 @@
     "saveError": "Échec de la publication. Réessayez.",
     "exportError": "Impossible de copier. Réessayez."
   },
-  "prices": {
-    "title": "Cotes des cartes Riftbound",
-    "lastUpdate": "Dernière mise à jour : {date}",
-    "currency": "Devise",
-    "trend7d": "7 jours"
-  },
-  "shop": {
-    "title": "Boutique RiftForge",
-    "addToCart": "Ajouter au panier",
-    "cart": "Panier",
-    "checkout": "Commander",
-    "emptyCart": "Votre panier est vide.",
-    "clearCart": "Vider le panier",
-    "checkoutDemoNotice": "Paiement non configuré (mode démo). Connectez Stripe pour activer la commande.",
-    "checkoutError": "Impossible de lancer le paiement. Réessayez.",
-    "outOfStock": "Rupture de stock",
-    "categories": {
-      "all": "Tout",
-      "playmat": "Tapis de jeu",
-      "sleeves": "Protège-cartes",
-      "deckbox": "Deck Box",
-      "figurine": "Figurines",
-      "clothing": "Vêtements",
-      "accessory": "Accessoires"
-    }
-  },
   "blog": {
     "title": "Actualités & Guides",
     "categories": {
@@ -187,16 +147,11 @@
     "newTopic": "Nouveau sujet",
     "topics": "sujets",
     "replies": "réponses",
-    "views": "vues",
-    "lastActivity": "Dernière activité",
     "by": "par",
-    "pickCategory": "Choisissez une catégorie pour parcourir les discussions.",
-    "noTopics": "Aucun sujet pour l'instant. Lancez la discussion !",
     "titlePlaceholder": "Titre du sujet",
     "contentPlaceholder": "Écrivez votre message...",
     "postTopic": "Publier le sujet",
     "cancel": "Annuler",
-    "loginRequired": "Connectez-vous pour participer.",
     "postError": "Échec de la publication. Réessayez.",
     "yourReply": "Votre réponse",
     "replyPlaceholder": "Écrivez votre réponse...",
@@ -210,29 +165,6 @@
     "empty": "Aucun commentaire pour l'instant. Soyez le premier !",
     "anonNotice": "Commentaire anonyme — un pseudo de carte aléatoire sera affiché.",
     "error": "Échec de l'envoi. Réessayez."
-  },
-  "account": {
-    "demoAccount": "Compte démo",
-    "memberAccount": "Membre",
-    "noDecks": "Vous n'avez pas encore de deck.",
-    "createFirstDeck": "Créer mon premier deck",
-    "noOrders": "Vous n'avez pas encore de commande.",
-    "browseShop": "Parcourir la boutique",
-    "orderTotal": "Total"
-  },
-  "auth": {
-    "login": "Connexion",
-    "register": "Inscription",
-    "email": "Adresse email",
-    "password": "Mot de passe",
-    "username": "Nom d'utilisateur",
-    "forgotPassword": "Mot de passe oublié ?",
-    "orContinueWith": "Ou continuer avec",
-    "noAccount": "Pas encore de compte ?",
-    "hasAccount": "Déjà un compte ?",
-    "demoNotice": "Authentification non configurée (mode démo). Connectez Supabase pour activer les comptes.",
-    "genericError": "Échec de l'authentification. Vérifiez vos identifiants.",
-    "checkEmail": "Vérifiez votre boîte mail pour confirmer votre compte."
   },
   "common": {
     "loading": "Chargement...",

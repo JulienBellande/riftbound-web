@@ -7,17 +7,8 @@
     "cards": "Cards",
     "decks": "Decks",
     "deckBuilder": "Build a deck",
-    "prices": "Prices",
-    "shop": "Shop",
     "blog": "Blog",
-    "forum": "Forum",
-    "login": "Log in",
-    "register": "Sign up",
-    "profile": "My profile",
-    "myDecks": "My decks",
-    "orders": "Orders",
-    "logout": "Log out",
-    "demoAccount": "Demo account"
+    "forum": "Forum"
   },
   "home": {
     "hero": {
@@ -51,11 +42,6 @@
     "latestNews": {
       "title": "Latest news",
       "viewAll": "View all news"
-    },
-    "priceAlerts": {
-      "title": "Price movements",
-      "rising": "Rising",
-      "falling": "Falling"
     }
   },
   "cards": {
@@ -139,32 +125,6 @@
     "saveError": "Publishing failed. Please try again.",
     "exportError": "Couldn't copy. Please try again."
   },
-  "prices": {
-    "title": "Riftbound Card Prices",
-    "lastUpdate": "Last update: {date}",
-    "currency": "Currency",
-    "trend7d": "7 days"
-  },
-  "shop": {
-    "title": "RiftForge Shop",
-    "addToCart": "Add to cart",
-    "cart": "Cart",
-    "checkout": "Checkout",
-    "emptyCart": "Your cart is empty.",
-    "clearCart": "Clear cart",
-    "checkoutDemoNotice": "Payments are not configured (demo mode). Connect Stripe to enable checkout.",
-    "checkoutError": "Could not start checkout. Please try again.",
-    "outOfStock": "Out of stock",
-    "categories": {
-      "all": "All",
-      "playmat": "Playmats",
-      "sleeves": "Sleeves",
-      "deckbox": "Deck Boxes",
-      "figurine": "Figurines",
-      "clothing": "Clothing",
-      "accessory": "Accessories"
-    }
-  },
   "blog": {
     "title": "News & Guides",
     "categories": {
@@ -187,16 +147,11 @@
     "newTopic": "New topic",
     "topics": "topics",
     "replies": "replies",
-    "views": "views",
-    "lastActivity": "Last activity",
     "by": "by",
-    "pickCategory": "Pick a category to browse the discussions.",
-    "noTopics": "No topics yet. Start the conversation!",
     "titlePlaceholder": "Topic title",
     "contentPlaceholder": "Write your message...",
     "postTopic": "Post topic",
     "cancel": "Cancel",
-    "loginRequired": "Log in to take part.",
     "postError": "Posting failed. Please try again.",
     "yourReply": "Your reply",
     "replyPlaceholder": "Write your reply...",
@@ -210,29 +165,6 @@
     "empty": "No comments yet. Be the first!",
     "anonNotice": "Anonymous comment — a random card pseudonym will be shown.",
     "error": "Submission failed. Please try again."
-  },
-  "account": {
-    "demoAccount": "Demo account",
-    "memberAccount": "Member",
-    "noDecks": "You don't have any decks yet.",
-    "createFirstDeck": "Create my first deck",
-    "noOrders": "You don't have any orders yet.",
-    "browseShop": "Browse the shop",
-    "orderTotal": "Total"
-  },
-  "auth": {
-    "login": "Log in",
-    "register": "Sign up",
-    "email": "Email address",
-    "password": "Password",
-    "username": "Username",
-    "forgotPassword": "Forgot password?",
-    "orContinueWith": "Or continue with",
-    "noAccount": "Don't have an account?",
-    "hasAccount": "Already have an account?",
-    "demoNotice": "Authentication is not configured (demo mode). Connect Supabase to enable accounts.",
-    "genericError": "Authentication failed. Check your credentials.",
-    "checkEmail": "Check your inbox to confirm your account."
   },
   "common": {
     "loading": "Loading...",
