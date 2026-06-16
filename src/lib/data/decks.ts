@@ -6,7 +6,7 @@ import {
   samplePricePoints,
 } from "./sample-data";
 import { demoRead, demoMutate } from "./demo-store";
-import { createAnonUser } from "@/lib/anon";
+import { createAnonUser, seedAlias } from "@/lib/anon";
 import type {
   CardWithPrice,
   DeckFilters,
@@ -23,12 +23,12 @@ interface DemoUser {
   avatarUrl: string | null;
 }
 
-const DEMO_USERS: DemoUser[] = [
-  { username: "ShadowMage", avatarUrl: null },
-  { username: "FlameKnight", avatarUrl: null },
-  { username: "RiftWalker42", avatarUrl: null },
-  { username: "TideQueen", avatarUrl: null },
-];
+// Sample decks are attributed to stable, anonymous card-name aliases rather
+// than fabricated gamer handles.
+const DEMO_USERS: DemoUser[] = [0, 1, 2, 3].map((i) => ({
+  username: seedAlias(i),
+  avatarUrl: null,
+}));
 
 function demoCardDto(slug: string): CardWithPrice | null {
   const card = sampleCards.find((c) => c.slug === slug);
@@ -82,7 +82,6 @@ interface DeckRecipe {
   name: string;
   description: string;
   domain: string;
-  score: number;
   user: DemoUser;
   ageDays: number;
 }
@@ -94,7 +93,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     description:
       "Fast aggressive Fury deck that floods the board with cheap units and closes early.",
     domain: "Fury",
-    score: 47,
     user: DEMO_USERS[0],
     ageDays: 2,
   },
@@ -104,7 +102,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     description:
       "Patient Calm control shell that stabilises and grinds out the late game.",
     domain: "Calm",
-    score: 38,
     user: DEMO_USERS[1],
     ageDays: 4,
   },
@@ -113,7 +110,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     name: "Mind Tempo",
     description: "Mind-based tempo deck leveraging card selection and value units.",
     domain: "Mind",
-    score: 31,
     user: DEMO_USERS[2],
     ageDays: 1,
   },
@@ -122,7 +118,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     name: "Body Midrange",
     description: "Balanced Body midrange built around resilient threats.",
     domain: "Body",
-    score: 24,
     user: DEMO_USERS[3],
     ageDays: 6,
   },
@@ -131,7 +126,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     name: "Order Ramp",
     description: "Order ramp into powerful top-end finishers to lock the board.",
     domain: "Order",
-    score: 19,
     user: DEMO_USERS[0],
     ageDays: 3,
   },
@@ -140,7 +134,6 @@ const DECK_RECIPES: DeckRecipe[] = [
     name: "Chaos Burn",
     description: "Aggressive Chaos burn that empties the hand and goes face.",
     domain: "Chaos",
-    score: 12,
     user: DEMO_USERS[2],
     ageDays: 5,
   },
@@ -168,7 +161,7 @@ const DEMO_DECKS: DemoDeckDef[] = DECK_RECIPES.map((r) => {
     name: r.name,
     description: r.description,
     format: "standard",
-    score: r.score,
+    score: 0,
     user: r.user,
     createdAt: new Date(Date.now() - r.ageDays * 86400000).toISOString(),
     cardSlugs: pool.map((c, i) => ({ slug: c.slug, qty: QUANTITIES[i] })),
@@ -190,7 +183,7 @@ function buildDemoDecks(): DeckWithDetails[] {
         return card ? { quantity: cs.qty, card } : null;
       })
       .filter((c): c is { quantity: number; card: CardWithPrice } => c !== null),
-    _count: { comments: (d.score * 7) % 13 },
+    _count: { comments: 0 },
   }));
 }
 

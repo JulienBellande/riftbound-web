@@ -35,6 +35,13 @@ export function randomCardAlias(): string {
   return `${name} #${tag}`;
 }
 
+/** A stable card-name alias for a given index — used to attribute seed/sample
+ *  content without inventing fake gamer handles. */
+export function seedAlias(index: number): string {
+  if (ALIAS_NAMES.length === 0) return "Invocateur";
+  return ALIAS_NAMES[index % ALIAS_NAMES.length];
+}
+
 const VOTER_COOKIE = "rb_voter";
 const ONE_YEAR = 60 * 60 * 24 * 365;
 

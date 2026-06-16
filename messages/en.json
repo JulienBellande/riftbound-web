@@ -120,18 +120,24 @@
   },
   "deckBuilder": {
     "title": "Deck Builder",
-    "subtitle": "Tap the + on any card to add it to your deck.",
+    "subtitle": "Click a card's + (or drag it) to add it to your deck.",
     "deckName": "Deck name",
     "format": "Format",
-    "cardSearch": "Search for a card to add...",
     "deckList": "Deck list",
-    "totalCards": "Total: {count} cards",
-    "save": "Save",
-    "publish": "Publish",
-    "clear": "Clear",
-    "dragHint": "Drag cards here to add them",
-    "loginRequired": "Log in to save a deck.",
-    "saveError": "Save failed. Please try again."
+    "totalCards": "{count} cards total",
+    "statCards": "Cards",
+    "statAvgCost": "Avg cost",
+    "statPrice": "Value",
+    "publish": "Publish deck",
+    "publishHint": "Visible to everyone in the community decks, under an anonymous alias.",
+    "copyList": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "clear": "Clear deck",
+    "dragHint": "Drag cards here, or click a card's +.",
+    "nameRequired": "Give your deck a name before publishing.",
+    "saveError": "Publishing failed. Please try again.",
+    "exportError": "Couldn't copy. Please try again."
   },
   "prices": {
     "title": "Riftbound Card Prices",
@@ -202,7 +208,7 @@
     "placeholder": "Add a comment...",
     "submit": "Comment",
     "empty": "No comments yet. Be the first!",
-    "loginRequired": "Log in to comment.",
+    "anonNotice": "Anonymous comment — a random card pseudonym will be shown.",
     "error": "Submission failed. Please try again."
   },
   "account": {

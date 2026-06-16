@@ -22,10 +22,6 @@ export function CommentForm({ deckId }: { deckId: string }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ deckId, content }),
         });
-        if (res.status === 401) {
-          setNotice(t("loginRequired"));
-          return;
-        }
         if (!res.ok) {
           setNotice(t("error"));
           return;
@@ -49,6 +45,7 @@ export function CommentForm({ deckId }: { deckId: string }) {
         className="w-full resize-y rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
       />
       {notice && <p className="mt-2 text-xs text-amber-400">{notice}</p>}
+      <p className="mt-2 text-[11px] text-zinc-500">{t("anonNotice")}</p>
       <div className="mt-2 flex justify-end">
         <button
           type="submit"
