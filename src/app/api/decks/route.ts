@@ -45,7 +45,7 @@ const createSchema = z.object({
     .array(
       z.object({
         cardId: z.string().min(1),
-        quantity: z.number().int().min(1).max(4),
+        quantity: z.number().int().min(1).max(3),
       })
     )
     .min(1)

@@ -139,7 +139,7 @@ const DECK_RECIPES: DeckRecipe[] = [
   },
 ];
 
-const QUANTITIES = [4, 4, 3, 3, 3, 2, 2, 2, 1, 1];
+const QUANTITIES = [3, 3, 3, 3, 3, 2, 2, 2, 1, 1];
 
 const DEMO_DECKS: DemoDeckDef[] = DECK_RECIPES.map((r) => {
   // Pick real, playable cards of the recipe's domain (no signature/alt-art

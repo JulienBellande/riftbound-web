@@ -15,7 +15,8 @@ interface DeckBuilderStore {
   loadDeck: (name: string, format: string, cards: DeckBuilderCard[]) => void;
 }
 
-const MAX_COPIES = 4;
+// Riftbound constructed rule: at most 3 copies of a given card.
+const MAX_COPIES = 3;
 const MAX_DECK_SIZE = 60;
 
 export const useDeckBuilderStore = create<DeckBuilderStore>()((set, get) => ({
