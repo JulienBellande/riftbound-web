@@ -95,7 +95,7 @@ function SectionHeader({
       <h2 className="text-base font-semibold text-zinc-100">{title}</h2>
       {linkHref && linkText && (
         <Link
-          href={linkHref as "/prices"}
+          href={linkHref as "/cards"}
           className="flex items-center gap-0.5 text-xs text-zinc-500 transition-colors hover:text-zinc-300"
         >
           {linkText}
@@ -140,6 +140,8 @@ export default async function HomePage({
     )
     .slice(0, 6);
 
+  const totalCards = extensions.reduce((sum, e) => sum + e.count, 0);
+
   return (
     <>
       {/* Hero */}
@@ -174,7 +176,12 @@ export default async function HomePage({
 
           <div className="mt-10 flex gap-8">
             {[
-              { value: "1 064", key: "cards" },
+              {
+                value: totalCards.toLocaleString(
+                  typedLocale === "fr" ? "fr-FR" : "en-GB"
+                ),
+                key: "cards",
+              },
               { value: String(extensions.length), key: "sets" },
               { value: "€", key: "prices" },
             ].map((s) => (
@@ -195,7 +202,7 @@ export default async function HomePage({
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <SectionHeader
           title={t("movers.risingTitle")}
-          linkHref="/prices"
+          linkHref="/cards"
           linkText={t("movers.viewAll")}
         />
         <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
@@ -220,7 +227,7 @@ export default async function HomePage({
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <SectionHeader
             title={t("movers.valuableTitle")}
-            linkHref="/prices"
+            linkHref="/cards"
             linkText={t("movers.viewAll")}
           />
           <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">

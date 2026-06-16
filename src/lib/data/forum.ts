@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
 import { demoRead, demoMutate } from "./demo-store";
-import type { CurrentUser } from "@/lib/auth";
+import { createAnonUser } from "@/lib/anon";
 import type { SupportedLocale, PaginatedResponse } from "@/types";
 
 export interface ForumCategoryWithCounts {
@@ -364,7 +364,7 @@ export async function getTopicById(
 export async function createTopic(
   categorySlug: string,
   input: { title: string; content: string },
-  user: CurrentUser
+  authorName: string
 ): Promise<{ id: string }> {
   const now = new Date().toISOString();
 
@@ -378,7 +378,7 @@ export async function createTopic(
         categorySlug,
         title: input.title,
         content: input.content,
-        user: { username: user.username, avatarUrl: user.avatarUrl },
+        user: { username: authorName, avatarUrl: null },
         replyCount: 0,
         viewCount: 0,
         isPinned: false,
@@ -397,10 +397,11 @@ export async function createTopic(
   });
   if (!category) throw new Error("unknown_category");
 
+  const userId = await createAnonUser(authorName);
   const topic = await prisma.forumTopic.create({
     data: {
       categoryId: category.id,
-      userId: user.id,
+      userId,
       title: input.title,
       content: input.content,
     },
@@ -411,7 +412,7 @@ export async function createTopic(
 export async function createReply(
   topicId: string,
   content: string,
-  user: CurrentUser
+  authorName: string
 ): Promise<{ id: string }> {
   if (!isDatabaseConfigured()) {
     const id = `user-reply-${Date.now()}-${Math.random()
@@ -432,7 +433,7 @@ export async function createReply(
             {
               id,
               content,
-              user: { username: user.username, avatarUrl: user.avatarUrl },
+              user: { username: authorName, avatarUrl: null },
               createdAt,
             },
           ],
@@ -447,8 +448,9 @@ export async function createReply(
   if (!topic) throw new Error("topic_not_found");
   if (topic.isLocked) throw new Error("topic_locked");
 
+  const userId = await createAnonUser(authorName);
   const reply = await prisma.forumReply.create({
-    data: { topicId, userId: user.id, content },
+    data: { topicId, userId, content },
   });
   return { id: reply.id };
 }

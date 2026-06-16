@@ -26,16 +26,18 @@ export function Footer() {
               Navigation
             </h3>
             <ul className="mt-3 space-y-1.5">
-              {(["cards", "decks", "prices", "shop"] as const).map((k) => (
-                <li key={k}>
-                  <Link
-                    href={`/${k}` as "/cards"}
-                    className="text-sm text-zinc-500 transition-colors hover:text-zinc-200"
-                  >
-                    {tNav(k)}
-                  </Link>
-                </li>
-              ))}
+              {(["cards", "decks", "deckBuilder", "forum"] as const).map(
+                (k) => (
+                  <li key={k}>
+                    <Link
+                      href={`/${k === "deckBuilder" ? "deck-builder" : k}` as "/cards"}
+                      className="text-sm text-zinc-500 transition-colors hover:text-zinc-200"
+                    >
+                      {tNav(k)}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
 

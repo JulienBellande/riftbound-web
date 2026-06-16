@@ -6,7 +6,7 @@ import {
   samplePricePoints,
 } from "./sample-data";
 import { demoRead, demoMutate } from "./demo-store";
-import type { CurrentUser } from "@/lib/auth";
+import { createAnonUser } from "@/lib/anon";
 import type {
   CardWithPrice,
   DeckFilters,
@@ -516,7 +516,7 @@ export interface CreateDeckInput {
 
 export async function createDeck(
   input: CreateDeckInput,
-  user: CurrentUser
+  authorName: string
 ): Promise<{ id: string }> {
   if (!isDatabaseConfigured()) {
     const id = `user-deck-${Date.now()}-${Math.random()
@@ -530,7 +530,7 @@ export async function createDeck(
       isPublic: input.isPublic,
       score: 0,
       createdAt: new Date().toISOString(),
-      user: { username: user.username, avatarUrl: user.avatarUrl },
+      user: { username: authorName, avatarUrl: null },
       cards: input.cards
         .map((c) => {
           const card = demoCardDto(c.cardId);
@@ -545,9 +545,10 @@ export async function createDeck(
     return { id };
   }
 
+  const userId = await createAnonUser(authorName);
   const deck = await prisma.deck.create({
     data: {
-      userId: user.id,
+      userId,
       name: input.name,
       description: input.description,
       format: input.format,
@@ -561,76 +562,4 @@ export async function createDeck(
     },
   });
   return { id: deck.id };
-}
-
-export async function getDecksByUser(
-  userId: string
-): Promise<DeckWithDetails[]> {
-  if (!isDatabaseConfigured()) {
-    if (userId !== "demo-user") return [];
-    return readCreatedDecks().map(applyVoteDelta);
-  }
-
-  const decks = await prisma.deck.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-    include: {
-      user: { select: { username: true, avatarUrl: true } },
-      cards: {
-        include: {
-          card: {
-            include: {
-              extension: true,
-              prices: { orderBy: { fetchedAt: "desc" }, take: 1 },
-            },
-          },
-        },
-      },
-      _count: { select: { comments: true } },
-    },
-  });
-
-  return decks.map((d) => ({
-    id: d.id,
-    name: d.name,
-    description: d.description,
-    format: d.format,
-    score: d.score,
-    createdAt: d.createdAt.toISOString(),
-    user: { username: d.user.username, avatarUrl: d.user.avatarUrl },
-    cards: d.cards.map((dc) => ({
-      quantity: dc.quantity,
-      card: {
-        id: dc.card.id,
-        collectorNum: dc.card.collectorNum,
-        nameFr: dc.card.nameFr,
-        nameEn: dc.card.nameEn,
-        descriptionFr: dc.card.descriptionFr,
-        descriptionEn: dc.card.descriptionEn,
-        type: dc.card.type,
-        rarity: dc.card.rarity,
-        cost: dc.card.cost,
-        attack: dc.card.attack,
-        health: dc.card.health,
-        imageUrl: dc.card.imageUrl,
-          domain: [],
-          artist: "",
-          tags: [],
-        extension: {
-          code: dc.card.extension.code,
-          nameFr: dc.card.extension.nameFr,
-          nameEn: dc.card.extension.nameEn,
-        },
-        latestPrice: dc.card.prices[0]
-          ? {
-              priceEur: Number(dc.card.prices[0].priceEur),
-              priceUsd: Number(dc.card.prices[0].priceUsd),
-              priceGbp: Number(dc.card.prices[0].priceGbp),
-              fetchedAt: dc.card.prices[0].fetchedAt.toISOString(),
-            }
-          : null,
-      },
-    })),
-    _count: d._count,
-  }));
 }

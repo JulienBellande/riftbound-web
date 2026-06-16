@@ -49,6 +49,9 @@ export function QuickSearch() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  // Debounced search that syncs UI state to an external system (the cards
+  // API) — a legitimate effect; the synchronous resets below are intentional.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (query.trim().length < 2) {
       setResults([]);
@@ -68,6 +71,7 @@ export function QuickSearch() {
     }, 200);
     return () => clearTimeout(timeout);
   }, [query]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function go(id: string) {
     setOpen(false);

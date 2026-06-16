@@ -26,14 +26,6 @@ export const routing = defineRouting({
       fr: "/constructeur-de-deck",
       en: "/deck-builder",
     },
-    "/prices": {
-      fr: "/prix",
-      en: "/prices",
-    },
-    "/shop": {
-      fr: "/boutique",
-      en: "/shop",
-    },
     "/blog": {
       fr: "/blog",
       en: "/blog",
@@ -53,26 +45,6 @@ export const routing = defineRouting({
     "/forum/[category]/[topicId]": {
       fr: "/forum/[category]/[topicId]",
       en: "/forum/[category]/[topicId]",
-    },
-    "/profile": {
-      fr: "/profil",
-      en: "/profile",
-    },
-    "/my-decks": {
-      fr: "/mes-decks",
-      en: "/my-decks",
-    },
-    "/orders": {
-      fr: "/commandes",
-      en: "/orders",
-    },
-    "/login": {
-      fr: "/connexion",
-      en: "/login",
-    },
-    "/register": {
-      fr: "/inscription",
-      en: "/register",
     },
   },
 });

@@ -25,13 +25,16 @@ export function CardsGrid({
   const [done, setDone] = useState(initialCards.length >= total);
   const sentinel = useRef<HTMLDivElement>(null);
 
+  // Reset the list when the active filters/search change. Uses the React
+  // "adjust state during render on prop change" pattern instead of an effect.
   const spKey = searchParams.toString();
-  useEffect(() => {
+  const [prevKey, setPrevKey] = useState(spKey);
+  if (spKey !== prevKey) {
+    setPrevKey(spKey);
     setCards(initialCards);
     setPage(1);
     setDone(initialCards.length >= total);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spKey, initialCards, total]);
+  }
 
   const loadMore = useCallback(async () => {
     if (loading || done) return;

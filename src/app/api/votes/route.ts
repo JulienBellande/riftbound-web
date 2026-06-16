@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { isDatabaseConfigured } from "@/lib/db";
 import { castDemoVote, castVote } from "@/lib/data/decks";
-import { getCurrentUser } from "@/lib/auth";
+import { getAnonVoterId, ensureAnonVoter } from "@/lib/anon";
 
 const bodySchema = z.object({
   deckId: z.string(),
@@ -19,17 +19,12 @@ export async function POST(request: NextRequest) {
   }
 
   const { deckId, value } = parsed.data;
+  const voterId = await getAnonVoterId();
 
   if (!isDatabaseConfigured()) {
-    const result = castDemoVote(deckId, "demo-user", value);
-    return NextResponse.json(result);
+    return NextResponse.json(castDemoVote(deckId, voterId, value));
   }
 
-  const user = await getCurrentUser();
-  if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
-
-  const result = await castVote(deckId, user.id, value);
-  return NextResponse.json(result);
+  await ensureAnonVoter(voterId);
+  return NextResponse.json(await castVote(deckId, voterId, value));
 }

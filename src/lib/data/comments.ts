@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
 import { demoRead, demoMutate } from "./demo-store";
-import type { CurrentUser } from "@/lib/auth";
+import { createAnonUser } from "@/lib/anon";
 
 export interface DeckComment {
   id: string;
@@ -34,13 +34,13 @@ export async function getDeckComments(deckId: string): Promise<DeckComment[]> {
 export async function createDeckComment(
   deckId: string,
   content: string,
-  user: CurrentUser
+  authorName: string
 ): Promise<DeckComment> {
   if (!isDatabaseConfigured()) {
     const comment: DeckComment = {
       id: `demo-comment-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       content,
-      user: { username: user.username, avatarUrl: user.avatarUrl },
+      user: { username: authorName, avatarUrl: null },
       createdAt: new Date().toISOString(),
     };
     demoMutate<CommentMap>("comments", {}, (map) => {
@@ -50,8 +50,9 @@ export async function createDeckComment(
     return comment;
   }
 
+  const userId = await createAnonUser(authorName);
   const c = await prisma.comment.create({
-    data: { parentType: "DECK", deckId, userId: user.id, content },
+    data: { parentType: "DECK", deckId, userId, content },
     include: { user: { select: { username: true, avatarUrl: true } } },
   });
 

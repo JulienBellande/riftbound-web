@@ -4,27 +4,19 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils/cn";
 import { LocaleSwitcher } from "./locale-switcher";
-import { UserMenu } from "./user-menu";
 import { QuickSearch } from "./quick-search";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-
-interface HeaderUser {
-  username: string;
-  isDemo: boolean;
-}
 
 const navItems = [
   { href: "/cards" as const, labelKey: "cards" },
   { href: "/decks" as const, labelKey: "decks" },
   { href: "/deck-builder" as const, labelKey: "deckBuilder" },
-  { href: "/prices" as const, labelKey: "prices" },
-  { href: "/shop" as const, labelKey: "shop" },
   { href: "/blog" as const, labelKey: "blog" },
   { href: "/forum" as const, labelKey: "forum" },
 ] as const;
 
-export function Header({ user }: { user: HeaderUser | null }) {
+export function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -57,16 +49,6 @@ export function Header({ user }: { user: HeaderUser | null }) {
         <div className="flex items-center gap-2">
           <QuickSearch />
           <LocaleSwitcher />
-          {user ? (
-            <UserMenu username={user.username} isDemo={user.isDemo} />
-          ) : (
-            <Link
-              href="/login"
-              className="hidden rounded-md bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-900 transition-colors hover:bg-white sm:block"
-            >
-              {t("login")}
-            </Link>
-          )}
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -97,15 +79,6 @@ export function Header({ user }: { user: HeaderUser | null }) {
                 {t(item.labelKey)}
               </Link>
             ))}
-            {!user && (
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="mt-1 rounded-md bg-zinc-100 px-3 py-2 text-center text-sm font-semibold text-zinc-900"
-              >
-                {t("login")}
-              </Link>
-            )}
           </div>
         </nav>
       )}

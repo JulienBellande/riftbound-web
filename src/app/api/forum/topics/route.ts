@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createTopic } from "@/lib/data/forum";
-import { getCurrentUser } from "@/lib/auth";
+import { randomCardAlias } from "@/lib/anon";
 
 const bodySchema = z.object({
   categorySlug: z.string().min(1),
@@ -10,11 +10,6 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const user = await getCurrentUser();
-  if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
-
   let parsed;
   try {
     parsed = bodySchema.parse(await request.json());
@@ -26,7 +21,7 @@ export async function POST(request: NextRequest) {
     const result = await createTopic(
       parsed.categorySlug,
       { title: parsed.title, content: parsed.content },
-      user
+      randomCardAlias()
     );
     return NextResponse.json(result, { status: 201 });
   } catch {
