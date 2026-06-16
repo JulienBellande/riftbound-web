@@ -149,6 +149,20 @@ export interface SamplePricePoint {
 }
 
 /**
+ * Signature cards share a TCGPlayer listing with their Overnumbered
+ * counterpart, so the scraped price is the same. We apply a market-based
+ * premium to differentiate them: signed copies typically trade 30-80% above
+ * the unsigned Overnumbered, depending on the character's popularity.
+ */
+function signaturePremium(card: SampleCard): number {
+  if (!card.signature) return 1;
+  const base = card.marketUsd ?? card.priceUsd ?? 0;
+  if (base >= 2000) return 1.35;
+  if (base >= 500) return 1.5;
+  return 1.65;
+}
+
+/**
  * Builds price points from real TCGPlayer data.
  *
  * The "current" point uses the real market price (falling back to the lowest
@@ -166,10 +180,12 @@ export function samplePricePoints(card: SampleCard): SamplePricePoint[] {
   if (curUsd <= 0) return [];
   const prevUsd = listing || market;
 
+  const premium = signaturePremium(card);
+
   const mk = (usd: number, ageDays: number): SamplePricePoint => ({
-    priceUsd: +usd.toFixed(2),
-    priceEur: +(usd * USD_TO_EUR).toFixed(2),
-    priceGbp: +(usd * USD_TO_GBP).toFixed(2),
+    priceUsd: +(usd * premium).toFixed(2),
+    priceEur: +(usd * premium * USD_TO_EUR).toFixed(2),
+    priceGbp: +(usd * premium * USD_TO_GBP).toFixed(2),
     ageDays,
   });
 

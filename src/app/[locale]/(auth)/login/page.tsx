@@ -1,7 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { AuthForm } from "@/components/auth/auth-form";
-import { Flame } from "lucide-react";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -24,21 +23,19 @@ export default async function LoginPage({
   const t = await getTranslations({ locale, namespace: "auth" });
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,_rgba(99,102,241,0.1),transparent)]" />
-      <div className="relative w-full max-w-sm">
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="w-full max-w-sm">
         <Link
           href="/"
-          className="mb-6 flex items-center justify-center gap-2"
+          className="mb-6 flex items-center justify-center"
         >
-          <Flame size={22} className="text-amber-500" />
-          <span className="text-xl font-extrabold tracking-tight">
+          <span className="text-lg font-bold tracking-tight">
             <span className="text-zinc-100">RIFT</span>
             <span className="text-amber-500">FORGE</span>
           </span>
         </Link>
 
-        <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-6 backdrop-blur-sm">
+        <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-6">
           <h1 className="text-xl font-black text-zinc-100">{t("login")}</h1>
 
           <AuthForm mode="login" />
@@ -47,7 +44,7 @@ export default async function LoginPage({
             {t("noAccount")}{" "}
             <Link
               href="/register"
-              className="font-semibold text-indigo-400 hover:text-indigo-300"
+              className="font-semibold text-zinc-200 hover:text-white"
             >
               {t("register")}
             </Link>

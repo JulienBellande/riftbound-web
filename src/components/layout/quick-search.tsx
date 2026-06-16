@@ -95,21 +95,21 @@ export function QuickSearch() {
           setOpen(true);
           setTimeout(() => inputRef.current?.focus(), 20);
         }}
-        className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 py-1 pl-2 pr-2.5 text-sm text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
+        className="flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-1 text-xs text-zinc-500 transition-colors hover:border-zinc-700 hover:text-zinc-400"
         aria-label="Search cards"
       >
-        <Search size={13} />
-        <span className="hidden text-xs md:inline">{t("search")}</span>
+        <Search size={12} />
+        <span className="hidden md:inline">{t("search")}</span>
         <kbd className="hidden rounded border border-zinc-700 px-1 text-[9px] text-zinc-600 lg:inline">
           /
         </kbd>
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-1.5 w-[88vw] max-w-md rounded-xl border border-zinc-700/50 bg-zinc-950/95 p-1.5 shadow-2xl shadow-black/50 backdrop-blur-xl">
+        <div className="absolute right-0 top-full z-50 mt-1 w-[88vw] max-w-sm rounded-lg border border-zinc-800 bg-zinc-950 p-1.5 shadow-xl">
           <div className="relative">
             <Search
-              size={14}
+              size={13}
               className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500"
             />
             <input
@@ -118,22 +118,22 @@ export function QuickSearch() {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={onKeyDown}
               placeholder={t("search")}
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-900/80 py-2 pl-8 pr-8 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-md border border-zinc-800 bg-zinc-900 py-1.5 pl-8 pr-7 text-sm text-zinc-100 placeholder-zinc-600 focus:border-zinc-600 focus:outline-none"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-zinc-400"
               >
-                <X size={13} />
+                <X size={12} />
               </button>
             )}
           </div>
 
           <div className="mt-1 max-h-[60vh] overflow-y-auto">
             {loading && (
-              <div className="flex justify-center py-5">
-                <Loader2 size={18} className="animate-spin text-zinc-500" />
+              <div className="flex justify-center py-4">
+                <Loader2 size={16} className="animate-spin text-zinc-600" />
               </div>
             )}
             {!loading &&
@@ -142,39 +142,39 @@ export function QuickSearch() {
                   key={card.id}
                   onClick={() => go(card.id)}
                   onMouseEnter={() => setSelected(i)}
-                  className={`flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors ${
-                    selected === i ? "bg-indigo-500/10" : "hover:bg-zinc-800/50"
+                  className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors ${
+                    selected === i ? "bg-zinc-800" : "hover:bg-zinc-900"
                   }`}
                 >
                   {card.imageUrl ? (
                     <Image
                       src={card.imageUrl}
                       alt=""
-                      width={28}
-                      height={39}
+                      width={24}
+                      height={34}
                       quality={50}
-                      className="shrink-0 rounded ring-1 ring-zinc-800"
+                      className="shrink-0 rounded"
                     />
                   ) : (
-                    <span className="h-[39px] w-7 shrink-0 rounded bg-zinc-800" />
+                    <span className="h-[34px] w-6 shrink-0 rounded bg-zinc-800" />
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-zinc-100">
+                    <p className="truncate text-xs font-medium text-zinc-200">
                       {localizedName(card, locale)}
                     </p>
-                    <p className="text-[10px] text-zinc-500">
+                    <p className="text-[10px] text-zinc-600">
                       {card.extension.code} · {t(`rarities.${card.rarity}`)}
                     </p>
                   </div>
                   {card.latestPrice && (
-                    <span className="shrink-0 text-xs font-bold text-emerald-400">
+                    <span className="shrink-0 text-[10px] font-semibold text-emerald-400">
                       {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
                     </span>
                   )}
                 </button>
               ))}
             {!loading && query.trim().length >= 2 && results.length === 0 && (
-              <p className="py-5 text-center text-xs text-zinc-500">
+              <p className="py-4 text-center text-xs text-zinc-600">
                 {t("noResults")}
               </p>
             )}

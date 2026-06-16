@@ -5,7 +5,7 @@ import { VoteButton } from "@/components/decks/vote-button";
 import { ManaCurve } from "@/components/decks/mana-curve";
 import { Pagination } from "@/components/ui/pagination";
 import { DecksToolbar } from "@/components/decks/decks-toolbar";
-import { MessageSquare, Plus } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import type { DeckFilters, SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -53,14 +53,13 @@ export default async function DecksPage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+        <h1 className="text-xl font-bold text-zinc-100 sm:text-2xl">
           {t("title")}
         </h1>
         <Link
           href="/deck-builder"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-indigo-600/25 hover:brightness-110"
+          className="rounded-md bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-900 transition-colors hover:bg-white"
         >
-          <Plus size={15} />
           {t("create")}
         </Link>
       </div>
@@ -78,7 +77,7 @@ export default async function DecksPage({
           {result.data.map((deck) => (
             <div
               key={deck.id}
-              className="flex gap-3 rounded-xl border border-zinc-800/50 bg-zinc-900/30 p-3 transition-all hover:border-zinc-700 hover:bg-zinc-900/50 sm:gap-4 sm:p-4"
+              className="flex gap-3 rounded-lg border border-zinc-800 bg-zinc-900 p-3 transition-colors hover:border-zinc-700 sm:gap-4 sm:p-4"
             >
               <div className="flex shrink-0 flex-col items-center justify-center">
                 <VoteButton deckId={deck.id} initialScore={deck.score} />
@@ -95,7 +94,7 @@ export default async function DecksPage({
                       pathname: "/decks/[id]",
                       params: { id: deck.id },
                     }}
-                    className="text-sm font-bold text-zinc-100 transition-colors hover:text-indigo-400 sm:text-base"
+                    className="text-sm font-bold text-zinc-100 transition-colors hover:text-zinc-50 sm:text-base"
                   >
                     {deck.name}
                   </Link>

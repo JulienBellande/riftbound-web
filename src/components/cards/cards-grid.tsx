@@ -88,7 +88,7 @@ export function CardsGrid({
       <div ref={sentinel} className="h-10" />
       {loading && (
         <div className="flex items-center justify-center gap-2 py-8">
-          <Loader2 className="animate-spin text-indigo-400" size={20} />
+          <Loader2 className="animate-spin text-zinc-500" size={20} />
           <span className="text-sm text-zinc-500">Loading...</span>
         </div>
       )}

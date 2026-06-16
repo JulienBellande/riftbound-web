@@ -54,7 +54,7 @@ export default async function BlogPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+      <h1 className="text-xl font-bold text-zinc-100 sm:text-2xl">
         {t("title")}
       </h1>
 
@@ -69,8 +69,8 @@ export default async function BlogPage({
             className={cn(
               "rounded-full border px-3.5 py-1 text-xs font-semibold transition-all",
               (cat === "all" && !category) || cat === category
-                ? "border-indigo-500/40 bg-indigo-500/10 text-indigo-400"
-                : "border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-zinc-200"
+                ? "border-zinc-600 bg-zinc-800 text-zinc-100"
+                : "border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
             )}
           >
             {t(`categories.${CATEGORY_LABEL_MAP[cat]}`)}
@@ -82,16 +82,16 @@ export default async function BlogPage({
         {result.data.map((post) => (
           <article
             key={post.id}
-            className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/30 transition-all hover:border-zinc-700"
+            className="group flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition-colors hover:border-zinc-700"
           >
-            <div className="aspect-video bg-gradient-to-br from-zinc-800/50 via-zinc-850/30 to-zinc-900/50" />
+            <div className="aspect-video bg-zinc-800" />
             <div className="flex flex-1 flex-col p-4">
               <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500">
                 {t(
                   `categories.${CATEGORY_LABEL_MAP[post.category] ?? "news"}`
                 )}
               </span>
-              <h2 className="mt-1.5 text-sm font-bold text-zinc-100 transition-colors group-hover:text-indigo-400">
+              <h2 className="mt-1.5 text-sm font-bold text-zinc-100 transition-colors group-hover:text-zinc-50">
                 <Link
                   href={{
                     pathname: "/blog/[slug]",

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils/cn";
 import { LocaleSwitcher } from "./locale-switcher";
 import { UserMenu } from "./user-menu";
 import { QuickSearch } from "./quick-search";
-import { Menu, X, Flame } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 interface HeaderUser {
@@ -30,28 +30,23 @@ export function Header({ user }: { user: HeaderUser | null }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5">
-          <Flame size={18} className="text-amber-500" />
-          <span className="text-base font-extrabold tracking-tight">
-            <span className="text-zinc-100">RIFT</span>
-            <span className="text-amber-500">FORGE</span>
-          </span>
+        <Link href="/" className="text-sm font-bold tracking-tight">
+          <span className="text-zinc-100">RIFT</span>
+          <span className="text-amber-500">FORGE</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-md px-2.5 py-1 text-[13px] font-medium transition-colors",
+                "rounded px-2.5 py-1 text-xs font-medium transition-colors",
                 pathname === item.href || pathname.startsWith(item.href + "/")
-                  ? "bg-indigo-500/10 text-indigo-400"
-                  : "text-zinc-400 hover:text-zinc-100"
+                  ? "bg-zinc-800 text-zinc-100"
+                  : "text-zinc-500 hover:text-zinc-200"
               )}
             >
               {t(item.labelKey)}
@@ -59,8 +54,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
           ))}
         </nav>
 
-        {/* Right side */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <QuickSearch />
           <LocaleSwitcher />
           {user ? (
@@ -68,7 +62,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
           ) : (
             <Link
               href="/login"
-              className="hidden rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-3.5 py-1 text-[13px] font-semibold text-white transition-all hover:shadow-lg hover:shadow-indigo-600/25 hover:brightness-110 sm:block"
+              className="hidden rounded-md bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-900 transition-colors hover:bg-white sm:block"
             >
               {t("login")}
             </Link>
@@ -76,7 +70,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800/60 lg:hidden"
+            className="rounded p-1.5 text-zinc-500 hover:bg-zinc-800 lg:hidden"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -84,9 +78,8 @@ export function Header({ user }: { user: HeaderUser | null }) {
         </div>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="border-t border-zinc-800/50 px-4 py-2 lg:hidden">
+        <nav className="border-t border-zinc-800 px-4 py-2 lg:hidden">
           <div className="flex flex-col gap-0.5">
             {navItems.map((item) => (
               <Link
@@ -94,10 +87,11 @@ export function Header({ user }: { user: HeaderUser | null }) {
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                    ? "bg-indigo-500/10 text-indigo-400"
-                    : "text-zinc-400 hover:text-zinc-100"
+                  "rounded px-3 py-2 text-sm font-medium transition-colors",
+                  pathname === item.href ||
+                    pathname.startsWith(item.href + "/")
+                    ? "bg-zinc-800 text-zinc-100"
+                    : "text-zinc-500 hover:text-zinc-200"
                 )}
               >
                 {t(item.labelKey)}
@@ -107,7 +101,7 @@ export function Header({ user }: { user: HeaderUser | null }) {
               <Link
                 href="/login"
                 onClick={() => setMobileOpen(false)}
-                className="mt-1 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-3 py-2 text-center text-sm font-semibold text-white"
+                className="mt-1 rounded-md bg-zinc-100 px-3 py-2 text-center text-sm font-semibold text-zinc-900"
               >
                 {t("login")}
               </Link>

@@ -201,7 +201,7 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
         <button
           onClick={() => save(true)}
           disabled={totalCards === 0 || !store.name || isSaving}
-          className="flex-1 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-110 disabled:opacity-50"
+          className="flex-1 rounded-lg bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 transition-colors hover:bg-white disabled:opacity-50"
         >
           {t("publish")}
         </button>

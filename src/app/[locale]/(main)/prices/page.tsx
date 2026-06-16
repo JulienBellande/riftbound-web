@@ -67,7 +67,7 @@ export default async function PricesPage({
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+          <h1 className="text-xl font-bold text-zinc-100 sm:text-2xl">
             {t("title")}
           </h1>
           {lastUpdate && (
@@ -83,9 +83,9 @@ export default async function PricesPage({
         <PricesToolbar currency={currency} />
       </div>
 
-      <div className="mt-5 overflow-hidden rounded-xl border border-zinc-800/50">
+      <div className="mt-5 overflow-hidden rounded-lg border border-zinc-800">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-zinc-800/50 bg-zinc-900/40">
+          <thead className="border-b border-zinc-800 bg-zinc-900">
             <tr>
               <th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-500">
                 {tCards("sort.name")}
@@ -104,11 +104,11 @@ export default async function PricesPage({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/30">
+          <tbody className="divide-y divide-zinc-800">
             {result.data.map((row) => (
               <tr
                 key={row.id}
-                className="transition-colors hover:bg-zinc-900/30"
+                className="transition-colors hover:bg-zinc-900"
               >
                 <td className="px-3 py-2">
                   <Link
@@ -116,7 +116,7 @@ export default async function PricesPage({
                       pathname: "/cards/[id]",
                       params: { id: row.id },
                     }}
-                    className="flex items-center gap-2.5 font-medium text-zinc-200 transition-colors hover:text-indigo-400"
+                    className="flex items-center gap-2.5 font-medium text-zinc-200 transition-colors hover:text-zinc-100"
                   >
                     {row.imageUrl ? (
                       <Image

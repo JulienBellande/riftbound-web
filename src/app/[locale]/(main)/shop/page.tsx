@@ -5,7 +5,6 @@ import { AddToCartButton } from "@/components/shop/add-to-cart-button";
 import { CartButton } from "@/components/shop/cart-button";
 import { Pagination } from "@/components/ui/pagination";
 import { formatPrice } from "@/lib/utils/format";
-import { ShoppingBag } from "lucide-react";
 import type { SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -45,12 +44,9 @@ export default async function ShopPage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <ShoppingBag size={20} className="text-amber-500" />
-          <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
-            {t("title")}
-          </h1>
-        </div>
+        <h1 className="text-xl font-bold text-zinc-100 sm:text-2xl">
+          {t("title")}
+        </h1>
         <CartButton />
       </div>
 
@@ -62,9 +58,9 @@ export default async function ShopPage({
         {result.data.map((product) => (
           <div
             key={product.id}
-            className="group flex flex-col overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/30 transition-all hover:border-zinc-700 hover:bg-zinc-900/50"
+            className="group flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition-colors hover:border-zinc-700"
           >
-            <div className="aspect-square bg-gradient-to-br from-zinc-800/50 via-zinc-850/30 to-zinc-900/50" />
+            <div className="aspect-square bg-zinc-800" />
             <div className="flex flex-1 flex-col p-3.5">
               <h3 className="text-sm font-bold text-zinc-100">
                 {product.name}

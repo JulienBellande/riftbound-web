@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07070b;
+  --background: #09090b;
   --foreground: #fafafa;
 }
 
@@ -11,7 +11,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Brand tokens */
   --color-brand-50: #eef2ff;
   --color-brand-400: #818cf8;
   --color-brand-500: #6366f1;
@@ -28,38 +27,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-  background-image:
-    radial-gradient(60% 50% at 50% 0%, rgba(99, 102, 241, 0.08), transparent),
-    radial-gradient(40% 40% at 100% 10%, rgba(245, 158, 11, 0.05), transparent);
-  background-attachment: fixed;
-}
-
-/* ── Reusable utilities ───────────────────────────── */
-
-@utility glass {
-  background: rgba(24, 24, 27, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(63, 63, 70, 0.4);
-}
-
-@utility text-gradient-brand {
-  background: linear-gradient(
-    100deg,
-    #fbbf24 0%,
-    #f472b6 45%,
-    #818cf8 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@utility text-gradient-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Custom select chevron */
@@ -80,11 +47,11 @@ select {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #27272a;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #3f3f46;
 }
 
 /* ── Animations ───────────────────────────── */
@@ -92,7 +59,7 @@ select {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -100,71 +67,5 @@ select {
   }
 }
 .animate-fade-in {
-  animation: fadeInUp 0.4s ease both;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-/* Rare+ card shimmer on hover */
-.card-shimmer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.06) 45%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.06) 55%,
-    transparent 60%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.group:hover .card-shimmer::after {
-  opacity: 1;
-}
-
-/* Smooth number ticker */
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-count {
-  animation: countUp 0.5s ease both;
-}
-
-/* Section reveal */
-@keyframes sectionReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.animate-section {
-  animation: sectionReveal 0.6s ease both;
-}
-
-/* Focus ring utility */
-@utility focus-ring {
-  &:focus-visible {
-    outline: 2px solid rgba(99, 102, 241, 0.5);
-    outline-offset: 2px;
-  }
+  animation: fadeInUp 0.3s ease both;
 }

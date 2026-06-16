@@ -42,7 +42,7 @@ function DraggableCard({
           e.stopPropagation();
           onClickAdd(card);
         }}
-        className="absolute bottom-12 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg ring-2 ring-zinc-950/40 transition-all hover:scale-110 hover:bg-indigo-500 active:scale-95"
+        className="absolute bottom-12 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 text-zinc-900 shadow-lg transition-all hover:scale-110 hover:bg-white active:scale-95"
         aria-label="Add to deck"
       >
         <Plus size={18} strokeWidth={2.5} />

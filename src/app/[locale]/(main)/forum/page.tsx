@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { getForumCategories } from "@/lib/data/forum";
-import { MessageSquare, Eye, Clock, MessagesSquare } from "lucide-react";
+import { MessageSquare, Eye, Clock } from "lucide-react";
 import type { SupportedLocale } from "@/types";
 import type { Metadata } from "next";
 
@@ -43,12 +43,9 @@ export default async function ForumPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      <div className="flex items-center gap-2.5">
-        <MessagesSquare size={20} className="text-sky-400" />
-        <h1 className="text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
-          {t("title")}
-        </h1>
-      </div>
+      <h1 className="text-xl font-bold text-zinc-100 sm:text-2xl">
+        {t("title")}
+      </h1>
       <p className="mt-2 text-sm text-zinc-500">{t("pickCategory")}</p>
 
       <div className="mt-6 space-y-2.5">
@@ -59,7 +56,7 @@ export default async function ForumPage({
               pathname: "/forum/[category]",
               params: { category: cat.slug },
             }}
-            className="flex items-center justify-between rounded-xl border border-zinc-800/50 bg-zinc-900/30 p-4 transition-all hover:border-zinc-700 hover:bg-zinc-900/50 sm:p-5"
+            className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 p-4 transition-colors hover:border-zinc-700 sm:p-5"
           >
             <div className="flex-1">
               <h3 className="text-sm font-bold text-zinc-100 sm:text-base">

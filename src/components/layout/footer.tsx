@@ -1,24 +1,20 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { Flame } from "lucide-react";
 
 export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
 
   return (
-    <footer className="border-t border-zinc-800/50">
+    <footer className="border-t border-zinc-800">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <Flame size={18} className="text-amber-500" />
-              <span className="text-base font-extrabold tracking-tight">
-                <span className="text-zinc-100">RIFT</span>
-                <span className="text-amber-500">FORGE</span>
-              </span>
-            </div>
+            <span className="text-sm font-bold tracking-tight">
+              <span className="text-zinc-100">RIFT</span>
+              <span className="text-amber-500">FORGE</span>
+            </span>
             <p className="mt-3 text-xs leading-relaxed text-zinc-600">
               {t("copyright", { year: new Date().getFullYear() })}
             </p>
@@ -96,7 +92,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 border-t border-zinc-800/40 pt-5">
+        <div className="mt-8 border-t border-zinc-800 pt-5">
           <p className="text-[10px] leading-relaxed text-zinc-700">
             {t("disclaimer")}
           </p>

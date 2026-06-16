@@ -3,22 +3,13 @@ import { cn } from "@/lib/utils/cn";
 import { formatPrice, localizedName } from "@/lib/utils/format";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 
-const RARITY_RING: Record<string, string> = {
-  COMMON: "ring-zinc-700/50",
-  UNCOMMON: "ring-emerald-500/40",
-  RARE: "ring-sky-500/40",
-  EPIC: "ring-violet-500/50",
-  SHOWCASE: "ring-amber-400/60",
-  PROMO: "ring-fuchsia-500/50",
-};
-
-const RARITY_GLOW: Record<string, string> = {
-  COMMON: "",
-  UNCOMMON: "group-hover:shadow-emerald-500/15",
-  RARE: "group-hover:shadow-sky-500/20",
-  EPIC: "group-hover:shadow-violet-500/25",
-  SHOWCASE: "group-hover:shadow-amber-400/30",
-  PROMO: "group-hover:shadow-fuchsia-500/25",
+const RARITY_BORDER: Record<string, string> = {
+  COMMON: "border-zinc-800",
+  UNCOMMON: "border-emerald-800/60",
+  RARE: "border-sky-800/60",
+  EPIC: "border-violet-800/60",
+  SHOWCASE: "border-amber-700/60",
+  PROMO: "border-fuchsia-800/60",
 };
 
 const RARITY_DOT: Record<string, string> = {
@@ -26,11 +17,9 @@ const RARITY_DOT: Record<string, string> = {
   UNCOMMON: "bg-emerald-500",
   RARE: "bg-sky-500",
   EPIC: "bg-violet-500",
-  SHOWCASE: "bg-gradient-to-br from-amber-300 to-orange-500",
-  PROMO: "bg-gradient-to-br from-fuchsia-400 to-pink-600",
+  SHOWCASE: "bg-amber-400",
+  PROMO: "bg-fuchsia-500",
 };
-
-const HAS_SHIMMER = new Set(["RARE", "EPIC", "SHOWCASE", "PROMO"]);
 
 const DOMAIN_COLORS: Record<string, string> = {
   Fury: "bg-red-500",
@@ -53,41 +42,34 @@ export function CardFrame({
   showPrice?: boolean;
 }) {
   const name = localizedName(card, locale);
-  const shimmer = HAS_SHIMMER.has(card.rarity);
 
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl bg-zinc-900/60 ring-1 shadow-md transition-all duration-300",
-        "group-hover:-translate-y-1.5 group-hover:shadow-2xl",
-        RARITY_RING[card.rarity] ?? RARITY_RING.COMMON,
-        RARITY_GLOW[card.rarity] ?? "",
-        shimmer && "card-shimmer"
+        "overflow-hidden rounded-lg border bg-zinc-900 transition-all duration-200",
+        "group-hover:-translate-y-0.5 group-hover:border-zinc-600",
+        RARITY_BORDER[card.rarity] ?? "border-zinc-800"
       )}
     >
-      {/* Card image */}
-      <div className="relative aspect-[744/1039] w-full overflow-hidden bg-zinc-800/60">
+      <div className="relative aspect-[744/1039] w-full overflow-hidden">
         {card.imageUrl ? (
           <Image
             src={card.imageUrl}
             alt={name}
             fill
-            quality={90}
-            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 230px"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            quality={85}
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 200px"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl text-zinc-700">
-            ✦
+          <div className="flex h-full items-center justify-center bg-zinc-800 text-2xl text-zinc-700">
+            ?
           </div>
         )}
 
-        {/* Top gradient for badge legibility */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/50 to-transparent" />
-
         {/* Energy cost */}
         {card.cost > 0 && (
-          <div className="absolute left-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-md bg-zinc-950/80 text-[11px] font-bold text-amber-300 ring-1 ring-amber-400/30 backdrop-blur-sm">
+          <div className="absolute left-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded bg-black/70 text-[10px] font-bold text-amber-300 backdrop-blur-sm">
             {card.cost}
           </div>
         )}
@@ -95,29 +77,26 @@ export function CardFrame({
         {/* Rarity dot */}
         <div
           className={cn(
-            "absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full ring-2 ring-zinc-950/60",
-            RARITY_DOT[card.rarity] ?? RARITY_DOT.COMMON
+            "absolute right-1.5 top-1.5 h-2 w-2 rounded-full",
+            RARITY_DOT[card.rarity] ?? "bg-zinc-500"
           )}
         />
 
         {/* Might stat */}
         {card.attack !== null && (
-          <div className="absolute bottom-1.5 right-1.5 flex h-5 min-w-5 items-center justify-center rounded-md bg-zinc-950/80 px-1 text-[10px] font-bold text-orange-300 ring-1 ring-orange-400/30 backdrop-blur-sm">
+          <div className="absolute bottom-1.5 right-1.5 flex h-5 min-w-5 items-center justify-center rounded bg-black/70 px-1 text-[10px] font-bold text-orange-300 backdrop-blur-sm">
             {card.attack}
           </div>
         )}
-
-        {/* Bottom gradient for name overlay */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
-      {/* Info bar */}
-      <div className="flex items-center gap-1.5 px-2 py-1.5">
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[11px] font-semibold leading-tight text-zinc-100">
-            {name}
-          </p>
-          <div className="mt-0.5 flex items-center gap-1">
+      {/* Info */}
+      <div className="px-2 py-1.5">
+        <p className="truncate text-[11px] font-medium text-zinc-100">
+          {name}
+        </p>
+        <div className="mt-0.5 flex items-center justify-between">
+          <div className="flex items-center gap-1">
             {card.domain?.slice(0, 3).map((d) => (
               <span
                 key={d}
@@ -127,16 +106,16 @@ export function CardFrame({
                 )}
               />
             ))}
-            <span className="truncate text-[9px] uppercase tracking-wider text-zinc-500">
+            <span className="text-[9px] uppercase tracking-wider text-zinc-600">
               {card.extension.code}
             </span>
           </div>
+          {showPrice && card.latestPrice && (
+            <span className="text-[10px] font-semibold text-emerald-400">
+              {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
+            </span>
+          )}
         </div>
-        {showPrice && card.latestPrice && (
-          <span className="shrink-0 rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400">
-            {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
-          </span>
-        )}
       </div>
     </div>
   );
