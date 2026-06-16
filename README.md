@@ -71,3 +71,4 @@ prisma/
 | `npm run db:migrate` | Migrations Prisma |
 | `npm run db:seed` | Seed du dataset d'exemple |
 | `npm run db:studio` | Interface d'exploration de la base |
+| `npm run refresh-prices` | Rafraîchit les prix réels (TCGplayer via TCGCSV) — voir [docs/refresh-prices.md](docs/refresh-prices.md) |
