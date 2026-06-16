@@ -142,6 +142,52 @@ export function DeckBuilderClient({
     );
   }, [pool, legend]);
 
+  // The champion "label" that links a Legend to its Champion Units (e.g.
+  // "Teemo"): the tag that matches the Legend's name. A champion can have
+  // several Champion Units (Teemo - Strategist, Teemo - Scout), so we list
+  // them all and let the player choose.
+  const championTag = useMemo(() => {
+    if (!legend) return null;
+    return (
+      legend.tags.find((t) => legend.nameEn.startsWith(t)) ??
+      legend.tags[0] ??
+      null
+    );
+  }, [legend]);
+
+  const [championUnits, setChampionUnits] = useState<CardWithPrice[]>([]);
+  useEffect(() => {
+    if (!championTag || !domainsKey) return;
+    let cancelled = false;
+    (async () => {
+      const params = new URLSearchParams();
+      params.set("tag", championTag);
+      params.set("type", "UNIT");
+      params.set("domains", domainsKey);
+      params.set("perPage", "40");
+      const res = await fetch(`/api/cards?${params}`);
+      if (!res.ok || cancelled) return;
+      const data = await res.json();
+      const seen = new Set<string>();
+      const out: CardWithPrice[] = [];
+      for (const c of data.data as CardWithPrice[]) {
+        const base = c.nameEn.replace(/\s*\([^)]*\)\s*$/g, "").trim();
+        if (seen.has(base)) continue;
+        seen.add(base);
+        out.push(c);
+      }
+      setChampionUnits(out);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [championTag, domainsKey]);
+
+  // Guard against stale results from a previously selected Legend.
+  const champUnits = championTag
+    ? championUnits.filter((u) => u.tags.includes(championTag))
+    : [];
+
   const fetchCards = useCallback(
     (q: string, type: string, ext: string, domains: string) => {
       if (!domains) return;
@@ -219,6 +265,32 @@ export function DeckBuilderClient({
       </div>
 
       <p className="mt-3 text-xs text-zinc-500">{t("legalNote")}</p>
+
+      {/* Champion units matched to the Legend by champion tag */}
+      {champUnits.length > 0 && (
+        <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
+          <h3 className="text-sm font-semibold text-amber-300">
+            {t("championUnits")}
+          </h3>
+          <p className="mt-0.5 text-[11px] text-zinc-400">
+            {t("championUnitsHint")}
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {champUnits.map((unit) => (
+              <button
+                key={unit.id}
+                onClick={() => store.addCard(unit)}
+                className="group rounded-lg border border-zinc-800 bg-zinc-900/60 p-1.5 text-left transition-colors hover:border-amber-500/60"
+              >
+                <CardFrame card={unit} locale={locale} />
+                <p className="mt-1 truncate text-[11px] font-medium text-zinc-200">
+                  {localizedName(unit, locale)}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <DndContext
         collisionDetection={pointerWithin}

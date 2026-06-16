@@ -113,6 +113,8 @@
     "legend": "Légende",
     "changeLegend": "Changer",
     "legalNote": "Seules les cartes des domaines de votre Légende peuvent être ajoutées.",
+    "championUnits": "Unités Champion",
+    "championUnitsHint": "Les unités de votre champion. Ajoutez celle(s) que vous voulez jouer.",
     "runes": "Runes",
     "runesHint": "12 runes réparties entre les domaines de votre Légende. Ajustez si besoin.",
     "deckName": "Nom du deck",

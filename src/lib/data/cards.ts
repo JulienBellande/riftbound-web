@@ -102,6 +102,9 @@ function applyDemoFilters(filters: CardFilters): CardWithPrice[] {
   if (filters.domains && filters.domains.length > 0) {
     cards = cards.filter((c) => isLegalInDomains(c.domain, filters.domains!));
   }
+  if (filters.tag) {
+    cards = cards.filter((c) => c.tags.includes(filters.tag!));
+  }
   if (filters.costMin !== undefined) {
     cards = cards.filter((c) => c.cost >= filters.costMin!);
   }
@@ -174,8 +177,18 @@ export async function getExtensions(): Promise<ExtensionSummary[]> {
  */
 export async function getLegends(): Promise<CardWithPrice[]> {
   if (!isDatabaseConfigured()) {
-    return sampleCards
-      .filter((c) => c.type === "LEGEND" && !c.signature && !c.altArt)
+    // One entry per Legend (collapse Signature / Alternate-art / Metal /
+    // Overnumbered printings), preferring the plain printing.
+    const byBase = new Map<string, SampleCard>();
+    for (const c of sampleCards) {
+      if (c.type !== "LEGEND") continue;
+      const base = baseCardName(c.nameEn);
+      const existing = byBase.get(base);
+      if (!existing || (c.nameEn === base && existing.nameEn !== base)) {
+        byBase.set(base, c);
+      }
+    }
+    return [...byBase.values()]
       .map(demoCardToDto)
       .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
   }

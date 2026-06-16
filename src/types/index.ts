@@ -10,6 +10,8 @@ export interface CardFilters {
   domain?: string;
   /** Legal-domain set (a card matches when all its domains are in this set). */
   domains?: string[];
+  /** Match cards carrying this tag (e.g. a champion tag like "Teemo"). */
+  tag?: string;
   costMin?: number;
   costMax?: number;
   sortBy?: "name" | "cost" | "rarity" | "price" | "date";

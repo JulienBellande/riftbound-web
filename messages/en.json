@@ -113,6 +113,8 @@
     "legend": "Legend",
     "changeLegend": "Change",
     "legalNote": "Only cards within your Legend's domains can be added.",
+    "championUnits": "Champion units",
+    "championUnitsHint": "Your champion's units. Add the one(s) you want to run.",
     "runes": "Runes",
     "runesHint": "12 runes split across your Legend's domains. Adjust if needed.",
     "deckName": "Deck name",
