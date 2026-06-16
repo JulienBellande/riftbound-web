@@ -49,7 +49,11 @@ const createSchema = z.object({
       })
     )
     .min(1)
-    .max(60),
+    .max(40)
+    .refine(
+      (cards) => cards.reduce((sum, c) => sum + c.quantity, 0) <= 40,
+      { message: "main_deck_exceeds_40" }
+    ),
 });
 
 export async function POST(request: NextRequest) {

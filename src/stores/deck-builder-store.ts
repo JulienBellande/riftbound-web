@@ -15,9 +15,11 @@ interface DeckBuilderStore {
   loadDeck: (name: string, format: string, cards: DeckBuilderCard[]) => void;
 }
 
-// Riftbound constructed rule: at most 3 copies of a given card.
+// Riftbound constructed rules: at most 3 copies of a card, and a main deck of
+// exactly 40 cards (Units/Spells/Gear in the Legend's domains). The Legend,
+// the 12-rune rune deck and the 3 battlefields are tracked outside this tool.
 const MAX_COPIES = 3;
-const MAX_DECK_SIZE = 60;
+const MAX_DECK_SIZE = 40;
 
 export const useDeckBuilderStore = create<DeckBuilderStore>()((set, get) => ({
   name: "",

@@ -106,7 +106,7 @@
   },
   "deckBuilder": {
     "title": "Deck Builder",
-    "subtitle": "Click a card's + (or drag it) to add it to your deck.",
+    "subtitle": "Build your 40-card main deck: click a card's + (or drag it). Legend, runes and battlefields are handled separately.",
     "deckName": "Deck name",
     "format": "Format",
     "deckList": "Deck list",
@@ -114,6 +114,8 @@
     "statCards": "Cards",
     "statAvgCost": "Avg cost",
     "statPrice": "Value",
+    "deckComplete": "Main deck complete (40 cards)",
+    "deckRemaining": "{count} more card(s) to reach 40",
     "publish": "Publish deck",
     "publishHint": "Visible to everyone in the community decks, under an anonymous alias.",
     "copyList": "Copy",

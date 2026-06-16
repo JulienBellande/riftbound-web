@@ -106,7 +106,7 @@
   },
   "deckBuilder": {
     "title": "Constructeur de deck",
-    "subtitle": "Cliquez sur le + d'une carte (ou glissez-la) pour l'ajouter à votre deck.",
+    "subtitle": "Montez votre deck principal de 40 cartes : cliquez sur le + d'une carte (ou glissez-la). Légende, runes et champs de bataille se gèrent à part.",
     "deckName": "Nom du deck",
     "format": "Format",
     "deckList": "Liste du deck",
@@ -114,6 +114,8 @@
     "statCards": "Cartes",
     "statAvgCost": "Coût moy.",
     "statPrice": "Valeur",
+    "deckComplete": "Deck principal complet (40 cartes)",
+    "deckRemaining": "Encore {count} carte(s) sur 40",
     "publish": "Publier le deck",
     "publishHint": "Visible par tous dans les decks de la communauté, sous un pseudo anonyme.",
     "copyList": "Copier",

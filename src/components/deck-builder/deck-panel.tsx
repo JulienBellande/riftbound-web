@@ -139,7 +139,10 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
       {/* Deck stats */}
       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-lg bg-zinc-800/40 py-2">
-          <div className="text-base font-bold text-zinc-100">{totalCards}</div>
+          <div className="text-base font-bold text-zinc-100">
+            {totalCards}
+            <span className="text-xs font-medium text-zinc-500">/40</span>
+          </div>
           <div className="text-[10px] uppercase tracking-wide text-zinc-500">
             {t("statCards")}
           </div>
@@ -161,6 +164,19 @@ export function DeckPanel({ locale }: { locale: SupportedLocale }) {
           </div>
         </div>
       </div>
+
+      {totalCards > 0 && (
+        <p
+          className={cn(
+            "mt-2 text-center text-[11px]",
+            totalCards === 40 ? "text-emerald-400" : "text-zinc-500"
+          )}
+        >
+          {totalCards === 40
+            ? t("deckComplete")
+            : t("deckRemaining", { count: 40 - totalCards })}
+        </p>
+      )}
 
       {/* Mana Curve */}
       {sorted.length > 0 && (

@@ -31,28 +31,29 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
       "Le but du jeu, les domaines, l'énergie, le déroulement d'un tour, le combat et la victoire : tout ce qu'il faut pour lancer votre première partie en confiance.",
     excerptEn:
       "The goal, the domains, energy, how a turn flows, combat and winning: everything you need to start your first game with confidence.",
-    contentFr: `Bienvenue dans Riftbound, le jeu de cartes à collectionner de Riot Games situé dans l'univers de League of Legends. Ce guide vous explique pas à pas tout ce qu'il faut savoir pour comprendre les règles et jouer votre première partie en confiance.
+    contentFr: `Bienvenue dans Riftbound, le jeu de cartes à collectionner de Riot Games dans l'univers de League of Legends. Ce guide vous explique pas à pas tout ce qu'il faut savoir pour comprendre les règles et jouer votre première partie en confiance.
 
 ## Le but du jeu
 
-Riftbound est un jeu d'affrontement territorial. Vous ne cherchez pas seulement à détruire les unités adverses : vous luttez pour le contrôle de zones appelées champs de bataille. Tenir un champ de bataille vous rapporte des points, et le premier joueur à atteindre 8 points remporte la partie.
+Riftbound est un jeu d'affrontement territorial. Vous ne cherchez pas à réduire des points de vie : vous luttez pour le contrôle de zones appelées champs de bataille. Conquérir et tenir un champ de bataille rapporte des points, et le premier joueur à atteindre 8 points de victoire (11 en partie par équipes) gagne.
 
-Tout le reste — vos unités, vos sorts, votre énergie — sert ce seul objectif : conquérir et tenir le terrain plus longtemps que l'adversaire.
+Subtilité importante : le point qui vous fait gagner doit venir d'un champ de bataille tenu ou conquis ce tour-là — sinon vous piochez simplement une carte au lieu de l'emporter.
 
 ## Ce qu'il vous faut pour jouer
 
-Avant la partie, chaque joueur prépare quatre éléments :
+Un deck Riftbound complet ne se limite pas à un paquet de cartes. Chaque joueur prépare :
 
-- Une Légende : la carte qui représente votre champion et donne son identité à votre deck.
-- Un deck principal : vos unités, sorts et équipements (autour de 40 cartes).
-- Un deck de runes : les runes qui produisent votre énergie tout au long de la partie.
-- Des champs de bataille : les lieux que vous allez disputer.
+- Une Légende : votre champion. Elle ne fait pas partie de vos 40 cartes : elle reste dans sa propre zone, définit les deux domaines (couleurs) de votre deck et offre une capacité passive ou activée. Elle ne combat pas.
+- Une Unité Champion : la version « unité » de votre Légende. Une copie démarre la partie en jeu, à côté de la Légende, et combat comme n'importe quelle unité.
+- Un deck principal de 40 cartes exactement : vos unités, sorts et équipements, tous dans les domaines de votre Légende (votre Unité Champion en fait partie).
+- Un deck de runes de 12 runes : votre réserve de ressources.
+- 3 champs de bataille : en duel, vous n'en présentez qu'un seul, tiré au hasard parmi vos trois.
 
-En construction libre, on limite en général chaque carte à 3 exemplaires pour garder des decks équilibrés.
+Règle de construction clé : au maximum 3 exemplaires d'une carte portant le même nom. Deux versions au sous-titre différent comptent comme deux noms distincts.
 
 ## Les six domaines
 
-Chaque carte appartient à un ou plusieurs des six domaines. Ils définissent l'ambiance et les forces de votre deck :
+Chaque carte appartient à un ou plusieurs des six domaines, et votre Légende en fixe deux : ce sont les seules couleurs que votre deck peut jouer.
 
 - Fury : l'agression, les dégâts directs et la vitesse.
 - Body : la force brute, les grosses unités et la résistance.
@@ -61,33 +62,29 @@ Chaque carte appartient à un ou plusieurs des six domaines. Ils définissent l'
 - Order : la structure, la coopération et les effets durables.
 - Chaos : l'imprévu, le sacrifice et les effets explosifs.
 
-La plupart des decks se concentrent sur un ou deux domaines pour rester cohérents et fiables.
-
 ## Les types de cartes
 
 - Unité : se déploie sur les champs de bataille pour les conquérir et combattre.
 - Sort : un effet ponctuel que vous jouez puis défaussez.
 - Équipement : s'attache à une unité pour la renforcer durablement.
-- Rune : votre ressource ; elle génère l'énergie nécessaire pour jouer vos cartes.
-- Légende : votre champion, présent dès le début de la partie.
+- Rune : votre ressource ; elle alimente l'énergie et la puissance.
+- Légende : votre champion, dans sa propre zone, en dehors du deck de 40 cartes.
 - Champ de bataille : la zone que les unités se disputent pour marquer des points.
 
-## L'énergie et les runes
+## L'énergie, la puissance et les runes
 
-Pour jouer une carte, vous payez son coût avec de l'énergie. Cette énergie provient de vos runes : à chaque tour, vous canalisez des runes depuis votre deck de runes pour produire de l'énergie générique et de la puissance de domaine.
+Riftbound utilise deux ressources, toutes deux issues de vos runes :
 
-Deux notions à retenir :
+- L'énergie (générique) : épuisez une rune pour ajouter 1 énergie à votre réserve du tour. Elle paie le coût total d'une carte.
+- La puissance (de domaine) : recyclez une rune — elle repart sous le deck de runes — pour ajouter 1 puissance de son domaine. Elle paie les exigences de couleur (Fury, Calm, etc.).
 
-- L'énergie générique paie le coût total d'une carte.
-- La puissance de domaine (Fury, Calm, etc.) débloque les cartes qui exigent un domaine précis.
-
-Gérer ses runes, c'est gérer son tempo : trop peu d'énergie et vous subissez le jeu adverse, trop de runes et vous manquez de cartes utiles.
+À chaque tour, vous canalisez une rune : la carte du dessus de votre deck de runes entre en jeu. Comme les runes recyclées reviennent plus tard, votre deck de runes tourne en continu — maîtriser ce cycle, c'est maîtriser votre tempo.
 
 ## Le déroulement d'un tour
 
 Riftbound se joue par actions alternées plutôt qu'en longs tours séparés. Chacun votre tour, vous réalisez une action puis rendez la main :
 
-1. Canalisez une rune pour disposer d'énergie.
+1. Canalisez une rune, puis épuisez ou recyclez vos runes pour produire énergie et puissance.
 2. Jouez des cartes : déployez des unités, lancez des sorts, équipez vos unités.
 3. Déplacez vos unités vers les champs de bataille pour les conquérir.
 4. Réagissez : certaines cartes se jouent pendant le tour adverse, en réaction.
@@ -96,66 +93,67 @@ Quand les deux joueurs passent l'un après l'autre, on résout les affrontements
 
 ## Combat et affrontements
 
-Lorsque des unités des deux camps se retrouvent sur le même champ de bataille, un affrontement a lieu. Les unités comparent leur puissance ; celle qui ne survit pas est vaincue, et le camp qui reste prend le contrôle de la zone.
+Lorsque des unités des deux camps se retrouvent sur le même champ de bataille, un affrontement a lieu. Les unités comparent leur puissance ; celle qui ne survit pas est vaincue. S'il ne reste plus d'unité adverse sur la zone après le combat, vous la conquérez et marquez aussitôt un point.
 
 Bien choisir le moment d'un affrontement — avec le soutien d'un sort, ou en supériorité numérique — fait souvent toute la différence.
 
 ## Marquer des points et gagner
 
-À la résolution, chaque champ de bataille que vous contrôlez sans opposition vous rapporte des points. Le premier joueur à 8 points gagne.
+Conquérir un champ de bataille rapporte un point immédiat ; le tenir tour après tour continue d'en rapporter. Le premier à 8 points de victoire l'emporte (11 par équipes), à condition que le point décisif vienne bien d'un champ de bataille.
 
 Cela crée une tension permanente : faut-il tout engager pour conquérir maintenant, ou défendre et préparer un meilleur tour ? Lire le terrain est aussi important que jouer de bonnes cartes.
 
 ## Construire son premier deck
 
-Quelques principes simples pour un deck solide :
-
-- Choisissez une Légende et un ou deux domaines, puis des cartes qui vont dans le même sens.
+- Choisissez d'abord votre Légende : elle fixe vos deux domaines et votre Unité Champion.
+- Remplissez 40 cartes exactement, uniquement dans ces domaines, avec au plus 3 exemplaires par nom.
 - Soignez votre courbe : assez de cartes bon marché pour agir tôt, quelques cartes fortes pour finir.
-- Visez la cohérence : plusieurs exemplaires de vos meilleures cartes pour les piocher régulièrement.
 - Équilibrez unités, sorts et équipements ; un deck sans unités ne tient aucun terrain.
+- N'oubliez pas vos 12 runes et vos 3 champs de bataille, en dehors du deck principal.
 
-Notre constructeur de deck affiche en direct la courbe d'énergie et le total de cartes : utilisez-le pour tester vos idées, puis publiez votre deck ou exportez-le pour le garder.
+Notre constructeur de deck vous aide à monter le deck principal de 40 cartes : il affiche la courbe d'énergie et le total en direct. Une fois prêt, publiez votre deck ou exportez-le pour le garder.
 
 ## Conseils pour débuter
 
 - Tenez le terrain : marquer un point régulièrement vaut mieux qu'un grand coup risqué.
 - Ne videz pas votre main trop vite ; gardez une réaction pour surprendre l'adversaire.
-- Surveillez l'énergie disponible en face pour anticiper ses sorts.
+- Surveillez les runes et l'énergie disponibles en face pour anticiper ses sorts.
 - Rejouez vos parties : comprendre pourquoi on perd fait progresser plus vite que gagner par hasard.
 
 ## Lexique express
 
-- Légende : votre champion, l'identité de votre deck.
+- Légende : votre champion, hors du deck, qui fixe vos deux domaines.
+- Unité Champion : la version unité de votre Légende, en jeu dès le départ.
 - Domaine : la couleur d'une carte (Fury, Body, Mind, Calm, Order, Chaos).
-- Énergie : la ressource qui paie vos cartes, produite par les runes.
+- Rune : ressource ; canalisez pour la mettre en jeu, épuisez pour l'énergie, recyclez pour la puissance.
+- Énergie / Puissance : ressource générique / de domaine pour payer vos cartes.
 - Champ de bataille : zone à conquérir pour marquer des points.
 - Affrontement : combat entre unités sur un champ de bataille.
-- Tempo : l'avance prise en jouant plus efficacement que l'adversaire.
 
-Vous en savez maintenant assez pour lancer votre première partie. Parcourez la base de cartes, montez un deck dans le constructeur, et lancez-vous : c'est en jouant que tout devient limpide. Bon jeu sur la Faille !`,
+Vous en savez maintenant assez pour lancer votre première partie. Parcourez la base de cartes, montez votre deck principal dans le constructeur, et lancez-vous : c'est en jouant que tout devient limpide. Bon jeu sur la Faille !`,
     contentEn: `Welcome to Riftbound, Riot Games' trading card game set in the world of League of Legends. This guide walks you through everything you need to understand the rules and play your first game with confidence.
 
 ## The goal of the game
 
-Riftbound is a game about controlling territory. You are not simply trying to destroy your opponent's units: you fight for control of zones called battlefields. Holding a battlefield scores you points, and the first player to reach 8 points wins the game.
+Riftbound is a game about controlling territory. You are not lowering a life total: you fight for control of zones called battlefields. Conquering and holding a battlefield scores points, and the first player to reach 8 victory points (11 in a team game) wins.
 
-Everything else — your units, your spells, your energy — serves that single goal: conquer and hold ground longer than your opponent.
+One important nuance: the point that wins you the game must come from a battlefield you hold or conquer that turn — otherwise you simply draw a card instead of winning.
 
 ## What you need to play
 
-Before the game, each player prepares four things:
+A complete Riftbound deck is more than a stack of cards. Each player prepares:
 
-- A Legend: the card that represents your champion and defines your deck's identity.
-- A main deck: your units, spells and gear (around 40 cards).
-- A rune deck: the runes that produce your energy throughout the game.
-- Battlefields: the locations you will fight over.
+- A Legend: your champion. It is not part of your 40 cards: it sits in its own zone, defines your deck's two domains (colours) and grants a passive or activated ability. It does not fight.
+- A Champion Unit: the "unit" version of your Legend. One copy starts the game in play next to the Legend and fights like any other unit.
+- A 40-card main deck, exactly: your units, spells and gear, all within your Legend's domains (your Champion Unit is part of it).
+- A 12-rune rune deck: your resource pool.
+- 3 battlefields: in a duel you present only one, drawn at random from your three.
 
-In constructed play, cards are usually limited to 3 copies each to keep decks balanced.
+Key building rule: at most 3 copies of a card with the same name. Two versions with different subtitles count as different names.
 
 ## The six domains
 
-Every card belongs to one or more of the six domains. They define the mood and strengths of your deck:
+Every card belongs to one or more of the six domains, and your Legend fixes two of them — those are the only colours your deck may play.
 
 - Fury: aggression, direct damage and speed.
 - Body: raw strength, big units and resilience.
@@ -164,33 +162,29 @@ Every card belongs to one or more of the six domains. They define the mood and s
 - Order: structure, cooperation and lasting effects.
 - Chaos: the unexpected, sacrifice and explosive effects.
 
-Most decks focus on one or two domains to stay consistent and reliable.
-
 ## Card types
 
 - Unit: deploys onto battlefields to conquer them and fight.
 - Spell: a one-off effect you play and then discard.
 - Gear: attaches to a unit to strengthen it for the long run.
-- Rune: your resource; it generates the energy needed to play cards.
-- Legend: your champion, present from the start of the game.
+- Rune: your resource; it powers both energy and power.
+- Legend: your champion, in its own zone, outside the 40-card deck.
 - Battlefield: the zone units fight over to score points.
 
-## Energy and runes
+## Energy, power and runes
 
-To play a card, you pay its cost with energy. That energy comes from your runes: each turn you channel runes from your rune deck to produce generic energy and domain power.
+Riftbound uses two resources, both produced by your runes:
 
-Two ideas to remember:
+- Energy (generic): exhaust a rune to add 1 energy to your pool for the turn. It pays a card's total cost.
+- Power (by domain): recycle a rune — it goes to the bottom of the rune deck — to add 1 power of its domain. It pays colour requirements (Fury, Calm, and so on).
 
-- Generic energy pays a card's total cost.
-- Domain power (Fury, Calm, and so on) unlocks cards that require a specific domain.
-
-Managing your runes means managing your tempo: too little energy and you fall behind, too many runes and you run short on useful cards.
+Each turn you channel a rune: the top card of your rune deck enters play. Because recycled runes come back later, your rune deck cycles continuously — mastering that cycle is mastering your tempo.
 
 ## How a turn flows
 
 Riftbound is played with alternating actions rather than long separate turns. On your turn, you take one action and then pass back:
 
-1. Channel a rune to gain energy.
+1. Channel a rune, then exhaust or recycle runes to produce energy and power.
 2. Play cards: deploy units, cast spells, equip your units.
 3. Move your units toward battlefields to conquer them.
 4. React: some cards are played during the opponent's turn, as a response.
@@ -199,44 +193,44 @@ When both players pass one after the other, combats resolve and then scoring hap
 
 ## Combat and showdowns
 
-When units from both sides meet on the same battlefield, a showdown takes place. Units compare their power; the one that does not survive is defeated, and the side that remains takes control of the zone.
+When units from both sides meet on the same battlefield, a showdown takes place. Units compare their power; the one that does not survive is defeated. If no enemy unit remains on the zone after combat, you conquer it and immediately score a point.
 
 Choosing when to start a showdown — backed by a spell, or with a numbers advantage — often makes all the difference.
 
 ## Scoring points and winning
 
-At resolution, every battlefield you control unopposed scores you points. The first player to 8 points wins.
+Conquering a battlefield scores an immediate point; holding it turn after turn keeps scoring. The first player to 8 victory points wins (11 in a team game), as long as the deciding point comes from a battlefield.
 
 This creates constant tension: do you commit everything to conquer now, or defend and set up a better turn? Reading the board is as important as playing good cards.
 
 ## Building your first deck
 
-A few simple principles for a solid deck:
-
-- Pick a Legend and one or two domains, then cards that pull in the same direction.
+- Pick your Legend first: it sets your two domains and your Champion Unit.
+- Fill exactly 40 cards, only in those domains, with at most 3 copies per name.
 - Mind your curve: enough cheap cards to act early, a few strong cards to close.
-- Aim for consistency: several copies of your best cards so you draw them often.
 - Balance units, spells and gear; a deck with no units holds no ground.
+- Don't forget your 12 runes and 3 battlefields, kept outside the main deck.
 
-Our deck builder shows the energy curve and total card count live: use it to test ideas, then publish your deck or export it to keep.
+Our deck builder helps you assemble the 40-card main deck: it shows the energy curve and total live. Once it's ready, publish your deck or export it to keep.
 
 ## Beginner tips
 
 - Hold the ground: scoring steadily beats one risky swing.
 - Don't empty your hand too fast; keep a reaction to surprise your opponent.
-- Watch the energy available across the table to anticipate their spells.
+- Watch the runes and energy available across the table to anticipate their spells.
 - Replay your games: understanding why you lost improves you faster than winning by luck.
 
 ## Quick glossary
 
-- Legend: your champion, your deck's identity.
+- Legend: your champion, outside the deck, who sets your two domains.
+- Champion Unit: the unit version of your Legend, in play from the start.
 - Domain: a card's colour (Fury, Body, Mind, Calm, Order, Chaos).
-- Energy: the resource that pays for your cards, produced by runes.
+- Rune: resource; channel to put it in play, exhaust for energy, recycle for power.
+- Energy / Power: generic / domain resource used to pay for cards.
 - Battlefield: a zone to conquer in order to score points.
 - Showdown: combat between units on a battlefield.
-- Tempo: the lead you gain by playing more efficiently than your opponent.
 
-You now know enough to start your first game. Browse the card database, build a deck in the builder, and dive in: it all clicks once you start playing. Have fun on the Rift!`,
+You now know enough to start your first game. Browse the card database, build your main deck in the builder, and dive in: it all clicks once you start playing. Have fun on the Rift!`,
     coverImage: null,
     category: "GUIDE",
     publishedAt: new Date(Date.now() - 3600000).toISOString(),
