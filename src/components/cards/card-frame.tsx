@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import { formatPrice, localizedName } from "@/lib/utils/format";
+import { DOMAIN_DOT } from "@/lib/domains";
 import type { CardWithPrice, SupportedLocale } from "@/types";
 
 const RARITY_BORDER: Record<string, string> = {
@@ -21,14 +22,13 @@ const RARITY_DOT: Record<string, string> = {
   PROMO: "bg-fuchsia-500",
 };
 
-const DOMAIN_COLORS: Record<string, string> = {
-  Fury: "bg-red-500",
-  Calm: "bg-cyan-400",
-  Mind: "bg-purple-500",
-  Body: "bg-amber-500",
-  Chaos: "bg-rose-600",
-  Order: "bg-sky-400",
-  Colorless: "bg-zinc-500",
+const TYPE_LABEL: Record<string, { fr: string; en: string }> = {
+  UNIT: { fr: "Unité", en: "Unit" },
+  SPELL: { fr: "Sort", en: "Spell" },
+  GEAR: { fr: "Équipement", en: "Gear" },
+  RUNE: { fr: "Rune", en: "Rune" },
+  LEGEND: { fr: "Légende", en: "Legend" },
+  BATTLEFIELD: { fr: "Champ de bataille", en: "Battlefield" },
 };
 
 export function CardFrame({
@@ -38,10 +38,10 @@ export function CardFrame({
 }: {
   card: CardWithPrice;
   locale: SupportedLocale;
-  typeLabel?: string;
   showPrice?: boolean;
 }) {
   const name = localizedName(card, locale);
+  const typeLabel = TYPE_LABEL[card.type]?.[locale] ?? card.type;
 
   return (
     <div
@@ -95,23 +95,26 @@ export function CardFrame({
         <p className="truncate text-[11px] font-medium text-zinc-100">
           {name}
         </p>
-        <div className="mt-0.5 flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            {card.domain?.slice(0, 3).map((d) => (
-              <span
-                key={d}
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full",
-                  DOMAIN_COLORS[d] ?? "bg-zinc-500"
-                )}
-              />
-            ))}
-            <span className="text-[9px] uppercase tracking-wider text-zinc-600">
-              {card.extension.code}
-            </span>
-          </div>
+        <div className="mt-0.5 flex items-center gap-1">
+          {card.domain?.slice(0, 3).map((d) => (
+            <span
+              key={d}
+              className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                DOMAIN_DOT[d] ?? "bg-zinc-500"
+              )}
+            />
+          ))}
+          <span className="truncate text-[9px] font-medium uppercase tracking-wider text-zinc-500">
+            {typeLabel}
+          </span>
+        </div>
+        <div className="mt-0.5 flex items-center justify-between gap-1">
+          <span className="truncate text-[9px] uppercase tracking-wider text-zinc-600">
+            {card.extension.code} #{card.collectorNum}
+          </span>
           {showPrice && card.latestPrice && (
-            <span className="text-[10px] font-semibold text-emerald-400">
+            <span className="shrink-0 text-[10px] font-semibold text-emerald-400">
               {formatPrice(card.latestPrice.priceEur, "EUR", locale)}
             </span>
           )}

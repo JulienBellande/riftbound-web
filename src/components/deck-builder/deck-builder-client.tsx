@@ -88,12 +88,7 @@ function LegendPicker({
           >
             <CardFrame card={legend} locale={locale} />
             <div className="mt-2 px-0.5">
-              <p className="truncate text-xs font-semibold text-zinc-100">
-                {localizedName(legend, locale)}
-              </p>
-              <div className="mt-1">
-                <DomainChips domains={legend.domain} />
-              </div>
+              <DomainChips domains={legend.domain} />
             </div>
           </button>
         ))}
@@ -283,9 +278,6 @@ export function DeckBuilderClient({
                 className="group rounded-lg border border-zinc-800 bg-zinc-900/60 p-1.5 text-left transition-colors hover:border-amber-500/60"
               >
                 <CardFrame card={unit} locale={locale} />
-                <p className="mt-1 truncate text-[11px] font-medium text-zinc-200">
-                  {localizedName(unit, locale)}
-                </p>
               </button>
             ))}
           </div>

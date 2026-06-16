@@ -108,6 +108,7 @@ export default async function CardDetailPage({
         <div>
           <h1 className="text-2xl font-bold text-zinc-100">{name}</h1>
           <p className="mt-0.5 text-xs text-zinc-500">
+            {t(`types.${card.type}`)} ·{" "}
             {typedLocale === "fr"
               ? card.extension.nameFr
               : card.extension.nameEn}{" "}
