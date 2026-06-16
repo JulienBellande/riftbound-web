@@ -38,6 +38,7 @@ function demoCardDto(slug: string): CardWithPrice | null {
   const latest = prices[prices.length - 1];
   return {
     id: card.slug,
+    collectorNum: card.collectorNum,
     nameFr: card.nameFr,
     nameEn: card.nameEn,
     descriptionFr: card.descriptionFr,
@@ -324,6 +325,7 @@ export async function getDecks(
         quantity: dc.quantity,
         card: {
           id: dc.card.id,
+          collectorNum: dc.card.collectorNum,
           nameFr: dc.card.nameFr,
           nameEn: dc.card.nameEn,
           descriptionFr: dc.card.descriptionFr,
@@ -400,6 +402,7 @@ export async function getDeckById(id: string): Promise<DeckWithDetails | null> {
       quantity: dc.quantity,
       card: {
         id: dc.card.id,
+        collectorNum: dc.card.collectorNum,
         nameFr: dc.card.nameFr,
         nameEn: dc.card.nameEn,
         descriptionFr: dc.card.descriptionFr,
@@ -599,6 +602,7 @@ export async function getDecksByUser(
       quantity: dc.quantity,
       card: {
         id: dc.card.id,
+        collectorNum: dc.card.collectorNum,
         nameFr: dc.card.nameFr,
         nameEn: dc.card.nameEn,
         descriptionFr: dc.card.descriptionFr,

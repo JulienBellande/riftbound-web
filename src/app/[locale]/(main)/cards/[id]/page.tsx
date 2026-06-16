@@ -108,7 +108,10 @@ export default async function CardDetailPage({
         <div>
           <h1 className="text-2xl font-bold text-zinc-100">{name}</h1>
           <p className="mt-0.5 text-xs text-zinc-500">
-            {card.extension.nameEn} · #{card.extension.code}
+            {typedLocale === "fr"
+              ? card.extension.nameFr
+              : card.extension.nameEn}{" "}
+            · #{card.collectorNum}
           </p>
 
           {/* Domain + tags */}
@@ -256,7 +259,8 @@ export default async function CardDetailPage({
                       </span>
                     </div>
                     <p className="mt-0.5 text-[10px] text-zinc-600">
-                      {v.extension.code} · {t(`rarities.${v.rarity}`)}
+                      {v.extension.code} #{v.collectorNum} ·{" "}
+                      {t(`rarities.${v.rarity}`)}
                     </p>
                   </div>
                   <span className="shrink-0 text-xs font-semibold text-emerald-400">

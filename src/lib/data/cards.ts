@@ -44,6 +44,7 @@ function demoCardToDto(card: SampleCard): CardWithPrice {
 
   return {
     id: card.slug,
+    collectorNum: card.collectorNum,
     nameFr: card.nameFr,
     nameEn: card.nameEn,
     descriptionFr: card.descriptionFr,
@@ -227,6 +228,7 @@ export async function getCards(
   return {
     data: cards.map((c) => ({
       id: c.id,
+      collectorNum: c.collectorNum,
       nameFr: c.nameFr,
       nameEn: c.nameEn,
       descriptionFr: c.descriptionFr,
@@ -278,6 +280,7 @@ export async function getCardById(id: string): Promise<CardWithPrice | null> {
 
   return {
     id: card.id,
+    collectorNum: card.collectorNum,
     nameFr: card.nameFr,
     nameEn: card.nameEn,
     descriptionFr: card.descriptionFr,
@@ -343,6 +346,7 @@ export async function getCardVariants(
   });
   return cards.map((c) => ({
     id: c.id,
+    collectorNum: c.collectorNum,
     nameFr: c.nameFr,
     nameEn: c.nameEn,
     descriptionFr: c.descriptionFr,
@@ -451,6 +455,7 @@ export async function getPriceRows(filters: {
       const previousEur = previous ? Number(previous.priceEur) : null;
       return {
         id: c.id,
+        collectorNum: c.collectorNum,
         nameFr: c.nameFr,
         nameEn: c.nameEn,
         descriptionFr: c.descriptionFr,

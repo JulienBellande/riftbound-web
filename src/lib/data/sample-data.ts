@@ -111,12 +111,27 @@ interface RawCard {
   marketUsd: number | null;
 }
 
+/**
+ * Riftbound collector numbers carry a printing suffix:
+ *   • Signature copies      → "299*"
+ *   • Alternate-art copies   → "007a"
+ *   • Standard printing      → "007"
+ * This is what lets two variants share the same base number while staying
+ * individually identifiable (and is how they are listed at retail).
+ */
+function collectorNumber(c: RawCard): string {
+  const padded = String(c.num).padStart(3, "0");
+  if (c.signature) return `${padded}*`;
+  if (c.altArt) return `${padded}a`;
+  return padded;
+}
+
 export const sampleCards: SampleCard[] = (
   rawData as { sets: unknown[]; cards: RawCard[] }
 ).cards.map((c) => ({
   slug: c.id,
   extensionCode: c.set,
-  collectorNum: String(c.num).padStart(3, "0"),
+  collectorNum: collectorNumber(c),
   nameFr: c.name,
   nameEn: c.name,
   descriptionFr: c.text || "",

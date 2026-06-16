@@ -35,6 +35,7 @@ export interface PaginatedResponse<T> {
 
 export interface CardWithPrice {
   id: string;
+  collectorNum: string;
   nameFr: string;
   nameEn: string;
   descriptionFr: string | null;
