@@ -23,6 +23,226 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
   contentEn: string;
 })[] = [
   {
+    id: "post-guide-jouer-riftbound",
+    slug: "guide-complet-jouer-a-riftbound",
+    titleFr: "Guide complet : comprendre et jouer à Riftbound",
+    titleEn: "Complete Guide: Understanding and Playing Riftbound",
+    excerptFr:
+      "Le but du jeu, les domaines, l'énergie, le déroulement d'un tour, le combat et la victoire : tout ce qu'il faut pour lancer votre première partie en confiance.",
+    excerptEn:
+      "The goal, the domains, energy, how a turn flows, combat and winning: everything you need to start your first game with confidence.",
+    contentFr: `Bienvenue dans Riftbound, le jeu de cartes à collectionner de Riot Games situé dans l'univers de League of Legends. Ce guide vous explique pas à pas tout ce qu'il faut savoir pour comprendre les règles et jouer votre première partie en confiance.
+
+## Le but du jeu
+
+Riftbound est un jeu d'affrontement territorial. Vous ne cherchez pas seulement à détruire les unités adverses : vous luttez pour le contrôle de zones appelées champs de bataille. Tenir un champ de bataille vous rapporte des points, et le premier joueur à atteindre 8 points remporte la partie.
+
+Tout le reste — vos unités, vos sorts, votre énergie — sert ce seul objectif : conquérir et tenir le terrain plus longtemps que l'adversaire.
+
+## Ce qu'il vous faut pour jouer
+
+Avant la partie, chaque joueur prépare quatre éléments :
+
+- Une Légende : la carte qui représente votre champion et donne son identité à votre deck.
+- Un deck principal : vos unités, sorts et équipements (autour de 40 cartes).
+- Un deck de runes : les runes qui produisent votre énergie tout au long de la partie.
+- Des champs de bataille : les lieux que vous allez disputer.
+
+En construction libre, on limite en général chaque carte à 3 exemplaires pour garder des decks équilibrés.
+
+## Les six domaines
+
+Chaque carte appartient à un ou plusieurs des six domaines. Ils définissent l'ambiance et les forces de votre deck :
+
+- Fury : l'agression, les dégâts directs et la vitesse.
+- Body : la force brute, les grosses unités et la résistance.
+- Mind : la réflexion, la pioche et la manipulation des cartes.
+- Calm : la patience, le contrôle et la temporisation.
+- Order : la structure, la coopération et les effets durables.
+- Chaos : l'imprévu, le sacrifice et les effets explosifs.
+
+La plupart des decks se concentrent sur un ou deux domaines pour rester cohérents et fiables.
+
+## Les types de cartes
+
+- Unité : se déploie sur les champs de bataille pour les conquérir et combattre.
+- Sort : un effet ponctuel que vous jouez puis défaussez.
+- Équipement : s'attache à une unité pour la renforcer durablement.
+- Rune : votre ressource ; elle génère l'énergie nécessaire pour jouer vos cartes.
+- Légende : votre champion, présent dès le début de la partie.
+- Champ de bataille : la zone que les unités se disputent pour marquer des points.
+
+## L'énergie et les runes
+
+Pour jouer une carte, vous payez son coût avec de l'énergie. Cette énergie provient de vos runes : à chaque tour, vous canalisez des runes depuis votre deck de runes pour produire de l'énergie générique et de la puissance de domaine.
+
+Deux notions à retenir :
+
+- L'énergie générique paie le coût total d'une carte.
+- La puissance de domaine (Fury, Calm, etc.) débloque les cartes qui exigent un domaine précis.
+
+Gérer ses runes, c'est gérer son tempo : trop peu d'énergie et vous subissez le jeu adverse, trop de runes et vous manquez de cartes utiles.
+
+## Le déroulement d'un tour
+
+Riftbound se joue par actions alternées plutôt qu'en longs tours séparés. Chacun votre tour, vous réalisez une action puis rendez la main :
+
+1. Canalisez une rune pour disposer d'énergie.
+2. Jouez des cartes : déployez des unités, lancez des sorts, équipez vos unités.
+3. Déplacez vos unités vers les champs de bataille pour les conquérir.
+4. Réagissez : certaines cartes se jouent pendant le tour adverse, en réaction.
+
+Quand les deux joueurs passent l'un après l'autre, on résout les affrontements puis le score.
+
+## Combat et affrontements
+
+Lorsque des unités des deux camps se retrouvent sur le même champ de bataille, un affrontement a lieu. Les unités comparent leur puissance ; celle qui ne survit pas est vaincue, et le camp qui reste prend le contrôle de la zone.
+
+Bien choisir le moment d'un affrontement — avec le soutien d'un sort, ou en supériorité numérique — fait souvent toute la différence.
+
+## Marquer des points et gagner
+
+À la résolution, chaque champ de bataille que vous contrôlez sans opposition vous rapporte des points. Le premier joueur à 8 points gagne.
+
+Cela crée une tension permanente : faut-il tout engager pour conquérir maintenant, ou défendre et préparer un meilleur tour ? Lire le terrain est aussi important que jouer de bonnes cartes.
+
+## Construire son premier deck
+
+Quelques principes simples pour un deck solide :
+
+- Choisissez une Légende et un ou deux domaines, puis des cartes qui vont dans le même sens.
+- Soignez votre courbe : assez de cartes bon marché pour agir tôt, quelques cartes fortes pour finir.
+- Visez la cohérence : plusieurs exemplaires de vos meilleures cartes pour les piocher régulièrement.
+- Équilibrez unités, sorts et équipements ; un deck sans unités ne tient aucun terrain.
+
+Notre constructeur de deck affiche en direct la courbe d'énergie et le total de cartes : utilisez-le pour tester vos idées, puis publiez votre deck ou exportez-le pour le garder.
+
+## Conseils pour débuter
+
+- Tenez le terrain : marquer un point régulièrement vaut mieux qu'un grand coup risqué.
+- Ne videz pas votre main trop vite ; gardez une réaction pour surprendre l'adversaire.
+- Surveillez l'énergie disponible en face pour anticiper ses sorts.
+- Rejouez vos parties : comprendre pourquoi on perd fait progresser plus vite que gagner par hasard.
+
+## Lexique express
+
+- Légende : votre champion, l'identité de votre deck.
+- Domaine : la couleur d'une carte (Fury, Body, Mind, Calm, Order, Chaos).
+- Énergie : la ressource qui paie vos cartes, produite par les runes.
+- Champ de bataille : zone à conquérir pour marquer des points.
+- Affrontement : combat entre unités sur un champ de bataille.
+- Tempo : l'avance prise en jouant plus efficacement que l'adversaire.
+
+Vous en savez maintenant assez pour lancer votre première partie. Parcourez la base de cartes, montez un deck dans le constructeur, et lancez-vous : c'est en jouant que tout devient limpide. Bon jeu sur la Faille !`,
+    contentEn: `Welcome to Riftbound, Riot Games' trading card game set in the world of League of Legends. This guide walks you through everything you need to understand the rules and play your first game with confidence.
+
+## The goal of the game
+
+Riftbound is a game about controlling territory. You are not simply trying to destroy your opponent's units: you fight for control of zones called battlefields. Holding a battlefield scores you points, and the first player to reach 8 points wins the game.
+
+Everything else — your units, your spells, your energy — serves that single goal: conquer and hold ground longer than your opponent.
+
+## What you need to play
+
+Before the game, each player prepares four things:
+
+- A Legend: the card that represents your champion and defines your deck's identity.
+- A main deck: your units, spells and gear (around 40 cards).
+- A rune deck: the runes that produce your energy throughout the game.
+- Battlefields: the locations you will fight over.
+
+In constructed play, cards are usually limited to 3 copies each to keep decks balanced.
+
+## The six domains
+
+Every card belongs to one or more of the six domains. They define the mood and strengths of your deck:
+
+- Fury: aggression, direct damage and speed.
+- Body: raw strength, big units and resilience.
+- Mind: thinking ahead, card draw and manipulation.
+- Calm: patience, control and stalling.
+- Order: structure, cooperation and lasting effects.
+- Chaos: the unexpected, sacrifice and explosive effects.
+
+Most decks focus on one or two domains to stay consistent and reliable.
+
+## Card types
+
+- Unit: deploys onto battlefields to conquer them and fight.
+- Spell: a one-off effect you play and then discard.
+- Gear: attaches to a unit to strengthen it for the long run.
+- Rune: your resource; it generates the energy needed to play cards.
+- Legend: your champion, present from the start of the game.
+- Battlefield: the zone units fight over to score points.
+
+## Energy and runes
+
+To play a card, you pay its cost with energy. That energy comes from your runes: each turn you channel runes from your rune deck to produce generic energy and domain power.
+
+Two ideas to remember:
+
+- Generic energy pays a card's total cost.
+- Domain power (Fury, Calm, and so on) unlocks cards that require a specific domain.
+
+Managing your runes means managing your tempo: too little energy and you fall behind, too many runes and you run short on useful cards.
+
+## How a turn flows
+
+Riftbound is played with alternating actions rather than long separate turns. On your turn, you take one action and then pass back:
+
+1. Channel a rune to gain energy.
+2. Play cards: deploy units, cast spells, equip your units.
+3. Move your units toward battlefields to conquer them.
+4. React: some cards are played during the opponent's turn, as a response.
+
+When both players pass one after the other, combats resolve and then scoring happens.
+
+## Combat and showdowns
+
+When units from both sides meet on the same battlefield, a showdown takes place. Units compare their power; the one that does not survive is defeated, and the side that remains takes control of the zone.
+
+Choosing when to start a showdown — backed by a spell, or with a numbers advantage — often makes all the difference.
+
+## Scoring points and winning
+
+At resolution, every battlefield you control unopposed scores you points. The first player to 8 points wins.
+
+This creates constant tension: do you commit everything to conquer now, or defend and set up a better turn? Reading the board is as important as playing good cards.
+
+## Building your first deck
+
+A few simple principles for a solid deck:
+
+- Pick a Legend and one or two domains, then cards that pull in the same direction.
+- Mind your curve: enough cheap cards to act early, a few strong cards to close.
+- Aim for consistency: several copies of your best cards so you draw them often.
+- Balance units, spells and gear; a deck with no units holds no ground.
+
+Our deck builder shows the energy curve and total card count live: use it to test ideas, then publish your deck or export it to keep.
+
+## Beginner tips
+
+- Hold the ground: scoring steadily beats one risky swing.
+- Don't empty your hand too fast; keep a reaction to surprise your opponent.
+- Watch the energy available across the table to anticipate their spells.
+- Replay your games: understanding why you lost improves you faster than winning by luck.
+
+## Quick glossary
+
+- Legend: your champion, your deck's identity.
+- Domain: a card's colour (Fury, Body, Mind, Calm, Order, Chaos).
+- Energy: the resource that pays for your cards, produced by runes.
+- Battlefield: a zone to conquer in order to score points.
+- Showdown: combat between units on a battlefield.
+- Tempo: the lead you gain by playing more efficiently than your opponent.
+
+You now know enough to start your first game. Browse the card database, build a deck in the builder, and dive in: it all clicks once you start playing. Have fun on the Rift!`,
+    coverImage: null,
+    category: "GUIDE",
+    publishedAt: new Date(Date.now() - 3600000).toISOString(),
+    author: { username: "RiftForge", avatarUrl: null },
+  },
+  {
     id: "post-1",
     slug: "patch-2-1-equilibrage",
     titleFr: "Patch 2.1 : Rééquilibrage majeur",
@@ -34,7 +254,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "PATCH_NOTES",
     publishedAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    author: { username: "RiftForgeTeam", avatarUrl: null },
+    author: { username: "RiftForge", avatarUrl: null },
   },
   {
     id: "post-2",
@@ -48,35 +268,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "GUIDE",
     publishedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    author: { username: "ShadowMage", avatarUrl: null },
-  },
-  {
-    id: "post-3",
-    slug: "meta-report-semaine-23",
-    titleFr: "Rapport Méta — Semaine 23",
-    titleEn: "Meta Report — Week 23",
-    excerptFr: "Emberheart Control domine le classement cette semaine avec un taux de victoire de 58%. Analyse complète des top decks.",
-    excerptEn: "Emberheart Control dominates the rankings this week with a 58% win rate. Full analysis of top decks.",
-    contentFr: "Cette semaine, la méta est dominée par les decks de contrôle basés sur Ignis. Le deck Emberheart Control affiche un impressionnant taux de victoire de 58% sur l'échelle du classement.\n\n## Top 3 de la semaine\n\n1. **Emberheart Control** (58% WR)\n2. **Duskblade Aggro** (54% WR)\n3. **Tide Oracle Combo** (51% WR)\n\nLe deck Chainbreaker Midrange reste une option viable contre le méta actuel grâce à sa capacité à détruire les équipements ennemis.",
-    contentEn: "This week, the meta is dominated by control decks based on Ignis. The Emberheart Control deck shows an impressive 58% win rate across the ranking ladder.\n\n## Top 3 This Week\n\n1. **Emberheart Control** (58% WR)\n2. **Duskblade Aggro** (54% WR)\n3. **Tide Oracle Combo** (51% WR)\n\nThe Chainbreaker Midrange deck remains a viable option against the current meta due to its ability to destroy enemy gear.",
-    coverImage: null,
-    category: "META",
-    publishedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    author: { username: "RiftForgeTeam", avatarUrl: null },
-  },
-  {
-    id: "post-4",
-    slug: "tournoi-rift-masters-saison-2",
-    titleFr: "Rift Masters Saison 2 — Inscriptions ouvertes",
-    titleEn: "Rift Masters Season 2 — Registrations Open",
-    excerptFr: "Le plus grand tournoi Riftbound revient ! 256 joueurs, 10 000€ de cashprize. Inscriptions jusqu'au 30 juin.",
-    excerptEn: "The biggest Riftbound tournament is back! 256 players, €10,000 prize pool. Register until June 30th.",
-    contentFr: "Les Rift Masters reviennent pour une deuxième saison encore plus ambitieuse.\n\n## Informations clés\n\n- **Date** : 15-17 juillet 2026\n- **Format** : Standard, Bo3\n- **Places** : 256 joueurs\n- **Cashprize** : 10 000€\n- **Inscriptions** : Ouvertes jusqu'au 30 juin\n\nLes phases de qualification en ligne commencent le 1er juillet. Les 32 meilleurs joueurs s'affronteront lors des finales en présentiel à Paris.",
-    contentEn: "The Rift Masters are back for an even more ambitious second season.\n\n## Key Information\n\n- **Date**: July 15-17, 2026\n- **Format**: Standard, Bo3\n- **Slots**: 256 players\n- **Prize Pool**: €10,000\n- **Registration**: Open until June 30th\n\nOnline qualification phases begin July 1st. The top 32 players will compete in the in-person finals in Paris.",
-    coverImage: null,
-    category: "TOURNAMENT",
-    publishedAt: new Date(Date.now() - 5 * 86400000).toISOString(),
-    author: { username: "RiftForgeTeam", avatarUrl: null },
+    author: { username: "RiftForge", avatarUrl: null },
   },
   {
     id: "post-5",
@@ -90,7 +282,7 @@ const DEMO_POSTS: (Omit<BlogPost, "title" | "excerpt" | "content"> & {
     coverImage: null,
     category: "NEWS",
     publishedAt: new Date(Date.now() - 7 * 86400000).toISOString(),
-    author: { username: "RiftForgeTeam", avatarUrl: null },
+    author: { username: "RiftForge", avatarUrl: null },
   },
 ];
 
