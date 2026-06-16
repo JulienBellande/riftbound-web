@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma, isDatabaseConfigured } from "@/lib/db";
+import {
+  fetchRiftboundPriceIndex,
+  USD_TO_EUR,
+  USD_TO_GBP,
+} from "@/lib/prices/tcgcsv";
 
 export const maxDuration = 60;
 
 /**
  * Daily price snapshot job (Vercel Cron — see vercel.json).
  *
- * Fetches the current market price for every card and appends a new
- * CardPrice row, preserving full price history for trend charts.
- *
- * `fetchMarketPrice` is the integration point for a real price source
- * (Cardmarket / TCGplayer API, or a scraper service). Until one is wired
- * in, it derives a bounded random walk from the latest stored price so
- * that trends stay realistic in staging environments.
+ * Pulls the real TCGplayer market price for every card from TCGCSV and appends
+ * a new CardPrice row, preserving full price history for trend charts. Cards
+ * are matched to their individual printing by (set, name), so Overnumbered /
+ * Signature / Alternate-art variants each get their own real price.
  */
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
@@ -30,43 +32,54 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  let index;
+  try {
+    index = await fetchRiftboundPriceIndex();
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Price source unavailable", detail: String(err) },
+      { status: 502 }
+    );
+  }
+
   const cards = await prisma.card.findMany({
     select: {
       id: true,
-      prices: {
-        orderBy: { fetchedAt: "desc" },
-        take: 1,
-        select: { priceEur: true },
-      },
+      nameEn: true,
+      extension: { select: { code: true } },
     },
   });
 
   const now = new Date();
-  const rows = cards.map((card) => {
-    const latestEur = Number(card.prices[0]?.priceEur ?? 1);
-    const priceEur = fetchMarketPrice(latestEur);
-    return {
-      cardId: card.id,
-      priceEur,
-      priceUsd: round2(priceEur * USD_RATE),
-      priceGbp: round2(priceEur * GBP_RATE),
-      source: "cron",
-      fetchedAt: now,
-    };
+  let unmatched = 0;
+  const rows = cards.flatMap((card) => {
+    const price = index.lookup(card.extension.code, card.nameEn);
+    const usd = price?.marketUsd ?? price?.lowUsd ?? null;
+    if (usd === null) {
+      unmatched++;
+      return [];
+    }
+    return [
+      {
+        cardId: card.id,
+        priceUsd: round2(usd),
+        priceEur: round2(usd * USD_TO_EUR),
+        priceGbp: round2(usd * USD_TO_GBP),
+        source: "tcgcsv",
+        fetchedAt: now,
+      },
+    ];
   });
 
-  await prisma.cardPrice.createMany({ data: rows });
+  if (rows.length > 0) {
+    await prisma.cardPrice.createMany({ data: rows });
+  }
 
-  return NextResponse.json({ updated: rows.length, at: now.toISOString() });
-}
-
-const USD_RATE = 1.08;
-const GBP_RATE = 0.85;
-
-function fetchMarketPrice(latestEur: number): number {
-  // ±5 % bounded random walk, floored at 0.05 €
-  const variation = 1 + (Math.random() - 0.5) * 0.1;
-  return Math.max(0.05, round2(latestEur * variation));
+  return NextResponse.json({
+    updated: rows.length,
+    unmatched,
+    at: now.toISOString(),
+  });
 }
 
 function round2(n: number): number {
