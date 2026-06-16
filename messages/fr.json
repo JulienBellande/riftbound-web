@@ -174,6 +174,10 @@
   },
   "forum": {
     "title": "Forum de la communauté",
+    "intro": "Choisissez une catégorie pour parcourir les discussions. Pas besoin de compte : vous pouvez lire et publier librement.",
+    "anonNotice": "Publication anonyme — un pseudo de carte aléatoire vous est attribué.",
+    "emptyTitle": "Aucun sujet pour l'instant",
+    "emptyHint": "Soyez le premier à lancer la discussion dans cette catégorie.",
     "newTopic": "Nouveau sujet",
     "topics": "sujets",
     "replies": "réponses",

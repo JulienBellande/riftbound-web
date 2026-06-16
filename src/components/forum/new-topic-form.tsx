@@ -25,10 +25,6 @@ export function NewTopicForm({ categorySlug }: { categorySlug: string }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ categorySlug, title, content }),
         });
-        if (res.status === 401) {
-          setNotice(t("loginRequired"));
-          return;
-        }
         if (!res.ok) {
           setNotice(t("postError"));
           return;
@@ -91,6 +87,7 @@ export function NewTopicForm({ categorySlug }: { categorySlug: string }) {
         className="mt-2 w-full resize-y rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none"
       />
       {notice && <p className="mt-2 text-xs text-amber-400">{notice}</p>}
+      <p className="mt-2 text-[11px] text-zinc-500">{t("anonNotice")}</p>
       <div className="mt-3 flex justify-end gap-2">
         <button
           type="button"

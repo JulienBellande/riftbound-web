@@ -174,6 +174,10 @@
   },
   "forum": {
     "title": "Community Forum",
+    "intro": "Pick a category to browse discussions. No account needed — you can read and post freely.",
+    "anonNotice": "Anonymous posting — a random card pseudonym is assigned to you.",
+    "emptyTitle": "No topics yet",
+    "emptyHint": "Be the first to start a discussion in this category.",
     "newTopic": "New topic",
     "topics": "topics",
     "replies": "replies",

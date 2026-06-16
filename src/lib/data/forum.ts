@@ -9,6 +9,8 @@ export interface ForumCategoryWithCounts {
   slug: string;
   name: string;
   description: string | null;
+  /** Icon key resolved to a lucide icon by the UI. */
+  icon: string;
   topicCount: number;
   replyCount: number;
   lastActivity: string | null;
@@ -19,7 +21,6 @@ export interface ForumTopicSummary {
   title: string;
   user: { username: string; avatarUrl: string | null };
   replyCount: number;
-  viewCount: number;
   isPinned: boolean;
   isLocked: boolean;
   createdAt: string;
@@ -36,193 +37,117 @@ export interface ForumTopicDetail extends ForumTopicSummary {
   }[];
 }
 
-const DEMO_CATEGORIES: (ForumCategoryWithCounts & {
+// ──────────────────────────────────────────────
+// Fixed category set. Clear, self-explanatory sections so newcomers know
+// exactly where to post. Counts are always computed from real topics — never
+// fabricated.
+// ──────────────────────────────────────────────
+
+interface CategoryDef {
+  slug: string;
+  icon: string;
   nameFr: string;
   nameEn: string;
   descFr: string;
   descEn: string;
-})[] = [
+}
+
+const CATEGORIES: CategoryDef[] = [
   {
-    id: "cat-strategy",
-    slug: "strategy",
-    name: "",
-    nameFr: "Stratégie",
-    nameEn: "Strategy",
-    description: null,
-    descFr: "Discussions autour des stratégies et du métagame",
-    descEn: "Discussions about strategies and the metagame",
-    topicCount: 142,
-    replyCount: 1203,
-    lastActivity: new Date(Date.now() - 3600000).toISOString(),
-  },
-  {
-    id: "cat-trades",
-    slug: "trades",
-    name: "",
-    nameFr: "Échanges",
-    nameEn: "Trades",
-    description: null,
-    descFr: "Proposez vos échanges de cartes",
-    descEn: "Post your card trade offers",
-    topicCount: 89,
-    replyCount: 567,
-    lastActivity: new Date(Date.now() - 7200000).toISOString(),
-  },
-  {
-    id: "cat-tournaments",
-    slug: "tournaments",
-    name: "",
-    nameFr: "Tournois",
-    nameEn: "Tournaments",
-    description: null,
-    descFr: "Annonces et résultats de tournois",
-    descEn: "Tournament announcements and results",
-    topicCount: 34,
-    replyCount: 298,
-    lastActivity: new Date(Date.now() - 86400000).toISOString(),
-  },
-  {
-    id: "cat-general",
     slug: "general",
-    name: "",
+    icon: "general",
     nameFr: "Général",
     nameEn: "General",
-    description: null,
-    descFr: "Discussion libre autour de Riftbound",
-    descEn: "Open discussion about Riftbound",
-    topicCount: 210,
-    replyCount: 1876,
-    lastActivity: new Date(Date.now() - 1800000).toISOString(),
+    descFr: "Discussions ouvertes autour de Riftbound et de la communauté.",
+    descEn: "Open discussion about Riftbound and the community.",
+  },
+  {
+    slug: "strategy",
+    icon: "strategy",
+    nameFr: "Stratégie & Méta",
+    nameEn: "Strategy & Meta",
+    descFr: "Tactiques, analyses de matchups et évolution du métagame.",
+    descEn: "Tactics, matchup analysis and how the metagame is shifting.",
+  },
+  {
+    slug: "decks",
+    icon: "decks",
+    nameFr: "Decks",
+    nameEn: "Decks",
+    descFr: "Partagez vos listes, demandez des retours et améliorez vos decks.",
+    descEn: "Share your lists, ask for feedback and refine your decks.",
+  },
+  {
+    slug: "help",
+    icon: "help",
+    nameFr: "Entraide",
+    nameEn: "Help",
+    descFr: "Questions de règles et coups de main pour les nouveaux joueurs.",
+    descEn: "Rules questions and a hand for new players.",
+  },
+  {
+    slug: "events",
+    icon: "events",
+    nameFr: "Événements & Tournois",
+    nameEn: "Events & Tournaments",
+    descFr: "Organisez, annoncez et débriefez vos tournois et rencontres.",
+    descEn: "Organise, announce and recap your tournaments and meetups.",
   },
 ];
 
-const DEMO_TOPICS: (ForumTopicDetail & { categorySlug: string })[] = [
-  {
-    id: "topic-1",
-    categorySlug: "strategy",
-    title: "Ignis nerf incoming — what decks survive?",
-    content:
-      "With the announced nerf to Ignis, Emberheart Control will take a hit. What do you think will rise to fill the void? I'm betting on Chainbreaker Midrange personally.",
-    user: { username: "ShadowMage", avatarUrl: null },
-    replyCount: 23,
-    viewCount: 412,
-    isPinned: true,
-    isLocked: false,
-    createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000).toISOString(),
-    replies: [
-      {
-        id: "reply-1",
-        content:
-          "Tide Oracle Combo will definitely benefit. Without Ignis burning you down, slower decks can thrive.",
-        user: { username: "RiftWalker42", avatarUrl: null },
-        createdAt: new Date(Date.now() - 1.5 * 86400000).toISOString(),
-      },
-      {
-        id: "reply-2",
-        content:
-          "I think aggro decks like Duskblade will dominate. Less control = more face damage.",
-        user: { username: "FlameKnight", avatarUrl: null },
-        createdAt: new Date(Date.now() - 86400000).toISOString(),
-      },
-    ],
-  },
-  {
-    id: "topic-2",
-    categorySlug: "strategy",
-    title: "Best budget deck for ranked climb?",
-    content:
-      "I'm a new player with a limited collection. What's the cheapest competitive deck I can build right now?",
-    user: { username: "NewRifter", avatarUrl: null },
-    replyCount: 15,
-    viewCount: 287,
-    isPinned: false,
-    isLocked: false,
-    createdAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    replies: [
-      {
-        id: "reply-3",
-        content:
-          "Blitz Runes is very cheap to build — mostly commons and uncommons, and it's surprisingly effective up to Gold rank.",
-        user: { username: "TideQueen", avatarUrl: null },
-        createdAt: new Date(Date.now() - 2.5 * 86400000).toISOString(),
-      },
-    ],
-  },
-  {
-    id: "topic-3",
-    categorySlug: "trades",
-    title: "[WTT] My Kaelen for your Theron",
-    content:
-      "I have a foil Kaelen, Duskblade that I'd like to trade for Theron, Chainbreaker. DM me if interested!",
-    user: { username: "FlameKnight", avatarUrl: null },
-    replyCount: 4,
-    viewCount: 67,
-    isPinned: false,
-    isLocked: false,
-    createdAt: new Date(Date.now() - 4 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
-    replies: [],
-  },
-  {
-    id: "topic-4",
-    categorySlug: "tournaments",
-    title: "Rift Masters S2 — Looking for team practice partners",
-    content:
-      "Anyone registered for Rift Masters Season 2 and wants to practice together? I'm currently Diamond 2.",
-    user: { username: "TideQueen", avatarUrl: null },
-    replyCount: 8,
-    viewCount: 156,
-    isPinned: false,
-    isLocked: false,
-    createdAt: new Date(Date.now() - 1 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 7200000).toISOString(),
-    replies: [],
-  },
-  {
-    id: "topic-5",
-    categorySlug: "general",
-    title: "What's your favourite card art?",
-    content:
-      "Just curious — which card do you think has the best artwork? For me it's Vyra, Tide Oracle. The colours are incredible.",
-    user: { username: "RiftWalker42", avatarUrl: null },
-    replyCount: 31,
-    viewCount: 543,
-    isPinned: false,
-    isLocked: false,
-    createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 1800000).toISOString(),
-    replies: [],
-  },
-];
+function iconForSlug(slug: string): string {
+  return CATEGORIES.find((c) => c.slug === slug)?.icon ?? "general";
+}
 
-// Topics created during a demo session, persisted via the demo file store so
-// they survive the RSC-page / route-handler worker boundary.
+export function isForumCategory(slug: string): boolean {
+  return CATEGORIES.some((c) => c.slug === slug);
+}
+
+// Topics created during a demo session, persisted via the file store so they
+// survive the RSC-page / route-handler worker boundary in production builds.
 type SessionTopic = ForumTopicDetail & { categorySlug: string };
 const sessionTopics = () => demoRead<SessionTopic[]>("topics", []);
 
-export async function getForumCategory(
-  slug: string,
-  locale: SupportedLocale
-): Promise<ForumCategoryWithCounts | null> {
-  const categories = await getForumCategories(locale);
-  return categories.find((c) => c.slug === slug) ?? null;
+function toSummary(t: SessionTopic): ForumTopicSummary {
+  return {
+    id: t.id,
+    title: t.title,
+    user: t.user,
+    replyCount: t.replies.length,
+    isPinned: t.isPinned,
+    isLocked: t.isLocked,
+    createdAt: t.createdAt,
+    updatedAt: t.updatedAt,
+  };
 }
+
+// ──────────────────────────────────────────────
+// Public API
+// ──────────────────────────────────────────────
 
 export async function getForumCategories(
   locale: SupportedLocale
 ): Promise<ForumCategoryWithCounts[]> {
   if (!isDatabaseConfigured()) {
-    return DEMO_CATEGORIES.map((c) => ({
-      id: c.id,
-      slug: c.slug,
-      name: locale === "fr" ? c.nameFr : c.nameEn,
-      description: locale === "fr" ? c.descFr : c.descEn,
-      topicCount: c.topicCount,
-      replyCount: c.replyCount,
-      lastActivity: c.lastActivity,
-    }));
+    const topics = sessionTopics();
+    return CATEGORIES.map((c) => {
+      const inCat = topics.filter((t) => t.categorySlug === c.slug);
+      const replyCount = inCat.reduce((s, t) => s + t.replies.length, 0);
+      const lastActivity = inCat.reduce<string | null>(
+        (acc, t) => (!acc || t.updatedAt > acc ? t.updatedAt : acc),
+        null
+      );
+      return {
+        id: `cat-${c.slug}`,
+        slug: c.slug,
+        name: locale === "fr" ? c.nameFr : c.nameEn,
+        description: locale === "fr" ? c.descFr : c.descEn,
+        icon: c.icon,
+        topicCount: inCat.length,
+        replyCount,
+        lastActivity,
+      };
+    });
   }
 
   const nameField = locale === "fr" ? "nameFr" : "nameEn";
@@ -233,10 +158,7 @@ export async function getForumCategories(
     include: {
       _count: { select: { topics: true } },
       topics: {
-        select: {
-          _count: { select: { replies: true } },
-          updatedAt: true,
-        },
+        select: { _count: { select: { replies: true } }, updatedAt: true },
         orderBy: { updatedAt: "desc" },
         take: 1,
       },
@@ -248,10 +170,19 @@ export async function getForumCategories(
     slug: c.slug,
     name: c[nameField] as string,
     description: (c[descField] as string) ?? null,
+    icon: iconForSlug(c.slug),
     topicCount: c._count.topics,
     replyCount: c.topics.reduce((s, t) => s + t._count.replies, 0),
     lastActivity: c.topics[0]?.updatedAt.toISOString() ?? null,
   }));
+}
+
+export async function getForumCategory(
+  slug: string,
+  locale: SupportedLocale
+): Promise<ForumCategoryWithCounts | null> {
+  const categories = await getForumCategories(locale);
+  return categories.find((c) => c.slug === slug) ?? null;
 }
 
 export async function getTopics(
@@ -262,7 +193,7 @@ export async function getTopics(
   const perPage = Math.min(Math.max(filters.perPage ?? 20, 1), 50);
 
   if (!isDatabaseConfigured()) {
-    const topics = [...sessionTopics(), ...DEMO_TOPICS]
+    const topics = sessionTopics()
       .filter((t) => t.categorySlug === categorySlug)
       .sort((a, b) => {
         if (a.isPinned !== b.isPinned) return a.isPinned ? -1 : 1;
@@ -270,7 +201,7 @@ export async function getTopics(
       });
     const start = (page - 1) * perPage;
     return {
-      data: topics.slice(start, start + perPage),
+      data: topics.slice(start, start + perPage).map(toSummary),
       total: topics.length,
       page,
       perPage,
@@ -304,7 +235,6 @@ export async function getTopics(
       title: t.title,
       user: { username: t.user.username, avatarUrl: t.user.avatarUrl },
       replyCount: t._count.replies,
-      viewCount: t.viewCount,
       isPinned: t.isPinned,
       isLocked: t.isLocked,
       createdAt: t.createdAt.toISOString(),
@@ -321,11 +251,7 @@ export async function getTopicById(
   id: string
 ): Promise<ForumTopicDetail | null> {
   if (!isDatabaseConfigured()) {
-    return (
-      sessionTopics().find((t) => t.id === id) ??
-      DEMO_TOPICS.find((t) => t.id === id) ??
-      null
-    );
+    return sessionTopics().find((t) => t.id === id) ?? null;
   }
 
   const t = await prisma.forumTopic.findUnique({
@@ -347,7 +273,6 @@ export async function getTopicById(
     content: t.content,
     user: { username: t.user.username, avatarUrl: t.user.avatarUrl },
     replyCount: t._count.replies,
-    viewCount: t.viewCount,
     isPinned: t.isPinned,
     isLocked: t.isLocked,
     createdAt: t.createdAt.toISOString(),
@@ -366,6 +291,7 @@ export async function createTopic(
   input: { title: string; content: string },
   authorName: string
 ): Promise<{ id: string }> {
+  if (!isForumCategory(categorySlug)) throw new Error("unknown_category");
   const now = new Date().toISOString();
 
   if (!isDatabaseConfigured()) {
@@ -380,7 +306,6 @@ export async function createTopic(
         content: input.content,
         user: { username: authorName, avatarUrl: null },
         replyCount: 0,
-        viewCount: 0,
         isPinned: false,
         isLocked: false,
         createdAt: now,
@@ -426,7 +351,6 @@ export async function createReply(
         found = true;
         return {
           ...t,
-          replyCount: t.replyCount + 1,
           updatedAt: createdAt,
           replies: [
             ...t.replies,
@@ -440,7 +364,7 @@ export async function createReply(
         };
       })
     );
-    if (!found) throw new Error("topic_not_found_or_readonly");
+    if (!found) throw new Error("topic_not_found");
     return { id };
   }
 
@@ -455,11 +379,14 @@ export async function createReply(
   return { id: reply.id };
 }
 
-/** True when a topic accepts replies in the current mode (demo topics from the
- *  static seed are read-only; only session-created ones can be replied to). */
-export function isTopicReplyable(topicId: string): boolean {
+/** Whether a topic accepts replies (true unless explicitly locked). */
+export async function isTopicReplyable(topicId: string): Promise<boolean> {
   if (!isDatabaseConfigured()) {
-    return sessionTopics().some((t) => t.id === topicId);
+    return sessionTopics().some((t) => t.id === topicId && !t.isLocked);
   }
-  return true;
+  const topic = await prisma.forumTopic.findUnique({
+    where: { id: topicId },
+    select: { isLocked: true },
+  });
+  return !!topic && !topic.isLocked;
 }

@@ -31,7 +31,7 @@ export default async function ForumTopicPage({
   if (!topic) notFound();
 
   const cat = await getForumCategory(category, typedLocale);
-  const replyable = isTopicReplyable(topicId) && !topic.isLocked;
+  const replyable = (await isTopicReplyable(topicId)) && !topic.isLocked;
 
   function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString(
