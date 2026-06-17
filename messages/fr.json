@@ -178,6 +178,15 @@
     "anonNotice": "Commentaire anonyme — un pseudo de carte aléatoire sera affiché.",
     "error": "Échec de l'envoi. Réessayez."
   },
+  "buy": {
+    "title": "Où acheter",
+    "from": "à partir de",
+    "buy": "Acheter",
+    "see": "Voir les offres",
+    "checkOffers": "Voir les offres en ligne",
+    "bestPrice": "Meilleur prix",
+    "disclosure": "Liens partenaires — RiftForge peut percevoir une commission sur les achats."
+  },
   "common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue",

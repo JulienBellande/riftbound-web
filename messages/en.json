@@ -178,6 +178,15 @@
     "anonNotice": "Anonymous comment — a random card pseudonym will be shown.",
     "error": "Submission failed. Please try again."
   },
+  "buy": {
+    "title": "Where to buy",
+    "from": "from",
+    "buy": "Buy",
+    "see": "See offers",
+    "checkOffers": "Check online offers",
+    "bestPrice": "Best price",
+    "disclosure": "Affiliate links — RiftForge may earn a commission on purchases."
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { ArrowLeft } from "lucide-react";
 import { getCardById, getCardVariants } from "@/lib/data/cards";
+import { buildBuyOptions } from "@/lib/buy-links";
+import { WhereToBuy } from "@/components/cards/where-to-buy";
 import {
   formatPrice,
   localizedName,
@@ -216,6 +218,8 @@ export default async function CardDetailPage({
               </p>
             </div>
           )}
+
+          <WhereToBuy options={buildBuyOptions(card)} />
         </div>
       </div>
 
