@@ -23,11 +23,17 @@ export function WhereToBuy({ options }: { options: BuyOption[] }) {
         {options.map((o) => (
           <li
             key={o.source}
-            className="flex items-center justify-between gap-3 bg-zinc-900 px-4 py-3"
+            className={`flex items-center justify-between gap-3 px-4 py-3 ${
+              o.featured ? "bg-amber-500/5" : "bg-zinc-900"
+            }`}
           >
             <div className="min-w-0">
               <p className="text-sm font-medium text-zinc-100">{o.label}</p>
-              {o.priceEur !== null ? (
+              {o.featured ? (
+                <p className="mt-0.5 text-xs text-zinc-400">
+                  {t("compareOffers")}
+                </p>
+              ) : o.priceEur !== null ? (
                 <p className="mt-0.5 text-xs text-zinc-500">
                   {t("from")}{" "}
                   <span className="font-semibold text-emerald-400">
@@ -47,9 +53,13 @@ export function WhereToBuy({ options }: { options: BuyOption[] }) {
               href={o.url}
               target="_blank"
               rel="nofollow sponsored noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-semibold text-zinc-900 transition-colors hover:bg-white"
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                o.featured
+                  ? "bg-amber-500 text-zinc-950 hover:bg-amber-400"
+                  : "bg-zinc-100 text-zinc-900 hover:bg-white"
+              }`}
             >
-              {o.priceEur !== null ? t("buy") : t("see")}
+              {o.featured ? t("compare") : o.priceEur !== null ? t("buy") : t("see")}
               <ExternalLink size={13} />
             </a>
           </li>

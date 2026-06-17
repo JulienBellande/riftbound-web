@@ -17,7 +17,7 @@ import type { CardWithPrice } from "@/types";
  *  • Cardmarket affiliate is arranged directly; price data via 3rd-party APIs.
  */
 
-export type BuySource = "tcgplayer" | "cardmarket" | "ebay";
+export type BuySource = "cardnexus" | "tcgplayer" | "cardmarket" | "ebay";
 
 export interface BuyOption {
   source: BuySource;
@@ -25,10 +25,26 @@ export interface BuyOption {
   /** Known unit price in EUR, or null when we only link to a search. */
   priceEur: number | null;
   url: string;
+  /** Aggregator entry shown first (compares many sellers). */
+  featured?: boolean;
 }
 
 function baseName(name: string): string {
   return name.replace(/\s*\([^)]*\)\s*$/g, "").trim();
+}
+
+/**
+ * CardNexus — a multi-game marketplace that already compares Riftbound prices
+ * across many sellers/countries. One affiliate out-link covers the whole
+ * comparison. We can't deep-link an exact card without CardNexus' card id, so
+ * we link to the Riftbound explorer with the name as a search hint.
+ */
+function cardnexusUrl(query: string): string {
+  const target = `https://cardnexus.com/en/explore/riftbound?search=${encodeURIComponent(
+    query
+  )}`;
+  const prefix = process.env.CARDNEXUS_AFFILIATE_URL;
+  return prefix ? `${prefix}?u=${encodeURIComponent(target)}` : target;
 }
 
 function tcgplayerUrl(query: string): string {
@@ -69,6 +85,13 @@ export function buildBuyOptions(card: CardWithPrice): BuyOption[] {
   const query = baseName(card.nameEn);
   const options: BuyOption[] = [
     {
+      source: "cardnexus",
+      label: "CardNexus",
+      priceEur: null,
+      url: cardnexusUrl(query),
+      featured: true,
+    },
+    {
       source: "tcgplayer",
       label: "TCGplayer",
       priceEur: card.latestPrice?.priceEur ?? null,
@@ -88,7 +111,9 @@ export function buildBuyOptions(card: CardWithPrice): BuyOption[] {
     },
   ];
 
+  // Featured aggregator first, then cheapest known price, then search-only.
   return options.sort((a, b) => {
+    if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
     if (a.priceEur === null && b.priceEur === null) return 0;
     if (a.priceEur === null) return 1;
     if (b.priceEur === null) return -1;
