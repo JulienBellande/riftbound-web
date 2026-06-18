@@ -17,7 +17,7 @@ const TYPE_MAP: Record<string, CardType> = {
   SPELL: "SPELL",
   RUNE: "RUNE",
   GEAR: "GEAR",
-  LEGEND: "CHAMPION",
+  LEGEND: "LEGEND",
   BATTLEFIELD: "BATTLEFIELD",
 };
 
@@ -26,8 +26,8 @@ const RARITY_MAP: Record<string, CardRarity> = {
   UNCOMMON: "UNCOMMON",
   RARE: "RARE",
   EPIC: "EPIC",
-  SHOWCASE: "EPIC",
-  PROMO: "RARE",
+  SHOWCASE: "SHOWCASE",
+  PROMO: "PROMO",
 };
 
 async function main() {
@@ -77,6 +77,8 @@ async function main() {
         attack: card.attack,
         health: card.health,
         imageUrl: card.imageUrl,
+        domain: card.domain,
+        tags: card.tags,
       },
       create: {
         extensionId,
@@ -91,6 +93,8 @@ async function main() {
         attack: card.attack,
         health: card.health,
         imageUrl: card.imageUrl,
+        domain: card.domain,
+        tags: card.tags,
       },
     });
 
@@ -113,36 +117,44 @@ async function main() {
   console.log("Seeding forum categories...");
   const forumCategories = [
     {
-      slug: "strategy",
-      nameFr: "Stratégie",
-      nameEn: "Strategy",
-      descriptionFr: "Discussions autour des stratégies et du métagame",
-      descriptionEn: "Discussions about strategies and the metagame",
-      sortOrder: 1,
-    },
-    {
-      slug: "trades",
-      nameFr: "Échanges",
-      nameEn: "Trades",
-      descriptionFr: "Proposez vos échanges de cartes",
-      descriptionEn: "Post your card trade offers",
-      sortOrder: 2,
-    },
-    {
-      slug: "tournaments",
-      nameFr: "Tournois",
-      nameEn: "Tournaments",
-      descriptionFr: "Annonces et résultats de tournois",
-      descriptionEn: "Tournament announcements and results",
-      sortOrder: 3,
-    },
-    {
       slug: "general",
       nameFr: "Général",
       nameEn: "General",
-      descriptionFr: "Discussion libre autour de Riftbound",
-      descriptionEn: "Open discussion about Riftbound",
+      descriptionFr: "Discussions ouvertes autour de Riftbound et de la communauté.",
+      descriptionEn: "Open discussion about Riftbound and the community.",
+      sortOrder: 1,
+    },
+    {
+      slug: "strategy",
+      nameFr: "Stratégie & Méta",
+      nameEn: "Strategy & Meta",
+      descriptionFr: "Tactiques, analyses de matchups et évolution du métagame.",
+      descriptionEn: "Tactics, matchup analysis and how the metagame is shifting.",
+      sortOrder: 2,
+    },
+    {
+      slug: "decks",
+      nameFr: "Decks",
+      nameEn: "Decks",
+      descriptionFr: "Partagez vos listes, demandez des retours et améliorez vos decks.",
+      descriptionEn: "Share your lists, ask for feedback and refine your decks.",
+      sortOrder: 3,
+    },
+    {
+      slug: "help",
+      nameFr: "Entraide",
+      nameEn: "Help",
+      descriptionFr: "Questions de règles et coups de main pour les nouveaux joueurs.",
+      descriptionEn: "Rules questions and a hand for new players.",
       sortOrder: 4,
+    },
+    {
+      slug: "events",
+      nameFr: "Événements & Tournois",
+      nameEn: "Events & Tournaments",
+      descriptionFr: "Organisez, annoncez et débriefez vos tournois et rencontres.",
+      descriptionEn: "Organise, announce and recap your tournaments and meetups.",
+      sortOrder: 5,
     },
   ];
 

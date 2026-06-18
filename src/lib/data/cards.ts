@@ -221,9 +221,9 @@ export async function getLegends(): Promise<CardWithPrice[]> {
       attack: c.attack,
       health: c.health,
       imageUrl: c.imageUrl,
-      domain: [],
+      domain: c.domain,
       artist: "",
-      tags: [],
+      tags: c.tags,
       extension: {
         code: c.extension.code,
         nameFr: c.extension.nameFr,
@@ -278,6 +278,7 @@ export async function getCards(
     }),
     ...(filters.type && { type: filters.type as never }),
     ...(filters.rarity && { rarity: filters.rarity as never }),
+    ...(filters.tag && { tags: { has: filters.tag } }),
     ...((filters.costMin !== undefined || filters.costMax !== undefined) && {
       cost: {
         ...(filters.costMin !== undefined && { gte: filters.costMin }),
@@ -326,9 +327,9 @@ export async function getCards(
       attack: c.attack,
       health: c.health,
       imageUrl: c.imageUrl,
-      domain: [],
+      domain: c.domain,
       artist: "",
-      tags: [],
+      tags: c.tags,
       extension: {
         code: c.extension.code,
         nameFr: c.extension.nameFr,
@@ -378,9 +379,9 @@ export async function getCardById(id: string): Promise<CardWithPrice | null> {
     attack: card.attack,
     health: card.health,
     imageUrl: card.imageUrl,
-    domain: [],
+    domain: card.domain,
     artist: "",
-    tags: [],
+    tags: card.tags,
     extension: {
       code: card.extension.code,
       nameFr: card.extension.nameFr,
@@ -444,9 +445,9 @@ export async function getCardVariants(
     attack: c.attack,
     health: c.health,
     imageUrl: c.imageUrl,
-    domain: [],
+    domain: c.domain,
     artist: "",
-    tags: [],
+    tags: c.tags,
     extension: {
       code: c.extension.code,
       nameFr: c.extension.nameFr,
@@ -560,9 +561,9 @@ export async function getPriceRows(filters: {
         attack: c.attack,
         health: c.health,
         imageUrl: c.imageUrl,
-        domain: [],
+        domain: c.domain,
         artist: "",
-        tags: [],
+        tags: c.tags,
         extension: {
           code: c.extension.code,
           nameFr: c.extension.nameFr,

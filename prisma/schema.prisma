@@ -75,6 +75,8 @@ model Card {
   attack        Int?
   health        Int?
   imageUrl      String?    @map("image_url")
+  domain        String[]
+  tags          String[]
   createdAt     DateTime   @default(now()) @map("created_at")
   updatedAt     DateTime   @updatedAt @map("updated_at")
 
@@ -108,7 +110,7 @@ model CardPrice {
 
 enum CardType {
   UNIT
-  CHAMPION
+  LEGEND
   SPELL
   GEAR
   RUNE
@@ -120,7 +122,8 @@ enum CardRarity {
   UNCOMMON
   RARE
   EPIC
-  LEGENDARY
+  SHOWCASE
+  PROMO
 }
 
 // ──────────────────────────────────────────────

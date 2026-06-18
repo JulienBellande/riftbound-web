@@ -8,10 +8,10 @@ CREATE TYPE "UserRole" AS ENUM ('USER', 'MODERATOR', 'ADMIN');
 CREATE TYPE "Locale" AS ENUM ('FR', 'EN');
 
 -- CreateEnum
-CREATE TYPE "CardType" AS ENUM ('UNIT', 'CHAMPION', 'SPELL', 'GEAR', 'RUNE', 'BATTLEFIELD');
+CREATE TYPE "CardType" AS ENUM ('UNIT', 'LEGEND', 'SPELL', 'GEAR', 'RUNE', 'BATTLEFIELD');
 
 -- CreateEnum
-CREATE TYPE "CardRarity" AS ENUM ('COMMON', 'UNCOMMON', 'RARE', 'EPIC', 'LEGENDARY');
+CREATE TYPE "CardRarity" AS ENUM ('COMMON', 'UNCOMMON', 'RARE', 'EPIC', 'SHOWCASE', 'PROMO');
 
 -- CreateEnum
 CREATE TYPE "PostCategory" AS ENUM ('NEWS', 'GUIDE', 'META', 'TOURNAMENT', 'PATCH_NOTES');
@@ -67,6 +67,8 @@ CREATE TABLE "cards" (
     "attack" INTEGER,
     "health" INTEGER,
     "image_url" TEXT,
+    "domain" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "tags" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
