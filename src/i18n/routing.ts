@@ -46,6 +46,18 @@ export const routing = defineRouting({
       fr: "/forum/[category]/[topicId]",
       en: "/forum/[category]/[topicId]",
     },
+    "/privacy": {
+      fr: "/confidentialite",
+      en: "/privacy",
+    },
+    "/terms": {
+      fr: "/conditions",
+      en: "/terms",
+    },
+    "/legal": {
+      fr: "/mentions-legales",
+      en: "/legal",
+    },
   },
 });
 

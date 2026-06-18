@@ -12,6 +12,9 @@ const STATIC_PATHS = [
   "/deck-builder",
   "/blog",
   "/forum",
+  "/privacy",
+  "/terms",
+  "/legal",
 ] as const;
 
 function localizedPath(pathname: string, locale: "fr" | "en"): string {

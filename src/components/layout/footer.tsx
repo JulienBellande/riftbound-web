@@ -81,13 +81,28 @@ export function Footer() {
             </h3>
             <ul className="mt-3 space-y-1.5">
               <li>
-                <span className="text-sm text-zinc-600">{t("privacy")}</span>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-zinc-500 transition-colors hover:text-zinc-200"
+                >
+                  {t("privacy")}
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-zinc-600">{t("terms")}</span>
+                <Link
+                  href="/terms"
+                  className="text-sm text-zinc-500 transition-colors hover:text-zinc-200"
+                >
+                  {t("terms")}
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-zinc-600">{t("contact")}</span>
+                <Link
+                  href="/legal"
+                  className="text-sm text-zinc-500 transition-colors hover:text-zinc-200"
+                >
+                  {t("mentions")}
+                </Link>
               </li>
             </ul>
           </div>

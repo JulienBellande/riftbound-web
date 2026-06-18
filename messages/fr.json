@@ -190,6 +190,11 @@
     "bestPrice": "Meilleur prix",
     "disclosure": "Liens partenaires — RiftForge peut percevoir une commission sur les achats."
   },
+  "cookies": {
+    "message": "Ce site utilise un cookie fonctionnel (anti double-vote) et des liens d'affiliation. Pas de publicité ni de pistage publicitaire.",
+    "accept": "OK",
+    "learnMore": "En savoir plus"
+  },
   "common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue",
@@ -209,7 +214,8 @@
   "footer": {
     "about": "À propos",
     "contact": "Contact",
-    "legal": "Mentions légales",
+    "legal": "Légal",
+    "mentions": "Mentions légales",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
     "copyright": "© {year} RiftForge. Tous droits réservés.",

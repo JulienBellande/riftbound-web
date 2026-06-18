@@ -190,6 +190,11 @@
     "bestPrice": "Best price",
     "disclosure": "Affiliate links — RiftForge may earn a commission on purchases."
   },
+  "cookies": {
+    "message": "This site uses one functional cookie (to prevent double-voting) and affiliate links. No ads or ad tracking.",
+    "accept": "OK",
+    "learnMore": "Learn more"
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
@@ -210,6 +215,7 @@
     "about": "About",
     "contact": "Contact",
     "legal": "Legal",
+    "mentions": "Legal notice",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "copyright": "© {year} RiftForge. All rights reserved.",
