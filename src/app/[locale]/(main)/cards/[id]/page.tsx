@@ -2,9 +2,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { getCardById, getCardVariants } from "@/lib/data/cards";
-import { buildBuyOptions } from "@/lib/buy-links";
+import { buildBuyOptions, cardNexusUrl } from "@/lib/buy-links";
 import { WhereToBuy } from "@/components/cards/where-to-buy";
 import {
   formatPrice,
@@ -66,6 +66,7 @@ export default async function CardDetailPage({
 
   const t = await getTranslations({ locale, namespace: "cards" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
+  const tBuy = await getTranslations({ locale, namespace: "buy" });
   const typedLocale = locale as SupportedLocale;
 
   const name = localizedName(card, typedLocale);
@@ -116,6 +117,16 @@ export default async function CardDetailPage({
               : card.extension.nameEn}{" "}
             · #{card.collectorNum}
           </p>
+
+          <a
+            href={cardNexusUrl(card)}
+            target="_blank"
+            rel="nofollow sponsored noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-950 transition-colors hover:bg-amber-400"
+          >
+            {tBuy("viewCardnexus")}
+            <ExternalLink size={14} />
+          </a>
 
           {/* Domain + tags */}
           {(card.domain.length > 0 || card.tags.length > 0) && (

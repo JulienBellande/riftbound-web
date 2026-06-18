@@ -39,9 +39,9 @@ function baseName(name: string): string {
  * comparison. We can't deep-link an exact card without CardNexus' card id, so
  * we link to the Riftbound explorer with the name as a search hint.
  */
-function cardnexusUrl(query: string): string {
+export function cardNexusUrl(card: CardWithPrice): string {
   const target = `https://cardnexus.com/en/explore/riftbound?search=${encodeURIComponent(
-    query
+    baseName(card.nameEn)
   )}`;
   const prefix = process.env.CARDNEXUS_AFFILIATE_URL;
   return prefix ? `${prefix}?u=${encodeURIComponent(target)}` : target;
@@ -88,7 +88,7 @@ export function buildBuyOptions(card: CardWithPrice): BuyOption[] {
       source: "cardnexus",
       label: "CardNexus",
       priceEur: null,
-      url: cardnexusUrl(query),
+      url: cardNexusUrl(card),
       featured: true,
     },
     {
