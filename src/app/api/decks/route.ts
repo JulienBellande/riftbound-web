@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getDecks, createDeck } from "@/lib/data/decks";
 import { randomCardAlias } from "@/lib/anon";
+import { rateLimit, clientKey, tooManyRequests } from "@/lib/rate-limit";
 
 const querySchema = z.object({
   q: z.string().optional(),
@@ -57,6 +58,9 @@ const createSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const rl = rateLimit(clientKey(request, "deck-create"), 10, 60_000);
+  if (!rl.ok) return tooManyRequests(rl.retryAfter);
+
   let parsed;
   try {
     parsed = createSchema.parse(await request.json());

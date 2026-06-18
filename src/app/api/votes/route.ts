@@ -3,6 +3,7 @@ import { z } from "zod";
 import { isDatabaseConfigured } from "@/lib/db";
 import { castDemoVote, castVote } from "@/lib/data/decks";
 import { getAnonVoterId, ensureAnonVoter } from "@/lib/anon";
+import { rateLimit, clientKey, tooManyRequests } from "@/lib/rate-limit";
 
 const bodySchema = z.object({
   deckId: z.string(),
@@ -10,6 +11,9 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const rl = rateLimit(clientKey(request, "vote"), 30, 60_000);
+  if (!rl.ok) return tooManyRequests(rl.retryAfter);
+
   const parsed = bodySchema.safeParse(await request.json());
   if (!parsed.success) {
     return NextResponse.json(
